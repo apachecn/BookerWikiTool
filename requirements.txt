@@ -1,0 +1,5 @@
+requests
+pyquery
+readability-lxml
+pyyaml
+EpubCrawler
