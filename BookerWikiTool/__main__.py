@@ -27,7 +27,7 @@ default_hdrs = {
 }
 
 RE_YAML_META = r'<!--yml([\s\S]+?)-->'
-RE_TITLE = r'\.html$'
+RE_TITLE = r'^#+ (.+?)$'
 
 def d(name):
     return path.join(DIR, name)
@@ -40,7 +40,7 @@ def tomd(html):
         ["node", js_fname, html_fname],
         shell=True,
     ).communicate()
-    md_fname = re.sub(RE_TITLE, '', html_fname) + '.md'
+    md_fname = re.sub(r'\.html$', '', html_fname) + '.md'
     md = open(md_fname, encoding='utf8').read()
     os.remove(html_fname)
     return md
@@ -129,7 +129,7 @@ def summary_handle(args):
         dt = meta.get('date', '0001-01-01 00:00:00')
         cate = meta.get('category', '未分类')
         # 提取标题
-        m = re.search(r'^#+ (.+?)$', md, flags=re.M)
+        m = re.search(RE_TITLE, md, flags=re.M)
         if not m: 
             print('未找到标题，已跳过')
             continue
