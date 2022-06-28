@@ -184,7 +184,7 @@ def main():
     
     fix_parser = subparsers.add_parser("fix", help="fix titles")
     fix_parser.add_argument("file", help="file")
-    dl_parser.set_defaults(func=fix_handle)
+    fix_parser.set_defaults(func=fix_handle)
     
     args = parser.parse_args()
     args.func(args)
