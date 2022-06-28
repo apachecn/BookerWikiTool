@@ -56,6 +56,19 @@ def fname_escape(name):
                .replace('>', '＞') \
                .replace('|', '｜')
 
+def fix_handle(args):
+    cont = open(args.file, encoding='utf8').read()
+    dir = path.dirname(args.file)
+    rm = re.search(RE_TITLE, cont, flags=re.M)
+    if not rm: 
+        print(f'{args.file} 未找到标题')
+        return
+    title = rm.group(1)
+    nfname = re.sub(r'\s', '-', fname_escape(title)) + '.md'
+    nfname = path.join(dir, nfname)
+    print(nfname)
+    os.rename(args.file, nfname)
+
 def download_handle(args):
     html = requests.get(
         args.url,
