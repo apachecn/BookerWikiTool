@@ -57,6 +57,9 @@ def fname_escape(name):
                .replace('|', '｜')
 
 def fix_handle(args):
+    if not args.file.endswith('.md'):
+        print('请提供 markdown 文件')
+        return
     cont = open(args.file, encoding='utf8').read()
     dir = path.dirname(args.file)
     rm = re.search(RE_TITLE, cont, flags=re.M)
@@ -178,6 +181,10 @@ def main():
     
     sum_parser = subparsers.add_parser("summary", help="generate the summary")
     sum_parser.set_defaults(func=summary_handle)
+    
+    fix_parser = subparsers.add_parser("fix", help="fix titles")
+    fix_parser.add_argument("file", help="file")
+    dl_parser.set_defaults(func=fix_handle)
     
     args = parser.parse_args()
     args.func(args)
