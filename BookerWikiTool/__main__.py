@@ -75,7 +75,7 @@ def account_handle(args):
     zh_count = len(re.findall(RE_ZH_WORD, cont))
     en_count = len(re.findall(RE_EN_WORD, cont))
     total = zh_count + en_count
-    print(f'中文字数：{zh_count}\n英文字数：{en_count}\n，总字数：{total}')
+    print(f'中文字数：{zh_count}\n英文字数：{en_count}\n总字数：{total}')
 
 def fix_handle(args):
     if not args.file.endswith('.md'):
