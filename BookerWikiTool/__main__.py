@@ -30,8 +30,8 @@ RE_YAML_META = r'<!--yml([\s\S]+?)-->'
 RE_TITLE = r'^#+ (.+?)$'
 RE_CODE_BLOCK = r'```[\s\S]+?```'
 RE_IMG = r'!\[.*?\]\(.*?\)'
-RE_ZH_WORD = r'[\u4e00-\u9fff]'
-RE_EN_WORD = r'[a-zA-Z0-9_\-\.]+'
+RE_ZH_WORD = r'[\u2018-\u201d\u3001-\u301c\u4e00-\u9fff\uff01-\uff65]'
+RE_EN_WORD = r'[\x21-\x7e]+'
 
 def d(name):
     return path.join(DIR, name)
