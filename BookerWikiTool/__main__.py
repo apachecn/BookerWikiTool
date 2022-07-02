@@ -30,6 +30,9 @@ RE_YAML_META = r'<!--yml([\s\S]+?)-->'
 RE_TITLE = r'^#+ (.+?)$'
 RE_CODE_BLOCK = r'```[\s\S]+?```'
 RE_IMG = r'!\[.*?\]\(.*?\)'
+# Word 字数统计标准：
+# 一个汉字或中文标点算一个字
+# 一个连续的英文字母、标点和数字序列算一个字
 RE_ZH_WORD = r'[\u2018-\u201d\u3001-\u301c\u4e00-\u9fff\uff01-\uff65]'
 RE_EN_WORD = r'[\x21-\x7e]+'
 
