@@ -202,6 +202,10 @@ def main():
     fix_parser.add_argument("file", help="file")
     fix_parser.set_defaults(func=fix_handle)
     
+    acc_parser = subparsers.add_parser("account", help="account words")
+    acc_parser.add_argument("file", help="file")
+    acc_parser.set_defaults(func=account_handle)
+
     args = parser.parse_args()
     args.func(args)
 
