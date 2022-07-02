@@ -30,6 +30,8 @@ RE_YAML_META = r'<!--yml([\s\S]+?)-->'
 RE_TITLE = r'^#+ (.+?)$'
 RE_CODE_BLOCK = r'```[\s\S]+?```'
 RE_IMG = r'!\[.*?\]\(.*?\)'
+RE_ZH_WORD = r'[\u4e00-\u9fff]'
+RE_EN_WORD = r'[a-zA-Z0-9_\-\.]+'
 
 def d(name):
     return path.join(DIR, name)
@@ -67,8 +69,8 @@ def account_handle(args):
     # 去掉代码块和图片
     cont = re.sub(RE_CODE_BLOCK, '', cont)
     cont = re.sub(RE_IMG, '', cont)
-    zh_count = len(re.findall(r'[\u4e00-\u9fff]', cont))
-    en_count = len(re.findall(r'[\w\-\.]+', cont))
+    zh_count = len(re.findall(RE_ZH_WORD, cont))
+    en_count = len(re.findall(RE_EN_WORD, cont))
     total = zh_count + en_count
     print(f'中文字数：{zh_count}\n英文字数：{en_count}\n，总字数：{total}')
 
