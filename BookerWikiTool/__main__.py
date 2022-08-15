@@ -142,6 +142,29 @@ def summary_handle(args):
             summary += f'    +   [{title}](docs/{file})\n'
     open('SUMMARY.md', 'w', encoding='utf8').write(summary)
     
+def tomd_dir(args):
+    dir = args.fname
+    fnames = os.listdir(dir)
+    for fname in fnames:
+        args.fname = path.join(dir, fname)
+        tomd_file(args)
+    
+def tomd_file(args):
+    if not args.fname.endswith('.html'):
+        print('请提供 HTML 文件')
+        return
+    print(args.fname)
+    html = open(args.fname, encoding='utf8').read()
+    md = tomd(html)
+    ofname = re.sub(r'\.html$', '', args.fname) + '.md'
+    open(ofname, 'w', encoding='utf8').write(md)
+
+def tomd_handle(args):
+    if path.isdir(args.fname):
+        tomd_dir(args)
+    else:
+        tomd_file(args)
+    
 def main():
     parser = argparse.ArgumentParser(prog="BookerWikiTool", description="iBooker WIKI tool", formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("-v", "--version", action="version", version=f"BookerWikiTool version: {__version__}")
