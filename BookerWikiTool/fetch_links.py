@@ -25,7 +25,7 @@ def get_toc(html, base):
         links.append(urljoin(base, url))
     return links
 
-def fetch_pages(args):
+def fetch_links(args):
     url = args.url
     link = args.link
     ofname = args.ofname

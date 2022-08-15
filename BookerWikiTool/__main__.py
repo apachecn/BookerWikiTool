@@ -23,7 +23,7 @@ from .bili import *
 from .util import *
 from .comp_epub import *
 from .keyframe import *
-from .fetch_pages import *
+from .fetch_links import *
 
 def account_handle(args):
     if not args.file.endswith('.md'):
@@ -250,15 +250,15 @@ def main():
     bili_home_parser.add_argument("-a", "--audio", type=bool, default=False, help="whether to convert to audio")
     bili_home_parser.set_defaults(func=batch_home_bili)
 
-    fetch_pages_parser = subparsers.add_parser("fetch-pages", help="fetch pages")
-    fetch_pages_parser.add_argument("url", help="url with {i} as page num")
-    fetch_pages_parser.add_argument("link", help="link selector")
-    fetch_pages_parser.add_argument("ofname", help="output file name")
-    fetch_pages_parser.add_argument("-s", "--start", type=int, default=1, help="starting page")
-    fetch_pages_parser.add_argument("-e", "--end", type=int, default=10000000, help="ending page")
-    fetch_pages_parser.add_argument("-p", "--proxy", help="proxy")
-    fetch_pages_parser.add_argument("-H", "--headers", help="headers in JSON")
-    fetch_pages_parser.set_defaults(func=fetch_pages)
+    fetch_links_parser = subparsers.add_parser("fetch-links", help="fetch links in pages")
+    fetch_links_parser.add_argument("url", help="url with {i} as page num")
+    fetch_links_parser.add_argument("link", help="link selector")
+    fetch_links_parser.add_argument("ofname", help="output file name")
+    fetch_links_parser.add_argument("-s", "--start", type=int, default=1, help="starting page")
+    fetch_links_parser.add_argument("-e", "--end", type=int, default=10000000, help="ending page")
+    fetch_links_parser.add_argument("-p", "--proxy", help="proxy")
+    fetch_links_parser.add_argument("-H", "--headers", help="headers in JSON")
+    fetch_links_parser.set_defaults(func=fetch_links)
 
     args = parser.parse_args()
     args.func(args)
