@@ -175,8 +175,8 @@ def fmt_zh_dir(args):
         fmt_zh_file(args)
     
 def fmt_zh_file(args):
-    if not args.fname.endswith('.html') or \ :
-        not args.fname.endswith('.md')
+    if not args.fname.endswith('.html') and \
+        not args.fname.endswith('.md'):
         print('请提供 HTML 或 MD 文件')
         return
     print(args.fname)
