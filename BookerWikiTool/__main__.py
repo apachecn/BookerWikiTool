@@ -19,6 +19,7 @@ from collections import OrderedDict
 from EpubCrawler.img import process_img
 from EpubCrawler.util import safe_mkdir
 from . import __version__
+from .bili import *
 
 DIR = path.dirname(path.abspath(__file__))
 
@@ -210,6 +211,25 @@ def main():
     acc_parser = subparsers.add_parser("account", help="account words")
     acc_parser.add_argument("file", help="file")
     acc_parser.set_defaults(func=account_handle)
+
+    bili_parser = subparsers.add_parser("dl-bili", help="download bilibili video")
+    bili_parser.add_argument("id", help="av or bv")
+    bili_parser.add_argument("-a", "--audio", type=bool, default=False, help="whether to convert to audio")
+    bili_parser.set_defaults(func=download_bili)
+
+    bili_kw_parser = subparsers.add_parser("dl-bili-kw", help="download bilibili video by kw")
+    bili_kw_parser.add_argument("kw", help="keyword")
+    bili_kw_parser.add_argument("-s", "--start", type=int, default=1, help="starting page")
+    bili_kw_parser.add_argument("-e", "--end", type=int, default=10000000, help="ending page")
+    bili_kw_parser.add_argument("-a", "--audio", type=bool, default=False, help="whether to convert to audio")
+    bili_kw_parser.set_defaults(func=batch_kw_bili)
+  
+    bili_home_parser = subparsers.add_parser("dl-bili-home", help="download bilibili video by user")
+    bili_home_parser.add_argument("mid", help="user id")
+    bili_home_parser.add_argument("-s", "--start", type=int, default=1, help="starting page")
+    bili_home_parser.add_argument("-e", "--end", type=int, default=10000000, help="ending page")
+    bili_home_parser.add_argument("-a", "--audio", type=bool, default=False, help="whether to convert to audio")
+    bili_home_parser.set_defaults(func=batch_home_bili)
 
     args = parser.parse_args()
     args.func(args)
