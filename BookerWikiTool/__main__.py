@@ -257,7 +257,7 @@ def main():
     fetch_pages_parser.add_argument("-s", "--start", type=int, default=1, help="starting page")
     fetch_pages_parser.add_argument("-e", "--end", type=int, default=10000000, help="ending page")
     fetch_pages_parser.add_argument("-p", "--proxy", help="proxy")
-    fetch_pages_parser.add_argument("-h", "--headers", help="headers in JSON")
+    fetch_pages_parser.add_argument("-H", "--headers", help="headers in JSON")
     fetch_pages_parser.set_defaults(func=fetch_pages)
 
     args = parser.parse_args()
