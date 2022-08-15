@@ -23,6 +23,7 @@ from .bili import *
 from .util import *
 from .comp_epub import *
 from .keyframe import *
+from .fetch_pages import *
 
 def account_handle(args):
     if not args.file.endswith('.md'):
@@ -248,6 +249,16 @@ def main():
     bili_home_parser.add_argument("-e", "--end", type=int, default=10000000, help="ending page")
     bili_home_parser.add_argument("-a", "--audio", type=bool, default=False, help="whether to convert to audio")
     bili_home_parser.set_defaults(func=batch_home_bili)
+
+    fetch_pages_parser = subparsers.add_parser("fetch-pages", help="fetch pages")
+    fetch_pages_parser.add_argument("url", help="url with {i} as page num")
+    fetch_pages_parser.add_argument("link", help="link selector")
+    fetch_pages_parser.add_argument("ofname", help="output file name")
+    fetch_pages_parser.add_argument("-s", "--start", type=int, default=1, help="starting page")
+    fetch_pages_parser.add_argument("-e", "--end", type=int, default=10000000, help="ending page")
+    fetch_pages_parser.add_argument("-p", "--proxy", help="proxy")
+    fetch_pages_parser.add_argument("-h", "--headers", help="headers in JSON")
+    fetch_pages_parser.set_defaults(func=fetch_pages)
 
     args = parser.parse_args()
     args.func(args)
