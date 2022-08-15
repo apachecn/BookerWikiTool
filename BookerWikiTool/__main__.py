@@ -21,6 +21,7 @@ from EpubCrawler.util import safe_mkdir
 from . import __version__
 from .bili import *
 from .util import *
+from .comp_epub import *
 
 def account_handle(args):
     if not args.file.endswith('.md'):
@@ -160,7 +161,7 @@ def tomd_file(args):
     open(ofname, 'w', encoding='utf8').write(md)
 
 def tomd_handle(args):
-    if path.isdir(args.fname):
+    if path.isdir(args.file):
         tomd_dir(args)
     else:
         tomd_file(args)
@@ -191,6 +192,10 @@ def main():
     tomd_parser = subparsers.add_parser("tomd", help="html to markdown")
     tomd_parser.add_argument("file", help="file")
     tomd_parser.set_defaults(func=tomd_handle)
+
+    comp_epub_parser = subparsers.add_parser("comp-epub", help="compress epub")
+    comp_epub_parser.add_argument("file", help="file")
+    comp_epub_parser.set_defaults(func=comp_epub)
 
     bili_parser = subparsers.add_parser("dl-bili", help="download bilibili video")
     bili_parser.add_argument("id", help="av or bv")

@@ -4,3 +4,4 @@ readability-lxml
 pyyaml
 EpubCrawler
 moviepy
+imgyaso
