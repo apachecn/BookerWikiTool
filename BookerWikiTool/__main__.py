@@ -188,6 +188,10 @@ def main():
     acc_parser.add_argument("file", help="file")
     acc_parser.set_defaults(func=account_handle)
 
+    tomd_parser = subparsers.add_parser("tomd", help="html to markdown")
+    tomd_parser.add_argument("file", help="file")
+    tomd_parser.set_defaults(func=tomd_handle)
+
     bili_parser = subparsers.add_parser("dl-bili", help="download bilibili video")
     bili_parser.add_argument("id", help="av or bv")
     bili_parser.add_argument("-a", "--audio", type=bool, default=False, help="whether to convert to audio")
