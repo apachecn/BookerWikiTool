@@ -102,7 +102,7 @@ def download_handle(args):
         
     print('已完成')
     
-def summary_handle(args):
+def wiki_summary_handle(args):
     # 读入文件列表
     fnames = [f for f in os.listdir('docs') if f.endswith('.md')]
     toc = OrderedDict()
@@ -179,8 +179,8 @@ def main():
     dl_parser.add_argument("-c", "--category", default='未分类', help="category")
     dl_parser.set_defaults(func=download_handle)
     
-    sum_parser = subparsers.add_parser("summary", help="generate the summary")
-    sum_parser.set_defaults(func=summary_handle)
+    wiki_sum_parser = subparsers.add_parser("wiki-summary", help="generate wiki summary")
+    wiki_sum_parser.set_defaults(func=wiki_summary_handle)
     
     fix_parser = subparsers.add_parser("fix", help="fix titles")
     fix_parser.add_argument("file", help="file")
