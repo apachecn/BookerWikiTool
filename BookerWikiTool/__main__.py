@@ -22,6 +22,7 @@ from . import __version__
 from .bili import *
 from .util import *
 from .comp_epub import *
+from keyframe import *
 
 def account_handle(args):
     if not args.file.endswith('.md'):
@@ -196,6 +197,11 @@ def main():
     comp_epub_parser = subparsers.add_parser("comp-epub", help="compress epub")
     comp_epub_parser.add_argument("file", help="file")
     comp_epub_parser.set_defaults(func=comp_epub)
+
+    kf_parser = subparsers.add_parser("ext-kf", help="extract keyframes")
+    kf_parser.add_argument("file", help="file")
+    kf_parser.add_argument("--save-path", default='out', help="path to save")
+    kf_parser.set_defaults(func=ext_keyframe)
 
     bili_parser = subparsers.add_parser("dl-bili", help="download bilibili video")
     bili_parser.add_argument("id", help="av or bv")
