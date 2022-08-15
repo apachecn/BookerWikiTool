@@ -217,6 +217,10 @@ def main():
     tomd_parser.add_argument("fname", help="file name")
     tomd_parser.set_defaults(func=tomd_handle)
 
+    fmtzh_parser = subparsers.add_parser("fmtzh", help="format zh")
+    fmtzh_parser.add_argument("fname", help="file name")
+    fmtzh_parser.set_defaults(func=fmt_zh_handle)
+
     comp_epub_parser = subparsers.add_parser("comp-epub", help="compress epub")
     comp_epub_parser.add_argument("file", help="file")
     comp_epub_parser.set_defaults(func=comp_epub)
