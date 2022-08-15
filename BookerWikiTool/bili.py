@@ -12,8 +12,8 @@ from .util import *
 
 def batch_home_bili(args):
     mid = args.mid
-    st = args.st
-    ed = args.ed
+    st = args.start
+    ed = args.end
     to_audio = args.audio
     for i in range(st, ed + 1):
         url = f'https://api.bilibili.com/x/space/arc/search?search_type=video&mid={mid}&pn={i}&order=pubdate'
@@ -24,12 +24,12 @@ def batch_home_bili(args):
         for it in j['data']['list']['vlist']:
             bv = it['bvid']
             args.id = bv
-            download_safe(args)
+            download_bili_safe(args)
 
 def batch_kw_bili(args):
     kw = args.kw
-    st = args.st
-    ed = args.ed
+    st = args.start
+    ed = args.end
     to_audio = args.audio
     kw_enco = quote_plus(kw)
     for i in range(st, ed + 1):
@@ -41,10 +41,10 @@ def batch_kw_bili(args):
         for it in j['data']['result']:
             bv = it['bvid']
             args.id = bv
-            download_safe(args)
+            download_bili_safe(args)
 
-def download_safe(args):
-    try: download(args)
+def download_bili_safe(args):
+    try: download_bili(args)
     except Exception as ex: print(ex)
 
 def download_bili(args):
