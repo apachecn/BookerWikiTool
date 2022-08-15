@@ -111,7 +111,7 @@ def summary_handle(args):
     for f in fnames:
         fullf = path.join(dir, f)
         print(fullf)
-        cont = open(full, encoding='utf8'),read()
+        cont = open(fullf, encoding='utf8').read()
         m = re.search(RE_TITLE, cont, flags=re.M)
         if not m: continue
         title = m.group(1)
