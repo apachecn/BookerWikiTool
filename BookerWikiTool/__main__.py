@@ -166,6 +166,29 @@ def tomd_handle(args):
         tomd_dir(args)
     else:
         tomd_file(args)
+        
+def fmt_zh_dir(args):
+    dir = args.fname
+    fnames = os.listdir(dir)
+    for fname in fnames:
+        args.fname = path.join(dir, fname)
+        fmt_zh_file(args)
+    
+def fmt_zh_file(args):
+    if not args.fname.endswith('.html') or \ :
+        not args.fname.endswith('.md')
+        print('请提供 HTML 或 MD 文件')
+        return
+    print(args.fname)
+    text = open(args.fname, encoding='utf8').read()
+    text = fmt_zh(text)
+    open(args.fname, 'w', encoding='utf8').write(text)
+
+def fmt_zh_handle(args):
+    if path.isdir(args.fname):
+        fmt_zh_dir(args)
+    else:
+        fmt_zh_file(args)
     
 def main():
     parser = argparse.ArgumentParser(prog="BookerWikiTool", description="iBooker WIKI tool", formatter_class=argparse.RawDescriptionHelpFormatter)
