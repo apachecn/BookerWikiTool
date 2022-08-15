@@ -103,6 +103,22 @@ def download_handle(args):
         
     print('已完成')
     
+def summary_handler(args):
+    # 读入文件列表
+    dir = args.dir
+    fnames = [f for f in os.listdir(dir) if f.endswith('.md')]
+    toc = []
+    for f in fnames:
+        fullf = path.join(dir, f)
+        print(fullf)
+        cont = open(full, encoding='utf8'),read()
+        m = re.search(RE_TITLE, cont, flags=re.M)
+        if not m: continue
+        title = m.group(1)
+        toc.append(f'+   [{title}]({f})')
+    summary = '\n'.join(toc)
+    open(path.join(dir, 'SUMMARY.md'), 'w', encoding='utf8').write(summary)
+    
 def wiki_summary_handle(args):
     # 读入文件列表
     fnames = [f for f in os.listdir('docs') if f.endswith('.md')]
