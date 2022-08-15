@@ -103,7 +103,7 @@ def download_handle(args):
         
     print('已完成')
     
-def summary_handler(args):
+def summary_handle(args):
     # 读入文件列表
     dir = args.dir
     fnames = [f for f in os.listdir(dir) if f.endswith('.md')]
@@ -221,6 +221,10 @@ def main():
     
     wiki_sum_parser = subparsers.add_parser("wiki-summary", help="generate wiki summary")
     wiki_sum_parser.set_defaults(func=wiki_summary_handle)
+    
+    summary_parser = subparsers.add_parser("summary", help="generate summary")
+    summary_parser.add_argument("dir", help="dir")
+    summary_parser.set_defaults(func=summary_handle)
     
     fix_parser = subparsers.add_parser("fix", help="fix titles")
     fix_parser.add_argument("file", help="file")
