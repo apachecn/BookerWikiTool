@@ -22,7 +22,7 @@ from . import __version__
 from .bili import *
 from .util import *
 from .comp_epub import *
-from keyframe import *
+from .keyframe import *
 
 def account_handle(args):
     if not args.file.endswith('.md'):
@@ -162,7 +162,7 @@ def tomd_file(args):
     open(ofname, 'w', encoding='utf8').write(md)
 
 def tomd_handle(args):
-    if path.isdir(args.file):
+    if path.isdir(args.fname):
         tomd_dir(args)
     else:
         tomd_file(args)
@@ -191,7 +191,7 @@ def main():
     acc_parser.set_defaults(func=account_handle)
 
     tomd_parser = subparsers.add_parser("tomd", help="html to markdown")
-    tomd_parser.add_argument("file", help="file")
+    tomd_parser.add_argument("fname", help="file name")
     tomd_parser.set_defaults(func=tomd_handle)
 
     comp_epub_parser = subparsers.add_parser("comp-epub", help="compress epub")
