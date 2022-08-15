@@ -3,3 +3,4 @@ pyquery
 readability-lxml
 pyyaml
 EpubCrawler
+moviepy
