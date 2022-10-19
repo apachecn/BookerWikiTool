@@ -6,3 +6,4 @@ EpubCrawler
 moviepy
 imgyaso
 av
+pywin32

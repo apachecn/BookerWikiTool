@@ -1,0 +1,38 @@
+import win32com.client
+import os, sys
+from os import path
+
+def ppt2pdf(fname, ofname):
+    app = win32com.client.Dispatch('PowerPoint.Application')
+    ppt = app.Presentations.Open(fname)
+    ppt.SaveAs(ofname, 32)
+    app.Quit()
+    
+def ppt2pdf_file(fname):
+    print(fname)
+    if not fname.endswith('.ppt') and \
+        not fname.endswith('.pptx'):
+            print('请提供 PPT 文件')
+            return
+    fname = path.join(os.getcwd(), fname)
+    ofname = fname.replace('.ppt', '') \
+        .replace('.pptx', '') + '.pdf'
+    ofname = path.join(os.getcwd(), ofname)
+    ppt2pdf(fname, ofname)
+    print("转换成功！")
+
+def ppt2pdf_dir(dir):
+    fnames = os.listdir(dir)
+    for f in fnames:
+        ff = path.join(dir, f)
+        try: ppt2pdf_file(ff)
+        except(ex): print(ex)
+
+def main():
+    fname = sys.argv[1]
+    if path.isfile(fname):
+        ppt2pdf_file(fname)
+    else:
+        ppt2pdf_dir(fname)
+    
+if __name__ == '__main__': main()
