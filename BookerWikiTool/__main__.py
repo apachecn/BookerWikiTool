@@ -24,6 +24,7 @@ from .util import *
 from .comp_epub import *
 from .keyframe import *
 from .fetch_links import *
+from .ppt2pdf import *
 
 def account_handle(args):
     if not args.file.endswith('.md'):
@@ -184,6 +185,12 @@ def tomd_handle(args):
     else:
         tomd_file(args)
         
+def ppt2pdf_handle(args):
+    if path.isdir(args.fname):
+        ppt2pdf_dir(args)
+    else:
+        ppt2pdf_file(args)
+        
 def fmt_zh_dir(args):
     dir = args.fname
     fnames = os.listdir(dir)
@@ -237,6 +244,10 @@ def main():
     tomd_parser = subparsers.add_parser("tomd", help="html to markdown")
     tomd_parser.add_argument("fname", help="file name")
     tomd_parser.set_defaults(func=tomd_handle)
+
+    ppt2pdf_parser = subparsers.add_parser("ppt2pdf", help="ppt to pdf")
+    ppt2pdf_parser.add_argument("fname", help="file name")
+    ppt2pdf_parser.set_defaults(func=ppt2pdf_handle)
 
     fmtzh_parser = subparsers.add_parser("fmtzh", help="format zh")
     fmtzh_parser.add_argument("fname", help="file name")

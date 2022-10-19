@@ -8,7 +8,8 @@ def ppt2pdf(fname, ofname):
     ppt.SaveAs(ofname, 32)
     app.Quit()
     
-def ppt2pdf_file(fname):
+def ppt2pdf_file(args):
+    fname = args.fname
     print(fname)
     if not fname.endswith('.ppt') and \
         not fname.endswith('.pptx'):
@@ -21,18 +22,12 @@ def ppt2pdf_file(fname):
     ppt2pdf(fname, ofname)
     print("转换成功！")
 
-def ppt2pdf_dir(dir):
+def ppt2pdf_dir(args):
+    dir = args.fname
     fnames = os.listdir(dir)
     for f in fnames:
         ff = path.join(dir, f)
-        try: ppt2pdf_file(ff)
+        args.fname = ff
+        try: ppt2pdf_file(args)
         except(ex): print(ex)
 
-def main():
-    fname = sys.argv[1]
-    if path.isfile(fname):
-        ppt2pdf_file(fname)
-    else:
-        ppt2pdf_dir(fname)
-    
-if __name__ == '__main__': main()
