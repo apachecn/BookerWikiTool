@@ -82,3 +82,13 @@ def safe_mkdir(dir):
 def safe_rmdir(dir):
     try: shutil.rmtree(dir)
     except: pass
+
+def is_pic(fname):
+    return (
+        fname.endswith('.jpg') or
+        fname.endswith('.jpeg') or
+        fname.endswith('.png') or
+        fname.endswith('.gif') or
+        fname.endswith('.tiff') or
+        fname.endswith('.webp')
+    )

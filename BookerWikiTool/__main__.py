@@ -271,7 +271,7 @@ def main():
 
     sel_img_parser = subparsers.add_parser("select-img", help="select images by different widths")
     sel_img_parser.add_argument("dir", help="dir name")
-    ext_pdf_parser.set_defaults(func=select_img)
+    sel_img_parser.set_defaults(func=select_img)
 
     fetch_links_parser = subparsers.add_parser("fetch-links", help="fetch links in pages")
     fetch_links_parser.add_argument("url", help="url with {i} as page num")

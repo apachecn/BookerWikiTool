@@ -81,7 +81,8 @@ def select_img(args):
         print(fname)
         if not is_pic(fname): continue
         ffname = path.join(dir, fname)
-        img = Image.open(ffname)
+        try: img = Image.open(ffname)
+        except: continue
         scale = get_scale_by_width(img.size[0])
         img.close()
         safe_mkdir(path.join(dir, scale))
