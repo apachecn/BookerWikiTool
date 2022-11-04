@@ -2,7 +2,7 @@ import fitz
 from os import path
 import re
 
-def extract_pdf(args):
+def ext_pdf(args):
     fname, dir = args.fname, args.dir
     if not fname.endswith('.pdf'):
         print('请提供 PDF 文件')

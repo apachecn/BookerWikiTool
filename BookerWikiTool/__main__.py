@@ -25,6 +25,7 @@ from .comp_epub import *
 from .keyframe import *
 from .fetch_links import *
 from .ppt2pdf import *
+from .pdf_tool import *
 
 def account_handle(args):
     if not args.file.endswith('.md'):
@@ -261,6 +262,12 @@ def main():
     kf_parser.add_argument("file", help="file")
     kf_parser.add_argument("--save-path", default='out', help="path to save")
     kf_parser.set_defaults(func=ext_keyframe)
+
+    ext_pdf_parser = subparsers.add_parser("ext-pdf", help="extract odf into images")
+    ext_pdf_parser.add_argument("fname", help="file name")
+    ext_pdf_parser.add_argument("-d", "--dir", default='.', help="path to save")
+    ext_pdf_parser.set_defaults(func=ext_pdf)
+
 
     fetch_links_parser = subparsers.add_parser("fetch-links", help="fetch links in pages")
     fetch_links_parser.add_argument("url", help="url with {i} as page num")
