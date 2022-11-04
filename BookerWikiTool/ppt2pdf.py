@@ -29,5 +29,5 @@ def ppt2pdf_dir(args):
         ff = path.join(dir, f)
         args.fname = ff
         try: ppt2pdf_file(args)
-        except(ex): print(ex)
+        except Exception as ex: print(ex)
 
