@@ -1,6 +1,7 @@
 import fitz
 from os import path
 import re
+import os
 import traceback
 
 def ext_pdf(args):
@@ -30,6 +31,15 @@ def ext_pdf_file(args):
     lp = len(str(len(doc)))
     for ip, p in enumerate(doc):
         print(f'page: {ip + 1}')
+        
+        # 判断是否整页截图
+        if args.whole:
+            img = p.get_pixmap()
+            imgname = path.join(dir, f'{title}_{ip+1:0{lp}d}.png')
+            print(f'save: {imgname}')
+            img.writePNG(imgname)
+            continue
+        
         imgs = p.get_images()
         limg = len(str(len(imgs)))
         for ii, info in enumerate(imgs):

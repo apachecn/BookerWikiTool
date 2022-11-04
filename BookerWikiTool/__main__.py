@@ -266,6 +266,7 @@ def main():
     ext_pdf_parser = subparsers.add_parser("ext-pdf", help="extract odf into images")
     ext_pdf_parser.add_argument("fname", help="file name")
     ext_pdf_parser.add_argument("-d", "--dir", default='.', help="path to save")
+    ext_pdf_parser.add_argument("-w", "--whole", action='store_true', default=False, help="whether to clip the whole page")
     ext_pdf_parser.set_defaults(func=ext_pdf)
 
     fetch_links_parser = subparsers.add_parser("fetch-links", help="fetch links in pages")
