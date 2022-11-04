@@ -7,3 +7,4 @@ moviepy
 imgyaso
 av
 pywin32
+PyMuPdf
