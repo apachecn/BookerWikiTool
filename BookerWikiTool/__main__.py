@@ -268,7 +268,6 @@ def main():
     ext_pdf_parser.add_argument("-d", "--dir", default='.', help="path to save")
     ext_pdf_parser.set_defaults(func=ext_pdf)
 
-
     fetch_links_parser = subparsers.add_parser("fetch-links", help="fetch links in pages")
     fetch_links_parser.add_argument("url", help="url with {i} as page num")
     fetch_links_parser.add_argument("link", help="link selector")

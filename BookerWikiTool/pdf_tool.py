@@ -1,8 +1,24 @@
 import fitz
 from os import path
 import re
+import traceback
 
 def ext_pdf(args):
+    if path.isdir(args.fname):
+        ext_pdf_dir(args)
+    else:
+        ext_pdf_file(args)
+
+def ext_pdf_dir(args):
+    dir = args.fname
+    for fname in os.listdir(dir):
+        try:
+            ffname = path.join(dir, fname)
+            args.fname = ffname
+            ext_pdf_file(args)
+        except: traceback.print_exc()
+
+def ext_pdf_file(args):
     fname, dir = args.fname, args.dir
     if not fname.endswith('.pdf'):
         print('请提供 PDF 文件')
