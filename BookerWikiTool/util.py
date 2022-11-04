@@ -3,6 +3,7 @@ import uuid
 import subprocess as subp
 import re
 import os
+import shutil
 import json
 import yaml
 from urllib.parse import quote_plus
@@ -73,3 +74,11 @@ def fmt_zh(text):
     text = re.sub(r'([\u4e00-\u9fff])([a-zA-Z0-9_])', r'\1 \2', text)
     text = re.sub(r'([a-zA-Z0-9_])([\u4e00-\u9fff])', r'\1 \2', text)
     return text
+    
+def safe_mkdir(dir):
+    try: os.mkdir(dir)
+    except: pass
+    
+def safe_rmdir(dir):
+    try: shutil.rmtree(dir)
+    except: pass

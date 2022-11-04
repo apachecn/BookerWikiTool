@@ -3,6 +3,8 @@ from os import path
 import re
 import os
 import traceback
+from PIL import Image
+from .util import *
 
 def ext_pdf(args):
     if path.isdir(args.fname):
@@ -53,3 +55,34 @@ def ext_pdf_file(args):
             img.writePNG(imgname)
     
     doc.close()
+
+def get_scale_by_width(wid):
+    if wid < 700:
+        return 'x4'
+    elif wid < 1000:
+        return 'x3'
+    elif wid < 1800:
+        return 'x2':
+    elif wid < 3200:
+        return 'x1':
+    elif wid < 4000:
+        return 'x0.75'
+    else:
+        return 'x0.5'
+
+def select_img(args):
+    dir = args.dir
+    if not path.isdir(dir):
+        print('请提供目录')
+        return
+    fnames = os.listdir(dir)
+        
+    for fname in fnames:
+        print(fname)
+        if not is_pic(fname): continue
+        ffname = path.join(dir, fname)
+        img = Image.open(ffname)
+        scale = get_scale_by_width(img.size[0])
+        img.close()
+        safe_mkdir(path.join(dir, scale))
+        os.rename(ffname, path.join(dir, scale, fname))
