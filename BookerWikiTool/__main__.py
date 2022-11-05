@@ -26,6 +26,7 @@ from .keyframe import *
 from .fetch_links import *
 from .ppt2pdf import *
 from .pdf_tool import *
+from .flatten import *
 
 def account_handle(args):
     if not args.file.endswith('.md'):
@@ -253,6 +254,11 @@ def main():
     fmtzh_parser = subparsers.add_parser("fmtzh", help="format zh")
     fmtzh_parser.add_argument("fname", help="file name")
     fmtzh_parser.set_defaults(func=fmt_zh_handle)
+
+    flatten_parser = subparsers.add_parser("flatten", help="flatten dir")
+    flatten_parser.add_argument("dir", help="dir name")
+    flatten_parser.add_argument("-d", "--delim", default='：', help="delimiter")
+    flatten_parser.set_defaults(func=flatten_dir)
 
     comp_epub_parser = subparsers.add_parser("comp-epub", help="compress epub")
     comp_epub_parser.add_argument("file", help="file")
