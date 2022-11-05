@@ -4,6 +4,7 @@ import re
 import os
 import traceback
 from PIL import Image
+import img2pdf
 from .util import *
 
 def ext_pdf(args):
@@ -87,3 +88,33 @@ def select_img(args):
         img.close()
         safe_mkdir(path.join(dir, scale))
         os.rename(ffname, path.join(dir, scale, fname))
+
+def pack_pdf(args):
+    dir, rgx = args.dir, args.regex
+    if dir.endswith('/') or \
+        dir.endswith('\\'):
+        dir = dir[:-1]
+    
+    fnames = filter(is_pic, os.listdir(dir))
+    if not rgx:
+        fnames = [path.join(dir, f) for f in fnames]
+        pdf = img2pdf.convert(fnames)
+        fname = dir + '.pdf'
+        print(fname)
+        open(fname, 'wb').write(pdf)
+        return
+        
+    d = {}
+    for fname in fnames:
+        m = re.search(rgx, fname)
+        if not m: continue
+        prefix = m.group(0)
+        d.setdefault(prefix, [])
+        d[prefix].append(fname)
+        
+    for prefix, fnames in d.itmes():
+        fnames = [path.join(dir, f) for f in fnames]
+        pdf = img2pdf.convert(fnames)
+        print(fname)
+        fname = path.join(dir, prefix + '.pdf')
+        open(fname, 'wb').write(pdf)
