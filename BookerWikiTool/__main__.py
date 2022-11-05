@@ -273,6 +273,11 @@ def main():
     sel_img_parser.add_argument("dir", help="dir name")
     sel_img_parser.set_defaults(func=select_img)
 
+    pack_pdf_parser = subparsers.add_parser("pack-pdf", help="package images into pdf")
+    pack_pdf_parser.add_argument("dir", help="dir name")
+    pack_pdf_parser.add_argument("-r", "--regex", help="regex of keyword for grouping")
+    pack_pdf_parser.set_defaults(func=pack_pdf)
+
     fetch_links_parser = subparsers.add_parser("fetch-links", help="fetch links in pages")
     fetch_links_parser.add_argument("url", help="url with {i} as page num")
     fetch_links_parser.add_argument("link", help="link selector")
