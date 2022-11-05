@@ -112,7 +112,7 @@ def pack_pdf(args):
         d.setdefault(kw, [])
         d[kw].append(fname)
         
-    for kw, fnames in d.itmes():
+    for kw, fnames in d.items():
         fnames = [path.join(dir, f) for f in fnames]
         pdf = img2pdf.convert(fnames)
         print(fname)
