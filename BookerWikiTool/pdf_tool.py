@@ -108,13 +108,13 @@ def pack_pdf(args):
     for fname in fnames:
         m = re.search(rgx, fname)
         if not m: continue
-        prefix = m.group(0)
-        d.setdefault(prefix, [])
-        d[prefix].append(fname)
+        kw = m.group(0)
+        d.setdefault(kw, [])
+        d[kw].append(fname)
         
-    for prefix, fnames in d.itmes():
+    for kw, fnames in d.itmes():
         fnames = [path.join(dir, f) for f in fnames]
         pdf = img2pdf.convert(fnames)
         print(fname)
-        fname = path.join(dir, prefix + '.pdf')
+        fname = path.join(dir, kw + '.pdf')
         open(fname, 'wb').write(pdf)
