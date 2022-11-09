@@ -19,7 +19,6 @@ from collections import OrderedDict
 from EpubCrawler.img import process_img
 from EpubCrawler.util import safe_mkdir
 from . import __version__
-from .bili import *
 from .util import *
 from .comp_epub import *
 from .keyframe import *
@@ -74,7 +73,7 @@ def download_handle(args):
     
     # 解析内容并下载图片
     co = Document(str(rt)).summary()
-    co = pq(co).find('body').html()
+    co = pq(co).find('body').html() or co
     imgs = {}
     co = process_img(co, imgs, img_prefix='img/', page_url=args.url)
     html = f'''
