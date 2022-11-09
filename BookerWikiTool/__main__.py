@@ -225,6 +225,8 @@ def main():
     dl_parser.add_argument("url", help="url")
     dl_parser.add_argument("-e", "--encoding", default='utf-8', help="encoding")
     dl_parser.add_argument("-c", "--category", default='未分类', help="category")
+    dl_parser.add_argument("-t", "--title", default='title', help="selector of article title")
+    dl_parser.add_argument("-b", "--body", default='', help="selector of article body")
     dl_parser.set_defaults(func=download_handle)
     
     wiki_sum_parser = subparsers.add_parser("wiki-summary", help="generate wiki summary")
