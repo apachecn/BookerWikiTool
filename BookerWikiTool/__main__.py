@@ -60,7 +60,7 @@ def download_handle(args):
     
     # 解析标题
     rt = pq(html)
-    el_title = rt.find('title').eq(0)
+    el_title = rt.find(args.title).eq(0)
     title = el_title.text().strip()
     el_title.remove()
     
@@ -72,8 +72,11 @@ def download_handle(args):
         return
     
     # 解析内容并下载图片
-    co = Document(str(rt)).summary()
-    co = pq(co).find('body').html() or co
+    if args.body:
+        co = pq(co).find(args.body).html()
+    else:
+        co = Document(str(rt)).summary()
+        co = pq(co).find('body').html()
     imgs = {}
     co = process_img(co, imgs, img_prefix='img/', page_url=args.url)
     html = f'''
