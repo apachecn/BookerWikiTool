@@ -73,10 +73,13 @@ def download_handle(args):
     
     # 解析内容并下载图片
     if args.body:
-        co = pq(co).find(args.body).html()
+        co = rt.find(args.body).html()
     else:
         co = Document(str(rt)).summary()
         co = pq(co).find('body').html()
+    if not co: 
+        print('未获取到内容！')
+        return 
     imgs = {}
     co = process_img(co, imgs, img_prefix='img/', page_url=args.url)
     html = f'''
