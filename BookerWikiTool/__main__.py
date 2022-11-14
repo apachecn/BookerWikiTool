@@ -20,7 +20,7 @@ from EpubCrawler.img import process_img
 from EpubCrawler.util import safe_mkdir
 from . import __version__
 from .util import *
-from .epub_util import *
+from .epub_tool import *
 from .keyframe import *
 from .fetch_links import *
 from .pdf_tool import *
