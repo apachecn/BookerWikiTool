@@ -79,7 +79,7 @@ def exp_epub_chs(args):
     ed = args.end
     dir = args.dir
     
-        if not fname.endswith('.epub'):
+    if not fname.endswith('.epub'):
         print('请提供 EPUB 文件')
         return
         
