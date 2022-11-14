@@ -270,6 +270,10 @@ def main():
     comp_epub_parser.add_argument("file", help="file")
     comp_epub_parser.set_defaults(func=comp_epub)
 
+    epub_toc_parser = subparsers.add_parser("epub-toc", help="view epub toc")
+    epub_toc_parser.add_argument("fname", help="fname")
+    epub_toc_parser.set_defaults(func=get_epub_toc)
+
     kf_parser = subparsers.add_parser("ext-kf", help="extract keyframes")
     kf_parser.add_argument("file", help="file")
     kf_parser.add_argument("--save-path", default='out', help="path to save")
