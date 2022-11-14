@@ -23,7 +23,6 @@ from .util import *
 from .epub_util import *
 from .keyframe import *
 from .fetch_links import *
-from .ppt2pdf import *
 from .pdf_tool import *
 from .flatten import *
 
