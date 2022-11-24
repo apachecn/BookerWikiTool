@@ -92,3 +92,10 @@ def is_pic(fname):
         fname.endswith('.tiff') or
         fname.endswith('.webp')
     )
+
+def find_cmd_path(name):
+    for p in os.environ.get('PATH', '').split(';'):
+        if path.isfile(path.join(p, name)) or \
+            path.isfile(path.join(p, name + '.exe')):
+            return p
+    return ''

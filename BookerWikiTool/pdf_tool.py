@@ -153,8 +153,10 @@ def waifu2x_auto_file(args):
     width = min(img.size[0], img.size[1])
     scale = get_scale_by_width(width)
     img.close()
+    p = find_cmd_path('waifu2x-caffe')
+    # print(p)
     cmd = [
-        'waifu2x-caffe', 
+        path.join(p, 'waifu2x-caffe.exe'), 
         '-m', 'noise_scale',
         '-n', '2',
         '-s', str(scale),
@@ -168,7 +170,7 @@ def waifu2x_auto_file(args):
         stdout=subp.PIPE,
         stderr=subp.PIPE,
     ).communicate()
-    print(r[0].decode('Shift_JIS'))
+    print(r[0].decode('utf16', 'ignore'))
 
 def waifu2x_auto_dir(args):
     dir = args.fname
