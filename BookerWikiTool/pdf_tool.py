@@ -161,7 +161,7 @@ def waifu2x_auto_file(args):
         '-i', fname,
         '-o', fname,
     ]
-    print(cmd)
+    # print(cmd)
     r = subp.Popen(
         cmd, 
         shell=True,
