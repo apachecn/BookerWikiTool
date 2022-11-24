@@ -5,7 +5,8 @@ import sys
 from os import path
 import re
 import os
-import copyimport traceback
+import copy
+import traceback
 from PIL import Image
 import img2pdf
 from .util import *
