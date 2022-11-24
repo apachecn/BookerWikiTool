@@ -60,36 +60,24 @@ def ext_pdf_file(args):
     doc.close()
 
 def get_scale_by_width(wid):
-    if wid < 700:
-        return 'x4'
+    if wid < 800:
+        return 4
+    elif wid < 900:
+        return 3.5
     elif wid < 1000:
-        return 'x3'
-    elif wid < 1800:
-        return 'x2'
+        return 3
+    elif wid < 1200:
+        return 2.5
+    elif wid < 1600:
+        return 2
+    elif wid < 2000:
+        return 1.5
     elif wid < 3200:
-        return 'x1'
-    elif wid < 4000:
-        return 'x0.75'
+        return 1
+    elif wid < 4200:
+        return 0.75
     else:
-        return 'x0.5'
-
-def select_img(args):
-    dir = args.dir
-    if not path.isdir(dir):
-        print('请提供目录')
-        return
-    fnames = os.listdir(dir)
-        
-    for fname in fnames:
-        print(fname)
-        if not is_pic(fname): continue
-        ffname = path.join(dir, fname)
-        try: img = Image.open(ffname)
-        except: continue
-        scale = get_scale_by_width(img.size[0])
-        img.close()
-        safe_mkdir(path.join(dir, scale))
-        os.rename(ffname, path.join(dir, scale, fname))
+        return 0.5
 
 def pack_pdf(args):
     dir, rgx = args.dir, args.regex

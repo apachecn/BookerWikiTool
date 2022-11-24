@@ -293,10 +293,6 @@ def main():
     ext_pdf_parser.add_argument("-w", "--whole", action='store_true', default=False, help="whether to clip the whole page")
     ext_pdf_parser.set_defaults(func=ext_pdf)
 
-    sel_img_parser = subparsers.add_parser("select-img", help="select images by different widths")
-    sel_img_parser.add_argument("dir", help="dir name")
-    sel_img_parser.set_defaults(func=select_img)
-
     pack_pdf_parser = subparsers.add_parser("pack-pdf", help="package images into pdf")
     pack_pdf_parser.add_argument("dir", help="dir name")
     pack_pdf_parser.add_argument("-r", "--regex", help="regex of keyword for grouping")
