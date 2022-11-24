@@ -162,12 +162,13 @@ def waifu2x_auto_file(args):
     # print(p)
     cmd = [
         path.join(p, 'waifu2x.exe'), 
-        '-m', 'noise_scale',
-        '-n', '2',
-        '-s', str(scale),
+        '-m', 'noise-scale',
+        '--noise-level', '2',
+        '--scale-ratio', str(scale),
+        '--block-size', '256',
         '-i', fname,
         '-o', fname,
-        '-p', 'cpu',
+        '--disable-gpu',
     ]
     print(f'cmd: {cmd}')
     r = subp.Popen(
@@ -176,7 +177,7 @@ def waifu2x_auto_file(args):
         stdout=subp.PIPE,
         stderr=subp.PIPE,
     ).communicate()
-    print(r[0].decode('utf16', 'ignore') or 
+    print(r[0].decode('utf8', 'ignore') or 
         r[1].decode('utf8', 'ignore'))
 
 def waifu2x_auto_dir(args):
