@@ -311,7 +311,7 @@ def main():
 
     waifu2x_auto_parser = subparsers.add_parser("waifu2x-auto", help="process imgs with waifu2x")
     waifu2x_auto_parser.add_argument("fname", help="file or dir name")
-    waifu2x_auto_parser.add_argument("-t", "--thread", help="num of threads", type=int, default=8)
+    waifu2x_auto_parser.add_argument("-t", "--threads", help="num of threads", type=int, default=8)
     waifu2x_auto_parser.set_defaults(func=waifu2x_auto_handle)
 
     pack_pdf_parser = subparsers.add_parser("pack-pdf", help="package images into pdf")

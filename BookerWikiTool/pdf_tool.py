@@ -167,15 +167,17 @@ def waifu2x_auto_file(args):
         '-s', str(scale),
         '-i', fname,
         '-o', fname,
+        '-p', 'cpu',
     ]
-    # print(cmd)
+    print(f'cmd: {cmd}')
     r = subp.Popen(
         cmd, 
-        shell=True,
+        # shell=True,
         stdout=subp.PIPE,
         stderr=subp.PIPE,
     ).communicate()
-    print(r[0].decode('utf16', 'ignore'))
+    print(r[0].decode('utf16', 'ignore') or 
+        r[1].decode('utf8', 'ignore'))
 
 def waifu2x_auto_dir(args):
     dir = args.fname
