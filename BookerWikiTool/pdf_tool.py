@@ -5,7 +5,7 @@ import sys
 from os import path
 import re
 import os
-import traceback
+import copyimport traceback
 from PIL import Image
 import img2pdf
 from .util import *
@@ -172,6 +172,7 @@ def waifu2x_auto_dir(args):
     fnames = os.listdir(dir)
     for f in fnames:
         ff = path.join(dir, f)
+        args = copy.deepcopy(args)
         args.fname = ff
         try: waifu2x_auto_file(args)
         except Exception as ex: print(ex)
