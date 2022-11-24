@@ -198,6 +198,16 @@ def ppt2pdf_handle(args):
         ppt2pdf_file(args)
         
 def waifu2x_auto_handle(args):
+    # 检查 waifu2x-caffe
+    r = subp.Popen(
+        ['waifu2x-caffe'],
+        shell=True,
+        stdout=subp.PIPE,
+        stderr=subp.PIPE,
+    )
+    if r[1]: 
+        print('waifu2x-caffe 未找到，请下载并将其目录添加到系统变量 PATH 中')
+        return
     if path.isdir(args.fname):
         waifu2x_auto_dir(args)
     else:
