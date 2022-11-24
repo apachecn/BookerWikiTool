@@ -158,10 +158,10 @@ def waifu2x_auto_file(args):
     width = min(img.size[0], img.size[1])
     scale = get_scale_by_width(width)
     img.close()
-    p = find_cmd_path('waifu2x-caffe')
+    p = find_cmd_path('waifu2x')
     # print(p)
     cmd = [
-        path.join(p, 'waifu2x-caffe.exe'), 
+        path.join(p, 'waifu2x.exe'), 
         '-m', 'noise_scale',
         '-n', '2',
         '-s', str(scale),
