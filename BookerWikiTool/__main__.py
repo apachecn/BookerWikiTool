@@ -204,7 +204,7 @@ def waifu2x_auto_handle(args):
         shell=True,
         stdout=subp.PIPE,
         stderr=subp.PIPE,
-    )
+    ).communicate()
     if r[1]: 
         print('waifu2x-caffe 未找到，请下载并将其目录添加到系统变量 PATH 中')
         return
