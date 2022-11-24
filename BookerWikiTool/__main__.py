@@ -197,6 +197,12 @@ def ppt2pdf_handle(args):
     else:
         ppt2pdf_file(args)
         
+def waifu2x_auto_handle(args):
+    if path.isdir(args.fname):
+        waifu2x_auto_dir(args)
+    else:
+        waifu2x_auto_file(args)
+        
 def fmt_zh_dir(args):
     dir = args.fname
     fnames = os.listdir(dir)
