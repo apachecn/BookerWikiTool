@@ -1,5 +1,6 @@
 import fitz
 import win32com.client
+import subprocess as subp
 import sys
 from os import path
 import re
@@ -138,3 +139,30 @@ def ppt2pdf_dir(args):
         try: ppt2pdf_file(args)
         except Exception as ex: print(ex)
 
+def waifu2x_auto_file(args):
+    fname = args.fname
+    if not is_pic(fname):
+        print('请提供图像')
+        return
+    print(fname)
+    try: img = Image.open(fname)
+    except: 
+        print('文件无法打开')
+        return
+    width = min(img.size[0], img.size[1])
+    scale = get_scale_by_width(width)
+    img.close()
+    r = subp.Popen(
+        [
+            'waifu2x-caffe', 
+            '-m', 'noise_scale',
+            '-n', '2',
+            '-s', str(scale),
+            '-i', fname,
+            '-o', fname,
+        ], 
+        shell=True,
+        stdout=subp.PIPE,
+        stderr=subp.PIPE,
+    ).communicate()
+    print(r[0].decode('utf8'))
