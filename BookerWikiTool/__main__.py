@@ -200,7 +200,7 @@ def ppt2pdf_handle(args):
 def waifu2x_auto_handle(args):
     # 检查 waifu2x-caffe
     r = subp.Popen(
-        ['waifu2x-caffe'],
+        ['waifu2x-caffe', '--version'],
         shell=True,
         stdout=subp.PIPE,
         stderr=subp.PIPE,

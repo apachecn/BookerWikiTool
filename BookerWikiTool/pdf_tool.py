@@ -153,20 +153,22 @@ def waifu2x_auto_file(args):
     width = min(img.size[0], img.size[1])
     scale = get_scale_by_width(width)
     img.close()
+    cmd = [
+        'waifu2x-caffe', 
+        '-m', 'noise_scale',
+        '-n', '2',
+        '-s', str(scale),
+        '-i', fname,
+        '-o', fname,
+    ]
+    print(cmd)
     r = subp.Popen(
-        [
-            'waifu2x-caffe', 
-            '-m', 'noise_scale',
-            '-n', '2',
-            '-s', str(scale),
-            '-i', fname,
-            '-o', fname,
-        ], 
+        cmd, 
         shell=True,
         stdout=subp.PIPE,
         stderr=subp.PIPE,
     ).communicate()
-    print(r[0].decode('utf8'))
+    print(r[0].decode('Shift_JIS'))
 
 def waifu2x_auto_dir(args):
     dir = args.fname
