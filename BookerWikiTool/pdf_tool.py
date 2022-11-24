@@ -166,3 +166,12 @@ def waifu2x_auto_file(args):
         stderr=subp.PIPE,
     ).communicate()
     print(r[0].decode('utf8'))
+
+def waifu2x_auto_dir(args):
+    dir = args.fname
+    fnames = os.listdir(dir)
+    for f in fnames:
+        ff = path.join(dir, f)
+        args.fname = ff
+        try: waifu2x_auto_file(args)
+        except Exception as ex: print(ex)
