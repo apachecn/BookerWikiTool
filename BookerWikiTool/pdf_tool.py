@@ -8,6 +8,7 @@ import os
 import copy
 import traceback
 from PIL import Image
+from multiprocessing import Pool
 import img2pdf
 from .util import *
 
@@ -140,6 +141,10 @@ def ppt2pdf_dir(args):
         try: ppt2pdf_file(args)
         except Exception as ex: print(ex)
 
+def waifu2x_auto_file_safe(args):
+    try: waifu2x_auto_file(args)
+    except Exception as ex: print(ex)
+
 def waifu2x_auto_file(args):
     fname = args.fname
     if not is_pic(fname):
@@ -175,9 +180,11 @@ def waifu2x_auto_file(args):
 def waifu2x_auto_dir(args):
     dir = args.fname
     fnames = os.listdir(dir)
+    pool = Pool(args.threads)
     for f in fnames:
         ff = path.join(dir, f)
         args = copy.deepcopy(args)
         args.fname = ff
-        try: waifu2x_auto_file(args)
-        except Exception as ex: print(ex)
+        pool.apply_async(waifu2x_auto_file_safe, [args])
+    pool.close()
+    pool.join()
