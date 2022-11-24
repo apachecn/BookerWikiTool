@@ -200,13 +200,13 @@ def ppt2pdf_handle(args):
 def waifu2x_auto_handle(args):
     # 检查 waifu2x
     r = subp.Popen(
-        ['waifu2x', '--version'],
+        ['waifu2x-converter-cpp', '--version'],
         shell=True,
         stdout=subp.PIPE,
         stderr=subp.PIPE,
     ).communicate()
     if r[1]: 
-        print('waifu2x 未找到，请下载并将其目录添加到系统变量 PATH 中')
+        print('waifu2x-converter-cpp 未找到，请下载并将其目录添加到系统变量 PATH 中')
         return
     if path.isdir(args.fname):
         waifu2x_auto_dir(args)

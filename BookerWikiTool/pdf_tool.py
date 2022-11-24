@@ -158,10 +158,12 @@ def waifu2x_auto_file(args):
     width = min(img.size[0], img.size[1])
     scale = get_scale_by_width(width)
     img.close()
-    p = find_cmd_path('waifu2x')
+    p = find_cmd_path('waifu2x-converter-cpp')
+    cwd = os.getcwd()
+    os.chdir(p)
     # print(p)
     cmd = [
-        path.join(p, 'waifu2x.exe'), 
+        'waifu2x-converter-cpp', 
         '-m', 'noise-scale',
         '--noise-level', '2',
         '--scale-ratio', str(scale),
@@ -177,6 +179,7 @@ def waifu2x_auto_file(args):
         stdout=subp.PIPE,
         stderr=subp.PIPE,
     ).communicate()
+    os.chdir(cwd)
     print(r[0].decode('utf8', 'ignore') or 
         r[1].decode('utf8', 'ignore'))
 
