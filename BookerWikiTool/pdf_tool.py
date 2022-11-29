@@ -7,10 +7,12 @@ import re
 import os
 import copy
 import traceback
-from PIL import Image
+from PIL import Image, ImageFile
 from multiprocessing import Pool
 import img2pdf
 from .util import *
+
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 def ext_pdf(args):
     if path.isdir(args.fname):
