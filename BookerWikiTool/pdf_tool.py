@@ -169,7 +169,7 @@ def waifu2x_auto_file(args):
         '--block-size', '256',
         '-i', fname,
         '-o', fname,
-        '--model-dir', path.join(p. 'models_rgb'),
+        '--model-dir', path.join(p, 'models_rgb'),
         '--disable-gpu',
     ]
     print(f'cmd: {cmd}')
