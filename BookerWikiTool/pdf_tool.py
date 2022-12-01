@@ -161,9 +161,6 @@ def waifu2x_auto_file(args):
     scale = get_scale_by_width(width)
     img.close()
     p = find_cmd_path('waifu2x-converter-cpp')
-    cwd = os.getcwd()
-    os.chdir(p)
-    # print(p)
     cmd = [
         'waifu2x-converter-cpp', 
         '-m', 'noise-scale',
@@ -172,6 +169,7 @@ def waifu2x_auto_file(args):
         '--block-size', '256',
         '-i', fname,
         '-o', fname,
+        '--model-dir', path.join(p. 'models_rgb'),
         '--disable-gpu',
     ]
     print(f'cmd: {cmd}')
@@ -181,7 +179,6 @@ def waifu2x_auto_file(args):
         stdout=subp.PIPE,
         stderr=subp.PIPE,
     ).communicate()
-    os.chdir(cwd)
     print(r[0].decode('utf8', 'ignore') or 
         r[1].decode('utf8', 'ignore'))
 
