@@ -175,10 +175,11 @@ def waifu2x_auto_file(args):
     print(f'cmd: {cmd}')
     r = subp.Popen(
         cmd, 
-        # shell=True,
+        shell=True,
         stdout=subp.PIPE,
         stderr=subp.PIPE,
     ).communicate()
+    open(fname, 'ab').close() # touch
     print(r[0].decode('utf8', 'ignore') or 
         r[1].decode('utf8', 'ignore'))
 
