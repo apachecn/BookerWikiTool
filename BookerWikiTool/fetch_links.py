@@ -26,7 +26,7 @@ def get_toc(html, base):
     return links
 
 def fetch_links(args):
-    url = args.url
+    url_tmpl = args.url
     link = args.link
     ofname = args.ofname
     st = args.start
@@ -44,7 +44,7 @@ def fetch_links(args):
     
     for i in range(st, ed + 1):
         print(f'page: {i}')
-        url = config['url'].replace('{i}', str(i))
+        url = url_tmpl.replace('{i}', str(i))
         html = request_retry(
             'GET', url, 
             proxies=config['proxy'],
