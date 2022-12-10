@@ -44,6 +44,7 @@ def fetch_links(args):
     
     for i in range(st, ed + 1):
         url = config['url'].replace('{i}', str(i))
+        print(url)
         html = request_retry(
             'GET', url, 
             proxies=config['proxy'],
