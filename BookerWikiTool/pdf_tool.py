@@ -194,3 +194,25 @@ def waifu2x_auto_dir(args):
         pool.apply_async(waifu2x_auto_file_safe, [args])
     pool.close()
     pool.join()
+    
+def waifu2x_auto_handle(args):
+    # 检查 waifu2x
+    r = subp.Popen(
+        ['waifu2x-converter-cpp', '--version'],
+        shell=True,
+        stdout=subp.PIPE,
+        stderr=subp.PIPE,
+    ).communicate()
+    if r[1]: 
+        print('waifu2x-converter-cpp 未找到，请下载并将其目录添加到系统变量 PATH 中')
+        return
+    if path.isdir(args.fname):
+        waifu2x_auto_dir(args)
+    else:
+        waifu2x_auto_file(args)
+        
+def ppt2pdf_handle(args):
+    if path.isdir(args.fname):
+        ppt2pdf_dir(args)
+    else:
+        ppt2pdf_file(args)
