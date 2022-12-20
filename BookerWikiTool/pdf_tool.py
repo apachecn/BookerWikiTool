@@ -141,11 +141,11 @@ def ppt2pdf_dir(args):
         ff = path.join(dir, f)
         args.fname = ff
         try: ppt2pdf_file(args)
-        except Exception as ex: print(ex)
+        except Exception as ex: traceback.print_exc()
 
 def waifu2x_auto_file_safe(args):
     try: waifu2x_auto_file(args)
-    except Exception as ex: print(ex)
+    except Exception as ex: traceback.print_exc()
 
 def waifu2x_auto_file(args):
     fname = args.fname

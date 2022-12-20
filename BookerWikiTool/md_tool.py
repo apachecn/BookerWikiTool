@@ -8,6 +8,9 @@ import re
 import os
 import json
 import yaml
+import traceback
+import copy
+from multiprocessing import Pool
 from urllib.parse import quote_plus
 from os import path
 from pyquery import PyQuery as pq
@@ -132,7 +135,7 @@ def wiki_summary_handle(args):
         try:
             meta = yaml.safe_load(m.group(1))
         except Exception as ex: 
-            print(ex)
+            traceback.print_exc()
             continue
         dt = meta.get('date', '0001-01-01 00:00:00')
         cate = meta.get('category', '未分类')
@@ -162,10 +165,19 @@ def wiki_summary_handle(args):
 def tomd_dir(args):
     dir = args.fname
     fnames = os.listdir(dir)
+    pool = Pool(args.threads)
     for fname in fnames:
+        args = copy.deepcopy(args)
         args.fname = path.join(dir, fname)
-        tomd_file(args)
-    
+        # tomd_file(args)
+        pool.apply_async(tomd_file_safe, [args])
+    pool.close()
+    pool.join()
+
+def tomd_file_safe(args):
+    try: tomd_file(args)
+    except: traceback.print_exc()
+
 def tomd_file(args):
     if not args.fname.endswith('.html'):
         print('请提供 HTML 文件')

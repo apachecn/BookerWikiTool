@@ -57,7 +57,8 @@ def main():
     acc_parser.set_defaults(func=account_handle)
 
     tomd_parser = subparsers.add_parser("tomd", help="html to markdown")
-    tomd_parser.add_argument("fname", help="file name")
+    tomd_parser.add_argument("fname", help="file or dir name")
+    tomd_parser.add_argument("-t", "--threads", type=int, default=8, help="num of threads")
     tomd_parser.set_defaults(func=tomd_handle)
 
     ppt2pdf_parser = subparsers.add_parser("ppt2pdf", help="ppt to pdf")
