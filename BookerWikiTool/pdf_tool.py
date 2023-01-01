@@ -141,11 +141,11 @@ def ppt2pdf_dir(args):
         ff = path.join(dir, f)
         args.fname = ff
         try: ppt2pdf_file(args)
-        except Exception as ex: print(ex)
+        except Exception as ex: traceback.print_exc()
 
 def waifu2x_auto_file_safe(args):
     try: waifu2x_auto_file(args)
-    except Exception as ex: print(ex)
+    except Exception as ex: traceback.print_exc()
 
 def waifu2x_auto_file(args):
     fname = args.fname
@@ -175,10 +175,11 @@ def waifu2x_auto_file(args):
     print(f'cmd: {cmd}')
     r = subp.Popen(
         cmd, 
-        # shell=True,
+        shell=True,
         stdout=subp.PIPE,
         stderr=subp.PIPE,
     ).communicate()
+    open(fname, 'ab').close() # touch
     print(r[0].decode('utf8', 'ignore') or 
         r[1].decode('utf8', 'ignore'))
 
@@ -193,3 +194,25 @@ def waifu2x_auto_dir(args):
         pool.apply_async(waifu2x_auto_file_safe, [args])
     pool.close()
     pool.join()
+    
+def waifu2x_auto_handle(args):
+    # 检查 waifu2x
+    r = subp.Popen(
+        ['waifu2x-converter-cpp', '--version'],
+        shell=True,
+        stdout=subp.PIPE,
+        stderr=subp.PIPE,
+    ).communicate()
+    if r[1]: 
+        print('waifu2x-converter-cpp 未找到，请下载并将其目录添加到系统变量 PATH 中')
+        return
+    if path.isdir(args.fname):
+        waifu2x_auto_dir(args)
+    else:
+        waifu2x_auto_file(args)
+        
+def ppt2pdf_handle(args):
+    if path.isdir(args.fname):
+        ppt2pdf_dir(args)
+    else:
+        ppt2pdf_file(args)
