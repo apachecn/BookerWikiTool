@@ -70,7 +70,7 @@ var myConventors = [
 
   //<dl> (to <p>)
   {
-    filter: ['dd', 'dt'],
+    filter: ['dd', 'dt', 'figcaption'],
     replacement: function (c) {
       return '\n\n' + c + '\n\n';
     }
@@ -91,7 +91,7 @@ var myConventors = [
   //<span> & <div>
   
   {
-    filter: ['span', 'div'],
+    filter: ['span', 'div', 'article', 'section', 'header', 'footer', 'figure', 'nav', 'aside'],
     replacement: function(c){return c}
   },
   
