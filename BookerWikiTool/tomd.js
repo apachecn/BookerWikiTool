@@ -91,13 +91,13 @@ var myConventors = [
   //<span> & <div>
   
   {
-    filter: ['span', 'div', 'article', 'section', 'header', 'footer', 'figure', 'nav', 'aside'],
+    filter: ['span', 'div', 'article', 'section', 'header', 'footer', 'figure', 'nav', 'u', 'center', 'small'],
     replacement: function(c){return c}
   },
   
   //sth to clean
   {
-    filter: ['style', 'base', 'meta', 'script'],
+    filter: ['style', 'base', 'meta', 'script', 'ins', 'aside'],
     replacement: function(){return ''}
   },
   
