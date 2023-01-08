@@ -91,7 +91,7 @@ var myConventors = [
   //<span> & <div>
   
   {
-    filter: ['span', 'div', 'article', 'section', 'header', 'footer', 'figure', 'nav', 'u', 'center', 'small'],
+    filter: ['span', 'div', 'article', 'section', 'header', 'footer', 'figure', 'nav', 'u', 'center', 'small', 'cite'],
     replacement: function(c){return c}
   },
   
