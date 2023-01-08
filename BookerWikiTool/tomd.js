@@ -97,7 +97,7 @@ var myConventors = [
   
   //sth to clean
   {
-    filter: ['style', 'base', 'meta', 'script', 'ins', 'aside', 'noscript'],
+    filter: ['style', 'base', 'meta', 'script', 'ins', 'aside', 'noscript', 'form', 'label', 'input', 'button'],
     replacement: function(){return ''}
   },
   
