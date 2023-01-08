@@ -150,7 +150,7 @@ var myConventors = [
     filter: ['iframe', 'video', 'audio', 'source'],
     replacement: function (c, n) {
       var src = n.getAttribute('src')
-      return src? '<' + src + '>': ''
+      return src? '\n\n<' + src + '>\n\n': ''
     }
       
   },
