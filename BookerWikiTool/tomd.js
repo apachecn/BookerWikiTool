@@ -144,6 +144,16 @@ var myConventors = [
       return cell(c.replace(/\|/g, '&#124;'), n);
     }
   },
+  
+  // iframe, video, source
+  {
+    filter: ['iframe', 'video', 'audio', 'source'],
+    replacement: function (c, n) {
+      var src = n.getAttribute('src')
+      return src? '<' + src + '>': ''
+    }
+      
+  },
 ];
 
 if(module == require.main) main()
