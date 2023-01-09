@@ -21,6 +21,9 @@ RE_IMG = r'!\[.*?\]\(.*?\)'
 # 一个连续的英文字母、标点和数字序列算一个字
 RE_ZH_WORD = r'[\u2018-\u201d\u3001-\u301c\u4e00-\u9fff\uff01-\uff65]'
 RE_EN_WORD = r'[\x21-\x7e]+'
+RE_IFRAME = r'<iframe[^>]*src="(.+?)"[^>]*>'
+RE_IFRAME_ALL = r'</?iframe[^>]*>'
+RE_IFRAME_REPL = r'<br/><br/><a href="\1">\1</a><br/><br/>'
 
 DIR = path.dirname(path.abspath(__file__))
 
@@ -38,6 +41,9 @@ def d(name):
     return path.join(DIR, name)
 
 def tomd(html):
+    # 处理 IFRAME
+    html = re.sub(RE_IFRAME, RE_IFRAME_REPL, html)
+    html = re.sub(RE_IFRAME_ALL, '', html)
     js_fname = d('tomd.js')
     html_fname = path.join(tempfile.gettempdir(), uuid.uuid4().hex + '.html')
     open(html_fname, 'w', encoding='utf8').write(html)
