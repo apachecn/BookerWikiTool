@@ -150,10 +150,30 @@ var myConventors = [
     filter: ['iframe', 'video', 'audio', 'source'],
     replacement: function (c, n) {
       var src = n.getAttribute('src')
-      return src? '\n\n<' + src + '>\n\n': ''
+      return (src? '\n\n<' + src + '>\n\n': '') + c
     }
       
   },
+  
+  //<sub>
+  {
+    filter: ['sub'],
+    replacement: function (c, n) {
+      return '[' + c + ']'
+    }
+  },
+  
+  //<sup>
+  {
+    filter: ['sup'],
+    replacement: function (c, n) {
+	  var sup = '⁰¹²³⁴⁵⁶⁷⁸⁹'.split('')
+	  if(sup[c]) return sup[c]
+	  else if(c.length == 1) return '^' + c
+	  else return '^(' + c + ')'
+    }
+  },
+
 ];
 
 if(module == require.main) main()
