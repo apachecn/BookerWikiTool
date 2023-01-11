@@ -70,7 +70,7 @@ var myConventors = [
 
   //<dl> (to <p>)
   {
-    filter: ['dd', 'dt', 'figcaption'],
+    filter: ['dd', 'dt', 'figcaption', 'caption'],
     replacement: function (c) {
       return '\n\n' + c + '\n\n';
     }
@@ -91,13 +91,13 @@ var myConventors = [
   //<span> & <div>
   
   {
-    filter: ['span', 'div', 'article', 'section', 'header', 'footer', 'figure', 'nav', 'u', 'center', 'small', 'cite', 'mark', 'font'],
+    filter: ['span', 'div', 'article', 'section', 'header', 'footer', 'figure', 'nav', 'u', 'center', 'small', 'cite', 'mark', 'font', 'big', 'time', 'address', 'abbr', 'object'],
     replacement: function(c){return c}
   },
   
   //sth to clean
   {
-    filter: ['style', 'base', 'meta', 'script', 'ins', 'aside', 'noscript', 'form', 'label', 'input', 'button'],
+    filter: ['style', 'base', 'meta', 'script', 'ins', 'aside', 'noscript', 'form', 'label', 'input', 'button', 'col', 'colgroup'],
     replacement: function(){return ''}
   },
   
