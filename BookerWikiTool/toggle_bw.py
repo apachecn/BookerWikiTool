@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-import trackback
+import traceback
 import os
 from os import path
 from multiprocessing import Pool
@@ -25,7 +25,7 @@ def toggle_bw_dir(args):
 
 def toggle_bw_file_safe(args):
     try: toggle_bw_file(args)
-    except: trackback.print_exc()
+    except: traceback.print_exc()
     
 def toggle_bw_file(args):
     fname = args.fname
