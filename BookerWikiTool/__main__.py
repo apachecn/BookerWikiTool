@@ -72,6 +72,11 @@ def main():
     fmtzh_parser.add_argument("fname", help="file name")
     fmtzh_parser.set_defaults(func=fmt_zh_handle)
 
+    opti_md_parser = subparsers.add_parser("opti-md", help="optimize markdown")
+    opti_md_parser.add_argument("fname", help="file name")
+    opti_md_parser.add_argument("-t", "--threads", type=int, default=8, help="num of threads")
+    opti_md_parser.set_defaults(func=opti_md_handle)
+
     flatten_parser = subparsers.add_parser("flatten", help="flatten dir")
     flatten_parser.add_argument("dir", help="dir name")
     flatten_parser.add_argument("-d", "--delim", default='：', help="delimiter")
