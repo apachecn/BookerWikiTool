@@ -26,6 +26,7 @@ from .keyframe import *
 from .fetch_links import *
 from .pdf_tool import *
 from .flatten import *
+from .toggle_bw import *
     
 def main():
     parser = argparse.ArgumentParser(prog="BookerWikiTool", description="iBooker WIKI tool", formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -120,6 +121,12 @@ def main():
     fetch_links_parser.add_argument("-p", "--proxy", help="proxy")
     fetch_links_parser.add_argument("-H", "--headers", help="headers in JSON")
     fetch_links_parser.set_defaults(func=fetch_links)
+
+    toogle_bw_parser = subparsers.add_parser("tog-bw", help="check if image colors reversed and then toggle them")
+    toogle_bw_parser.add_argument("fname", help="file or dir name")
+    toogle_bw_parser.add_argument("-t", "--threads", type=int, default=8, help="num of thread")
+    toogle_bw_parser.add_argument("-s", "--thres", type=int, default=50, help="threshold less than which the color will be regarded as black")
+    toogle_bw_parser.set_defaults(func=toogle_bw_handle)
 
     args = parser.parse_args()
     args.func(args)
