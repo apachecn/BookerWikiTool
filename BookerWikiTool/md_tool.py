@@ -29,18 +29,40 @@ def account_handle(args):
     total, zh_count, en_count = account_words(cont)
     print(f'中文字数：{zh_count}\n英文字数：{en_count}\n总字数：{total}')
 
-def fix_handle(args):
+def ren_md_handle(args):
+    if path.isdir(args.fname):
+        ren_md_dir(args)
+    else:
+        ren_md_file(args)
+
+def ren_md_dir(args):
+    dir = args.fname
+    fnames = os.listdir(dir)
+    pool = Pool(args.threads)
+    for f in fnames:
+        args = copy.deepcopy(args)
+        args.fname = path.join(dir, f)
+        pool.apply_async(ren_md_file_safe, [args])
+    pool.close()
+    pool.join()
+
+def ren_md_file_safe(args):
+    try: ren_md_file(args)
+    except: traceback.print_exc()
+
+def ren_md_file(args):
     if not args.file.endswith('.md'):
         print('请提供 markdown 文件')
         return
     cont = open(args.file, encoding='utf8').read()
     dir = path.dirname(args.file)
-    rm = re.search(RE_TITLE, cont, flags=re.M)
+    RE_FNAME = RE_SOURCE if args.by == 'src' else RE_TITLE
+    rm = re.search(RE_FNAME, cont, flags=re.M)
     if not rm: 
-        print(f'{args.file} 未找到标题')
+        print(f'{args.file} 未找到文件名')
         return
-    title = rm.group(1)
-    nfname = re.sub(r'\s', '-', fname_escape(title)) + '.md'
+    nfname = rm.group(1)
+    nfname = re.sub(r'\s', '-', fname_escape(nfname)) + '.md'
     nfname = path.join(dir, nfname)
     print(nfname)
     os.rename(args.file, nfname)

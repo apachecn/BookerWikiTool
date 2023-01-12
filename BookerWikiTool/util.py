@@ -14,6 +14,7 @@ from collections import OrderedDict
 
 RE_YAML_META = r'<!--yml([\s\S]+?)-->'
 RE_TITLE = r'^#+ (.+?)$'
+RE_SOURCE = r'/([^/\n]+?)/?>'
 RE_CODE_BLOCK = r'```[\s\S]+?```'
 RE_IMG = r'!\[.*?\]\(.*?\)'
 # Word 字数统计标准：
