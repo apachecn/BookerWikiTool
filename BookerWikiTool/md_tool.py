@@ -9,7 +9,8 @@ import os
 import json
 import yaml
 import traceback
-import copyfrom multiprocessing import Pool
+import copy
+from multiprocessing import Pool
 from urllib.parse import quote_plus
 from os import path
 from pyquery import PyQuery as pq
