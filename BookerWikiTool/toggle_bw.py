@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 import traceback
 import os
+import copy
 from os import path
 from multiprocessing import Pool
 from .util import *
@@ -38,7 +39,7 @@ def toggle_bw_file(args):
     img = np.frombuffer(img, np.uint8)
     img = cv2.imdecode(img, cv2.IMREAD_UNCHANGED)
     mean = img.mean()
-    print(mean)
+    print(f'{fname} {mean}')
     if mean < thres: 
         img = 255 - img
         img = cv2.imencode(
