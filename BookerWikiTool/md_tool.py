@@ -51,21 +51,22 @@ def ren_md_file_safe(args):
     except: traceback.print_exc()
 
 def ren_md_file(args):
-    if not args.file.endswith('.md'):
+    fname = args.fname
+    if not fname.endswith('.md'):
         print('请提供 markdown 文件')
         return
-    cont = open(args.file, encoding='utf8').read()
-    dir = path.dirname(args.file)
+    cont = open(fname, encoding='utf8').read()
+    dir = path.dirname(fname)
     RE_FNAME = RE_SOURCE if args.by == 'src' else RE_TITLE
     rm = re.search(RE_FNAME, cont, flags=re.M)
     if not rm: 
-        print(f'{args.file} 未找到文件名')
+        print(f'{fname} 未找到文件名')
         return
     nfname = rm.group(1)
     nfname = re.sub(r'\s', '-', fname_escape(nfname)) + '.md'
     nfname = path.join(dir, nfname)
     print(nfname)
-    os.rename(args.file, nfname)
+    os.rename(fname, nfname)
 
 def download_handle(args):
     html = requests.get(
