@@ -279,7 +279,7 @@ def opti_md_dir(args):
 
 
 def config_proj(args):
-    dir = path.abspath(dir)
+    dir = path.abspath(args.dir)
     if not path.isdir(dir):
         print('请提供目录')
         return
