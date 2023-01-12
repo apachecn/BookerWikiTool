@@ -90,14 +90,12 @@ def safe_rmdir(dir):
     except: pass
 
 def is_pic(fname):
-    return (
-        fname.endswith('.jpg') or
-        fname.endswith('.jpeg') or
-        fname.endswith('.png') or
-        fname.endswith('.gif') or
-        fname.endswith('.tiff') or
-        fname.endswith('.webp')
-    )
+    ext = [
+        'jpg', 'jpeg', 'jfif', 'png', 
+        'gif', 'tiff', 'webp'
+    ]
+    m = re.search(r'\.(\w+)$', fname)
+    return bool(m and m.group(1) in ext)
 
 def find_cmd_path(name):
     for p in os.environ.get('PATH', '').split(';'):
@@ -105,3 +103,13 @@ def find_cmd_path(name):
             path.isfile(path.join(p, name + '.exe')):
             return p
     return ''
+    
+def is_video(fname):
+    ext = [
+        'mp4', 'm4v', '3gp', 'mpg', 'flv', 'f4v', 
+        'swf', 'avi', 'gif', 'wmv', 'rmvb', 'mov', 
+        'mts', 'm2t', 'webm', 'ogg', 'mkv', 'mp3', 
+        'aac', 'ape', 'flac', 'wav', 'wma', 'amr', 'mid',
+    ]
+    m = re.search(r'\.(\w+)$', fname)
+    return bool(m and m.group(1) in ext)
