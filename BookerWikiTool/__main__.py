@@ -135,6 +135,10 @@ def main():
     toggle_bw_parser.add_argument("-s", "--thres", type=int, default=50, help="threshold less than which the color will be regarded as black")
     toggle_bw_parser.set_defaults(func=toggle_bw_handle)
 
+    config_proj_parser = subparsers.add_parser("config-proj", help="config proj")
+    config_proj_parser.add_argument("dir", help="dir name")
+    config_proj_parser.set_defaults(func=config_proj)
+
     args = parser.parse_args()
     args.func(args)
 
