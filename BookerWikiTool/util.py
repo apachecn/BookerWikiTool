@@ -25,6 +25,10 @@ RE_EN_WORD = r'[\x21-\x7e]+'
 RE_IFRAME = r'<iframe[^>]*src="(.+?)"[^>]*>'
 RE_IFRAME_ALL = r'</?iframe[^>]*>'
 RE_IFRAME_REPL = r'<br/><br/><a href="\1">\1</a><br/><br/>'
+RE_SRC_FULL = r'原文:\[.+?\]\((.+?)\)'
+RE_SRC_FULL_REP = r'原文：<\1>'
+RE_PRE_HEAD = r'^\x20*\*+\x20*```'
+RE_LEG_TOKEN = r'T\d+】'
 
 DIR = path.dirname(path.abspath(__file__))
 

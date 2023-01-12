@@ -239,3 +239,37 @@ def fmt_zh_handle(args):
         fmt_zh_dir(args)
     else:
         fmt_zh_file(args)
+
+def opti_md_file_safe(args):
+    try: opti_md_file(args)
+    except: traceback.print_exc()
+
+def opti_md_file(args):
+    fname = args.fname
+    if not fname.endswith('.md'):
+        print('请提供 Markdown 文件')
+        return
+    print(fname)
+    cont = open(fname, encoding='utf8').read()
+    cont = cont.replace('../Images', 'img/')
+    cont = re.sub(RE_LEG_TOKEN, '', cont)
+    cont = re.sub(RE_SRC_FULL, RE_SRC_FULL_REP, cont)
+
+
+def opti_md_handle(args):
+    if path.isdir(args.fname):
+        opti_md_dir(args)
+    else:
+        opti_md_file(args)
+
+def opti_md_dir(args):
+    dir = args.fname
+    fnames = os.listdir(dir)
+    pool = Pool(args.threads)
+    for fname in fnames:
+        args = copy.deepcopy(args)
+        args.fname = path.join(dir, fname)
+        # tomd_file(args)
+        pool.apply_async(opti_md_file_safe, [args])
+    pool.close()
+    pool.join()
