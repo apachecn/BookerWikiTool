@@ -9,8 +9,7 @@ import os
 import json
 import yaml
 import traceback
-import copy
-from multiprocessing import Pool
+import copyfrom multiprocessing import Pool
 from urllib.parse import quote_plus
 from os import path
 from pyquery import PyQuery as pq
@@ -57,8 +56,8 @@ def ren_md_file(args):
         return
     cont = open(fname, encoding='utf8').read()
     dir = path.dirname(fname)
-    RE_FNAME = RE_SOURCE if args.by == 'src' else RE_TITLE
-    rm = re.search(RE_FNAME, cont, flags=re.M)
+    RE = RE_SOURCE if args.by == 'src' else RE_TITLE
+    rm = re.search(RE, cont, flags=re.M)
     if not rm: 
         print(f'{fname} 未找到文件名')
         return
