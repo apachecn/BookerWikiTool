@@ -2,6 +2,7 @@ import pandas as pd
 from os import path
 import re
 import subprocess as subp
+import json
 
 POST_TIME = '发布时间'
 ART_LINK = '文章链接'
@@ -23,7 +24,7 @@ config_tmpl = {
 def crawl_wx(args):
     fname = args.fname
     size = args.size
-    if not fnames.endswith('.xls') and \
+    if not fname.endswith('.xls') and \
         not fname.endswith('.xlsx'):
         print('请提供 EXCEL 文件')
         return
