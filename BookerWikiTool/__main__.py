@@ -27,6 +27,7 @@ from .fetch_links import *
 from .pdf_tool import *
 from .flatten import *
 from .toggle_bw import *
+from .crawl_wx import *
     
 def main():
     parser = argparse.ArgumentParser(prog="BookerWikiTool", description="iBooker WIKI tool", formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -138,6 +139,11 @@ def main():
     config_proj_parser = subparsers.add_parser("config-proj", help="config proj")
     config_proj_parser.add_argument("dir", help="dir name")
     config_proj_parser.set_defaults(func=config_proj)
+
+    crawl_wx_parser = subparsers.add_parser("crawl-wx", help="crawler weixin articles")
+    crawl_wx_parser.add_argument("fname", help="XLSX fname")
+    crawl_wx_parser.add_argument("-n", "--size", type=int, default=500, help="num of articles per ebook")
+    crawl_wx_parser.set_defaults(func=crawl_wx)
 
     args = parser.parse_args()
     args.func(args)
