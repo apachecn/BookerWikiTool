@@ -86,6 +86,10 @@ def main():
     comp_epub_parser = subparsers.add_parser("comp-epub", help="compress epub")
     comp_epub_parser.add_argument("file", help="file")
     comp_epub_parser.set_defaults(func=comp_epub)
+    
+    comp_pdf_parser = subparsers.add_parser("comp-pdf", help="compress pdf")
+    comp_pdf_parser.add_argument("fname", help="file name")
+    comp_pdf_parser.set_defaults(func=comp_pdf)
 
     epub_toc_parser = subparsers.add_parser("epub-toc", help="view epub toc")
     epub_toc_parser.add_argument("fname", help="fname")

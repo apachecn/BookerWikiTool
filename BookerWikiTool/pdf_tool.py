@@ -24,7 +24,7 @@ app_map = {
     'xlsx': ['Excel.Application', 'Workbooks'],
 }
 
-def comp_pdf_file(args):
+def comp_pdf(args):
     fname = args.fname
     if not fname.endswith('.pdf'):
         print('请提供 PDF 文件')
