@@ -70,7 +70,7 @@ def get_epub_toc(args):
     toc_ncx = zip.read('OEBPS/toc.ncx').decode('utf8')
     toc = get_ncx_toc(toc_ncx)
     for i, title, src in toc:
-        print(f'{i}\n{title}\n{src}')
+        print(f'{i}：{src}\n{title}')
 
 def exp_epub_chs(args):
     fname = args.fname
