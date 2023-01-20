@@ -9,11 +9,13 @@ import copy
 import traceback
 from PIL import Image, ImageFile
 from multiprocessing import Pool
+from imgyaso import pngquant_bts
 import img2pdf
 from io import BytesIO
 from .util import *
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
+fitz.Document.is_image = lambda *args, **kw: True
 
 app_map = {
     'ppt': ['PowerPoint.Application', 'Presentations'],
@@ -38,11 +40,9 @@ def comp_pdf(args):
             xref = info[0]
             print(f'image: {ii+1}, xref: {xref}')
             img = fitz.Pixmap(doc, xref)
-            bio = BytesIO()
-            img.save(bio, output='png')
-            data = pngquant_bts(bio.getvalue())
-            doc._deleteObject(xref)
-            p.insertImage(rect=info[1:5], stream=data, _imgname=info[7])
+            data = img.pil_tobytes(format="PNG", optimize=True)
+            data = pngquant_bts(data)
+            p.replace_image(xref, stream=data)
     doc.save(fname, clean=True, garbage=4, defalte=True, linear=True)
     doc.close()
 
