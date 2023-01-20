@@ -39,11 +39,11 @@ def comp_pdf_file(args):
             print(f'image: {ii+1}, xref: {xref}')
             img = fitz.Pixmap(doc, xref)
             bio = BytesIO()
-            img.writePNG(bio)
+            img.save(bio, 'png')
             data = pngquant_bts(bio.getvalue())
             doc._deleteObject(xref)
             p.insertImage(rect=info[1:5], stream=data, _imgname=info[7])
-    doc.save(fname, garbage=4, defalte=True)
+    doc.save(fname, clean=True, garbage=4, defalte=True, linear=True)
     doc.close()
 
 def ext_pdf(args):
@@ -79,7 +79,7 @@ def ext_pdf_file(args):
             img = p.get_pixmap()
             imgname = path.join(dir, f'{title}_{ip+1:0{lp}d}.png')
             print(f'save: {imgname}')
-            img.writePNG(imgname)
+            img.save(imgname)
             continue
         
         imgs = p.get_images()
@@ -90,7 +90,7 @@ def ext_pdf_file(args):
             img = fitz.Pixmap(doc, xref)
             imgname = path.join(dir, f'{title}_{ip+1:0{lp}d}_{ii+1:0{limg}d}.png')
             print(f'save: {imgname}')
-            img.writePNG(imgname)
+            img.save(imgname)
     
     doc.close()
 
