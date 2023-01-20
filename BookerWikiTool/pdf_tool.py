@@ -10,6 +10,7 @@ import traceback
 from PIL import Image, ImageFile
 from multiprocessing import Pool
 import img2pdf
+from io import BytesIO
 from .util import *
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -22,6 +23,28 @@ app_map = {
     'xls': ['Excel.Application', 'Workbooks'],
     'xlsx': ['Excel.Application', 'Workbooks'],
 }
+
+def comp_pdf_file(args):
+    fname = args.fname
+    if not fname.endswith('.pdf'):
+        print('请提供 PDF 文件')
+        return
+    print(f'file: {fname}')
+    doc = fitz.open(fname)
+    for i, p in enumerate(doc):
+        print(f'page: {i+1}')
+        imgs = p.get_images()
+        for ii, info in enumerate(imgs):
+            xref = info[0]
+            print(f'image: {ii+1}, xref: {xref}')
+            img = fitz.Pixmap(doc, xref)
+            bio = BytesIO()
+            img.writePNG(bio)
+            data = pngquant_bts(bio.getvalue())
+            doc._deleteObject(xref)
+            p.insertImage(rect=info[1:5], stream=data, _imgname=info[7])
+    doc.save(fname, garbage=4, defalte=True)
+    doc.close()
 
 def ext_pdf(args):
     if path.isdir(args.fname):
@@ -65,8 +88,6 @@ def ext_pdf_file(args):
             xref = info[0]
             print(f'img: {ii + 1}, xref: {xref}')
             img = fitz.Pixmap(doc, xref)
-            if img.n >= 5:
-                pix = fitz.Pixmap(fitz.csRGB, pix)
             imgname = path.join(dir, f'{title}_{ip+1:0{lp}d}_{ii+1:0{limg}d}.png')
             print(f'save: {imgname}')
             img.writePNG(imgname)
