@@ -39,7 +39,7 @@ def comp_pdf(args):
             print(f'image: {ii+1}, xref: {xref}')
             img = fitz.Pixmap(doc, xref)
             bio = BytesIO()
-            img.save(bio, 'png')
+            img.save(bio, output='png')
             data = pngquant_bts(bio.getvalue())
             doc._deleteObject(xref)
             p.insertImage(rect=info[1:5], stream=data, _imgname=info[7])
