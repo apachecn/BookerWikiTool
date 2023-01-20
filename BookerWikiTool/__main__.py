@@ -65,9 +65,9 @@ def main():
     tomd_parser.add_argument("-t", "--threads", type=int, default=8, help="num of threads")
     tomd_parser.set_defaults(func=tomd_handle)
 
-    ppt2pdf_parser = subparsers.add_parser("ppt2pdf", help="ppt to pdf")
-    ppt2pdf_parser.add_argument("fname", help="file name")
-    ppt2pdf_parser.set_defaults(func=ppt2pdf_handle)
+    office2pdf_parser = subparsers.add_parser("office2pdf", help="doc/xls/ppt to pdf")
+    office2pdf_parser.add_argument("fname", help="file name")
+    office2pdf_parser.set_defaults(func=office2pdf_handle)
 
     fmtzh_parser = subparsers.add_parser("fmtzh", help="format zh")
     fmtzh_parser.add_argument("fname", help="file name")

@@ -223,8 +223,8 @@ def waifu2x_auto_handle(args):
     else:
         waifu2x_auto_file(args)
         
-def ppt2pdf_handle(args):
+def office2pdf_handle(args):
     if path.isdir(args.fname):
-        ppt2pdf_dir(args)
+        office2pdf_dir(args)
     else:
-        ppt2pdf_file(args)
+        office2pdf_file(args)
