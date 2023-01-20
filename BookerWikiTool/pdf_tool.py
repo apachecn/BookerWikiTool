@@ -15,7 +15,7 @@ from io import BytesIO
 from .util import *
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
-fitz.Document.is_image = lambda *args, **kw: True
+fitz.Document.is_image = fitz.Document.xref_is_image
 
 app_map = {
     'ppt': ['PowerPoint.Application', 'Presentations'],
@@ -32,7 +32,7 @@ def comp_pdf(args):
         print('请提供 PDF 文件')
         return
     print(f'file: {fname}')
-    doc = fitz.open(fname)
+    doc = fitz.open("pdf", open(fname, 'rb').read())
     for i, p in enumerate(doc):
         print(f'page: {i+1}')
         imgs = p.get_images()
@@ -43,7 +43,7 @@ def comp_pdf(args):
             data = img.pil_tobytes(format="PNG", optimize=True)
             data = pngquant_bts(data)
             p.replace_image(xref, stream=data)
-    doc.save(fname, clean=True, garbage=4, defalte=True, linear=True)
+    doc.save(fname, clean=True, garbage=4, deflate=True, linear=True)
     doc.close()
 
 def ext_pdf(args):

@@ -3,6 +3,7 @@
 v2023.1.20
 
 +   新增 DOC 转换为 PDF 功能，`ppt2pdf`命令改为`office2pdf`
++   新增 PDF 压缩功能
 
 v2023.1.19
 
