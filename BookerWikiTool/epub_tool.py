@@ -103,6 +103,11 @@ def get_epub_toc(args):
     zip = zipfile.ZipFile(bio, 'r', zipfile.ZIP_DEFLATED)
     toc_ncx = zip.read('OEBPS/toc.ncx').decode('utf8')
     toc = get_ncx_toc(toc_ncx)
+    if args.hlevel:
+        toc = [
+            ch for ch in toc 
+            if ch['level'] <= args.hlevel
+        ]
     for ch in toc:
         pref = '>' * (ch["level"] - 1)
         if pref: pref += ' '
