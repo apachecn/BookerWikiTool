@@ -94,7 +94,7 @@ def main():
     epub_toc_parser = subparsers.add_parser("epub-toc", help="view epub toc")
     epub_toc_parser.add_argument("fname", help="fname")
     epub_toc_parser.add_argument("-l", "--hlevel", default=0, type=int, help="heading level, headings less than which will be revserved. 0 means all")
-    epub_toc_parser.add_argument("-r", "--regex", required=True, help="regex for chapter title")
+    epub_toc_parser.add_argument("-r", "--regex", help="regex for chapter title")
     epub_toc_parser.set_defaults(func=get_epub_toc)
 
     epub_chs_parser = subparsers.add_parser("epub-chs", help="export epub chapters")
@@ -103,7 +103,7 @@ def main():
     epub_chs_parser.add_argument("-s", "--start", default=-1, type=int, help="starting index. -1 means all")
     epub_chs_parser.add_argument("-e", "--end", default=-1, type=int, help="ending index. -1 means all")
     epub_chs_parser.add_argument("-l", "--hlevel", default=0, type=int, help="heading level, headings less than which will be revserved. 0 means all")
-    epub_chs_parser.add_argument("-r", "--regex", required=True, help="regex for chapter title")
+    epub_chs_parser.add_argument("-r", "--regex", help="regex for chapter title")
     epub_chs_parser.set_defaults(func=exp_epub_chs)
 
     kf_parser = subparsers.add_parser("ext-kf", help="extract keyframes")
