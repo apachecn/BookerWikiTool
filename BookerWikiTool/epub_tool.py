@@ -67,7 +67,7 @@ def get_opf_flist(cont_opf):
 
 def get_toc_lv(el_nav):
     cnt = 0
-    while el_nav and not el_nav.is_('map'):
+    while el_nav and el_nav.is_('nav'):
         cnt += 1
         el_nav = el_nav.parent()
     return cnt
