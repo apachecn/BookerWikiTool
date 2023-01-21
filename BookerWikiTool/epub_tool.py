@@ -65,12 +65,19 @@ def get_opf_flist(cont_opf):
         if id in id_map
     ]
 
+def get_toc_lv(el_nav):
+    cnt = 0
+    while el_nav and not el_nav.is_('map'):
+        cnt += 1
+        el_nav = el_nav.parent()
+    return cnt
 
 def get_ncx_toc(toc_ncx):
     toc_ncx = re.sub(r'<\?xml[^>]*\?>', '', toc_ncx)
     toc_ncx = re.sub(r'xmlns=".+?"', '', toc_ncx)
     toc_ncx = re.sub(r'<(/?)navLabel', r'<\1label', toc_ncx)
     toc_ncx = re.sub(r'<(/?)navPoint', r'<\1nav', toc_ncx)
+    toc_ncx = re.sub(r'<(/?)navmap', r'<\1map', toc_ncx)
     rt = pq(toc_ncx)
     el_nps = rt('nav')
     toc = []
@@ -82,6 +89,7 @@ def get_ncx_toc(toc_ncx):
             'idx': i,
             'title': title.strip(),
             'src': src,
+            'level': get_toc_lv(el),
         })
     return toc
 
@@ -96,7 +104,9 @@ def get_epub_toc(args):
     toc_ncx = zip.read('OEBPS/toc.ncx').decode('utf8')
     toc = get_ncx_toc(toc_ncx)
     for ch in toc:
-        print(f'{ch["idx"]}：{ch["src"]}\n{ch["title"]}')
+        pref = '>' * (ch["level"] - 1)
+        if pref: pref += ' '
+        print(f'{pref}{ch["idx"]}：{ch["src"]}\n{pref}{ch["title"]}')
 
 def exp_epub_chs(args):
     fname = args.fname
@@ -123,6 +133,11 @@ def exp_epub_chs(args):
         toc = [
             ch for ch in toc 
             if re.search(rgx, ch['title'])
+        ]
+    if hlv:
+        toc = [
+            ch for ch in toc 
+            if ch['level'] <= hlv
         ]
     toc_flist = {
         re.sub(r'#.+$|\?.+$', '', ch['src']) 
