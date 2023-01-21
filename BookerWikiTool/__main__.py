@@ -22,7 +22,6 @@ from . import __version__
 from .util import *
 from .epub_tool import *
 from .md_tool import *
-from .keyframe import *
 from .fetch_links import *
 from .pdf_tool import *
 from .flatten import *
@@ -105,11 +104,6 @@ def main():
     epub_chs_parser.add_argument("-l", "--hlevel", default=0, type=int, help="heading level, headings less than which will be revserved. 0 means all")
     epub_chs_parser.add_argument("-r", "--regex", help="regex for chapter title")
     epub_chs_parser.set_defaults(func=exp_epub_chs)
-
-    kf_parser = subparsers.add_parser("ext-kf", help="extract keyframes")
-    kf_parser.add_argument("file", help="file")
-    kf_parser.add_argument("--save-path", default='out', help="path to save")
-    kf_parser.set_defaults(func=ext_keyframe)
 
     ext_pdf_parser = subparsers.add_parser("ext-pdf", help="extract odf into images")
     ext_pdf_parser.add_argument("fname", help="file name")
