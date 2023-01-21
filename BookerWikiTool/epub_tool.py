@@ -157,7 +157,7 @@ def exp_epub_chs(args):
     # 按照目录合并文件
     chs = []
     for f in flist:
-        cont = zip.read(f).decode('utf8')
+        cont = zip.read('OEBPS/' + f).decode('utf8')
         if f in toc_flist:
             chs.appen([cont])
         else:
