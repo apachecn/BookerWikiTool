@@ -100,6 +100,7 @@ def main():
     epub_chs_parser.add_argument("-d", "--dir", default='.', help="output dir")
     epub_chs_parser.add_argument("-s", "--start", default=-1, type=int, help="starting index. -1 means all")
     epub_chs_parser.add_argument("-e", "--end", default=-1, type=int, help="ending index. -1 means all")
+    epub_chs_parser.add_argument("-l", "--hlevel", default=0, type=int, help="heading level, headings less than which will be revserved. 0 means all")
     epub_chs_parser.add_argument("-r", "--regex", required=True, help="regex for chapter title")
     epub_chs_parser.set_defaults(func=exp_epub_chs)
 
