@@ -47,7 +47,7 @@ def comp_epub(args):
 def get_opf_flist(cont_opf):
     cont_opf = re.sub(r'<\?xml[^>]*\?>', '', cont_opf)
     cont_opf = re.sub(r'xmlns=".+?"', '', cont_opf)
-    rt = pq(toc_ncx)
+    rt = pq(cont_opf)
     el_irs = rt('itemref')
     ids = [
         el_irs.eq(i).attr('idref') 
