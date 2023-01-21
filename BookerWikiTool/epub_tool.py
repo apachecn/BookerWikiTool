@@ -72,7 +72,7 @@ def get_toc_lv(el_nav):
         el_nav = el_nav.parent()
     return cnt
 
-def get_ncx_toc(toc_ncx):
+def get_ncx_toc(toc_ncx, rgx="", hlv=0):
     toc_ncx = re.sub(r'<\?xml[^>]*\?>', '', toc_ncx)
     toc_ncx = re.sub(r'xmlns=".+?"', '', toc_ncx)
     toc_ncx = re.sub(r'<(/?)navLabel', r'<\1label', toc_ncx)
@@ -91,6 +91,16 @@ def get_ncx_toc(toc_ncx):
             'src': src,
             'level': get_toc_lv(el),
         })
+    if rgx:
+        toc = [
+            ch for ch in toc 
+            if re.search(rgx, ch['title'])
+        ]
+    if hlv:
+        toc = [
+            ch for ch in toc 
+            if ch['level'] <= hlv
+        ]
     return toc
 
 def get_epub_toc(args):
@@ -102,17 +112,7 @@ def get_epub_toc(args):
     bio = BytesIO(open(fname, 'rb').read())
     zip = zipfile.ZipFile(bio, 'r', zipfile.ZIP_DEFLATED)
     toc_ncx = zip.read('OEBPS/toc.ncx').decode('utf8')
-    toc = get_ncx_toc(toc_ncx)
-    if args.regex:
-        toc = [
-            ch for ch in toc 
-            if re.search(args.regex, ch['title'])
-        ]
-    if args.hlevel:
-        toc = [
-            ch for ch in toc 
-            if ch['level'] <= args.hlevel
-        ]
+    toc = get_ncx_toc(toc_ncx, args.regex, args.hlevel)
     for ch in toc:
         pref = '>' * (ch["level"] - 1)
         if pref: pref += ' '
@@ -135,25 +135,13 @@ def exp_epub_chs(args):
     zip = zipfile.ZipFile(bio, 'r', zipfile.ZIP_DEFLATED)
     toc_ncx = zip.read('OEBPS/toc.ncx').decode('utf8')
     cont_opf = zip.read('OEBPS/content.opf').decode('utf8')
-    toc = get_ncx_toc(toc_ncx)
+    toc = get_ncx_toc(toc_ncx, rgx, hlv)
     flist = get_opf_flist(cont_opf)
-    
-    # 过滤目录
-    if rgx:
-        toc = [
-            ch for ch in toc 
-            if re.search(rgx, ch['title'])
-        ]
-    if hlv:
-        toc = [
-            ch for ch in toc 
-            if ch['level'] <= hlv
-        ]
     toc_flist = {
         re.sub(r'#.+$|\?.+$', '', ch['src']) 
         for ch in toc
     }
-    
+    print(flist, toc_flist)
     # 按照目录合并文件
     chs = []
     for f in flist:
