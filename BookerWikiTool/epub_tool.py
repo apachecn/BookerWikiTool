@@ -117,8 +117,6 @@ def exp_epub_chs(args):
     cont_opf = zip.read('OEBPS/content.opf').decode('utf8')
     toc = get_ncx_toc(toc_ncx)
     flist = get_opf_flist(cont_opf)
-    if ed != -1: toc = toc[:ed+1]
-    if st != -1: toc = toc[st:]
     
     # 过滤目录
     if rgx:
