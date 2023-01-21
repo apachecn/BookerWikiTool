@@ -48,16 +48,16 @@ def get_opf_flist(cont_opf):
     cont_opf = re.sub(r'<\?xml[^>]*\?>', '', cont_opf)
     cont_opf = re.sub(r'xmlns=".+?"', '', cont_opf)
     rt = pq(cont_opf)
-    el_irs = rt('itemref')
+    el_refs = rt('itemref')
     ids = [
-        el_irs.eq(i).attr('idref') 
-        for i in range(len(el_irs))
+        el_refs.eq(i).attr('idref') 
+        for i in range(len(el_refs))
     ]
     el_its = rt('item')
     id_map = {
         pq(el).attr('id'):
         pq(el).attr('href')
-        for el in el_irs
+        for el in el_its
     }
     return [
         id_map[id]
@@ -141,13 +141,12 @@ def exp_epub_chs(args):
         re.sub(r'#.+$|\?.+$', '', ch['src']) 
         for ch in toc
     }
-    print(flist, toc_flist)
     # 按照目录合并文件
     chs = []
     for f in flist:
         cont = zip.read('OEBPS/' + f).decode('utf8')
         if f in toc_flist:
-            chs.appen([cont])
+            chs.append([cont])
         else:
             if chs: chs[-1].append(cont)
     chs = ['\n'.join(ch) for ch in chs]
