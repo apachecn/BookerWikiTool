@@ -27,6 +27,7 @@ from .pdf_tool import *
 from .flatten import *
 from .toggle_bw import *
 from .crawl_wx import *
+from .codelint import *
     
 def main():
     parser = argparse.ArgumentParser(prog="BookerWikiTool", description="iBooker WIKI tool", formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -145,6 +146,10 @@ def main():
     crawl_wx_parser.add_argument("fname", help="XLSX fname")
     crawl_wx_parser.add_argument("-n", "--size", type=int, default=500, help="num of articles per ebook")
     crawl_wx_parser.set_defaults(func=crawl_wx)
+
+    code_lint_parser = subparsers.add_parser("code-lint", help="lint c-style code")
+    code_lint_parser.add_argument("fname", help="code fname")
+    code_lint_parser.set_defaults(func=code_lint_file)
 
     args = parser.parse_args()
     args.func(args)
