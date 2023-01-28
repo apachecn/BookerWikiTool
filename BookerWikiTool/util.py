@@ -94,6 +94,16 @@ def safe_rmdir(dir):
     try: shutil.rmtree(dir)
     except: pass
 
+def is_c_style_code(fname):
+    ext = [
+        'c', 'cpp', 'cxx', 'h', 'hpp',
+        'java', 'kt', 'scala', 
+        'cs', 'js', 'json', 'ts', 
+        'php', 'go', 'rust', 'swift',
+    ]
+    m = re.search(r'\.(\w+)$', fname)
+    return bool(m and m.group(1) in ext)
+
 def is_pic(fname):
     ext = [
         'jpg', 'jpeg', 'jfif', 'png', 

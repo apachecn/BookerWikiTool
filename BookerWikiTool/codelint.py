@@ -1,5 +1,5 @@
 import re
-import sys
+from .util import *
 
 RE_SL_COMM = r'//.*?$'
 RE_ML_COMM = r'/\*[\s\S]*?\*/'
@@ -16,17 +16,6 @@ re_arr = [
     RE_ML_STR, RE_ML_STR2, 
     RE_RAW_STR, RE_FOR
 ]
-
-def is_c_style_code(fname):
-    exts = [
-        'c', 'cpp', 'cxx', 'h', 'hpp',
-        'java', 'kt', 'scala', 
-        'cs', 'js', 'json', 'ts', 
-        'php', 'go', 'rust', 'swift',
-    ]
-    m = re.search(r'\.(\w+)$', fname)
-    ext = m.group(1) if m else ''
-    return ext in exts
 
 def code_lint(s):
     s = s.replace('\r', '')
@@ -82,8 +71,8 @@ def code_lint(s):
         s = s.replace(f'$TKN{i}$', tk)
     return s
     
-def main():
-    fname = sys.argv[1]
+def code_lint_file(args):
+    fname = args.fname
     if not is_c_style_code(fname):
         print('请提供 C 风格代码！')
         return
@@ -92,5 +81,3 @@ def main():
     cont = code_lint(cont)
     print(cont)
     open(fname, 'w', encoding='utf8').write(cont)
-    
-if __name__ == '__main__': main()
