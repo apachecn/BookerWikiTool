@@ -40,7 +40,7 @@ def comp_pdf(args):
             xref = info[0]
             print(f'image: {ii+1}, xref: {xref}')
             img = fitz.Pixmap(doc, xref)
-            data = img.pil_tobytes(format="PNG", optimize=True)
+            data = img.pil_tobytes(format="JPEG", quality=100)
             data = pngquant_bts(data)
             p.replace_image(xref, stream=data)
     doc.save(fname, clean=True, garbage=4, deflate=True, linear=True)
