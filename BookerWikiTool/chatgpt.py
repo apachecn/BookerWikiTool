@@ -19,6 +19,7 @@ def chatgpt_cmd(args):
             )
             # Print the generated text
             print(completion.choices[0].text)
+        except KeyboardInterrupt: break
         except:
             traceback.print_exc()
 
