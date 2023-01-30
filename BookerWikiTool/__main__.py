@@ -146,7 +146,7 @@ def main():
     crawl_wx_parser = subparsers.add_parser("crawl-wx", help="crawler weixin articles")
     crawl_wx_parser.add_argument("fname", help="XLSX fname")
     crawl_wx_parser.add_argument("-n", "--size", type=int, default=500, help="num of articles per ebook")
-    crawl_wx_parser.add_argument("-o", "--opti-mode", default='thres', help="img optimization mode")
+    crawl_wx_parser.add_argument("-o", "--opti-mode", default='thres', help="img optimization mode, default 'thres'")
     crawl_wx_parser.set_defaults(func=crawl_wx)
 
     code_lint_parser = subparsers.add_parser("code-lint", help="lint c-style code")
