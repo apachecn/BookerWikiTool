@@ -28,6 +28,7 @@ from .flatten import *
 from .toggle_bw import *
 from .crawl_wx import *
 from .codelint import *
+from .chatgpt import *
     
 def main():
     parser = argparse.ArgumentParser(prog="BookerWikiTool", description="iBooker WIKI tool", formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -150,6 +151,10 @@ def main():
     code_lint_parser = subparsers.add_parser("code-lint", help="lint c-style code")
     code_lint_parser.add_argument("fname", help="code fname")
     code_lint_parser.set_defaults(func=code_lint_file)
+
+    chatgpt_parser = subparsers.add_parser("chatgpt", help="chatgpt cmd client")
+    chatgpt_parser.add_argument("-t", "--token", help="openai token, default $OPENAI_TOKEN$")
+    chatgpt_parser.set_defaults(func=chatgpt_cmd)
 
     args = parser.parse_args()
     args.func(args)
