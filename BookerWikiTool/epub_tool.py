@@ -123,7 +123,9 @@ def exp_epub_chs(args):
     rgx = args.regex
     hlv = args.hlevel
     st = int(args.start)
+    if st == -1: st = 0
     ed = int(args.end)
+    if ed == -1: ed = 2 ** 32
     dir = args.dir
     
     if not fname.endswith('.epub'):
