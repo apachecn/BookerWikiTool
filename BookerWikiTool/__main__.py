@@ -153,7 +153,7 @@ def main():
     code_lint_parser.set_defaults(func=code_lint_file)
 
     chatgpt_parser = subparsers.add_parser("chatgpt", help="chatgpt cmd client")
-    chatgpt_parser.add_argument("-t", "--token", help="openai token, default $OPENAI_TOKEN$")
+    chatgpt_parser.add_argument("-t", "--openai-token", help="openai token, default $OPENAI_TOKEN$")
     chatgpt_parser.set_defaults(func=chatgpt_cmd)
 
     args = parser.parse_args()
