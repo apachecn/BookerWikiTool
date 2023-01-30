@@ -113,23 +113,23 @@ def get_epub_toc(args):
     zip = zipfile.ZipFile(bio, 'r', zipfile.ZIP_DEFLATED)
     toc_ncx = zip.read('OEBPS/toc.ncx').decode('utf8')
     toc = get_ncx_toc(toc_ncx, args.regex, args.hlevel)
-    for ch in toc:
+    for i, ch in enumerate(toc):
         pref = '>' * (ch["level"] - 1)
         if pref: pref += ' '
-        print(f'{pref}{ch["idx"]}：{ch["src"]}\n{pref}{ch["title"]}')
+        print(f'{pref}{i}-{ch["idx"]}：{ch["src"]}\n{pref}{ch["title"]}')
 
 def exp_epub_chs(args):
     fname = args.fname
     rgx = args.regex
     hlv = args.hlevel
-    st = args.start
-    ed = args.end
+    st = int(args.start)
+    ed = int(args.end)
     dir = args.dir
     
     if not fname.endswith('.epub'):
         print('请提供 EPUB 文件')
         return
-        
+
     # 获取目录和文件列表
     bio = BytesIO(open(fname, 'rb').read())
     zip = zipfile.ZipFile(bio, 'r', zipfile.ZIP_DEFLATED)
@@ -149,6 +149,7 @@ def exp_epub_chs(args):
             chs.append([cont])
         else:
             if chs: chs[-1].append(cont)
+    chs = chs[st:ed+1]
     chs = ['\n'.join(ch) for ch in chs]
     chs = [
         f'<html><head></head><body>{ch}</body></html>' 
