@@ -11,6 +11,7 @@ from os import path
 from pyquery import PyQuery as pq
 from datetime import datetime
 from collections import OrderedDict
+import imgyaso
 
 RE_YAML_META = r'<!--yml([\s\S]+?)-->'
 RE_TITLE = r'^#+ (.+?)$'
@@ -44,6 +45,18 @@ headers = {
 
 def d(name):
     return path.join(DIR, name)
+
+def opti_img(img, mode, colors):
+    if mode == 'quant':
+        return imgyaso.pngquant_bts(img, colors)
+    elif mode == 'grid':
+        return imgyaso.grid_bts(img)
+    elif mode == 'trunc':
+        return imgyaso.trunc_bts(img, colors)
+    elif mode == 'thres':
+        return imgyaso.adathres_bts(img)
+    else:
+        return img
 
 def tomd(html):
     # 处理 IFRAME

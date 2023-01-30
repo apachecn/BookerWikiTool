@@ -44,6 +44,7 @@ def crawl_wx(args):
         config = config_tmpl.copy()
         config['name'] = name
         config['list'] = df_part[ART_LINK].tolist()
+        config['optiMode'] = args.opti_mode
         config_fname = f'config_{gzh_name}_{st}_{ed}.json'
         open(config_fname, 'w', encoding='utf8').write(json.dumps(config))
         subp.Popen(['crawl-epub', config_fname], shell=True).communicate()
