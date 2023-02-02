@@ -249,3 +249,39 @@ def office2pdf_handle(args):
         office2pdf_dir(args)
     else:
         office2pdf_file(args)
+
+def anime4k_auto_file(args):
+    fname = args.fname
+    if not is_pic(fname):
+        print('请提供图像')
+        return
+    print(fname)
+    try: img = Image.open(fname)
+    except: 
+        print('文件无法打开')
+        return
+    width = min(img.size[0], img.size[1])
+    scale = get_scale_by_width(width)
+    img.close()
+    cmd = [
+        'Anime4KCPP_CLI', 
+        '-t', str(args.threads),
+        '-z', str(scale),
+        '-i', fname,
+        '-o', fname,
+        "-w", 
+        '-b', '-a',
+        '-r', "4",
+        "-e", "4",
+        "-q" if args.gpu else "",
+    ]
+    print(f'cmd: {cmd}')
+    r = subp.Popen(
+        cmd, 
+        shell=True,
+        stdout=subp.PIPE,
+        stderr=subp.PIPE,
+    ).communicate()
+    open(fname, 'ab').close() # touch
+    print(r[0].decode('utf8', 'ignore') or 
+        r[1].decode('utf8', 'ignore'))
