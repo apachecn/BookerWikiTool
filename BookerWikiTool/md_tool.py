@@ -323,7 +323,8 @@ def config_proj(args):
         )
         open(path.join(dir, fname), 'w', encoding='utf8').write(cont)
 
-def convert_cdirve_log(fname):
+def convert_cdrive_log(args):
+    fname = args.fname
     co = open(fname, encoding='utf8').read()
     cos = co.split(' 上传: ')
     res = ['| 文件 | 链接 |\n| --- | --- |\n']

@@ -159,6 +159,10 @@ def main():
     code_lint_parser.add_argument("fname", help="code fname")
     code_lint_parser.set_defaults(func=code_lint_file)
 
+    cdrive_log_parser = subparsers.add_parser("cdrive-log", help="convert cdrive log to md")
+    cdrive_log_parser.add_argument("fname", help="log fname")
+    cdrive_log_parser.set_defaults(func=convert_cdrive_log)
+
     chatgpt_parser = subparsers.add_parser("chatgpt", help="chatgpt cmd client")
     chatgpt_parser.add_argument(
         "-t", "--openai-token", 
