@@ -263,10 +263,8 @@ def anime4k_auto_file(args):
         '-z', str(scale),
         '-i', fname,
         '-o', fname,
-        "-w", 
-        # '-b', '-a',
-        # '-r', "4",
-        # "-e", "4",
+        "-w", "-H",
+        "-L", "3",
     ]
     if args.gpu: cmd.append('-q')
     print(f'cmd: {cmd}')
