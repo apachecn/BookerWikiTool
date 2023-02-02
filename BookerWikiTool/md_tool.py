@@ -20,10 +20,6 @@ from EpubCrawler.img import process_img
 from EpubCrawler.util import safe_mkdir
 from .util import *
 
-RE_INFO = r'\[(.+?)\]([^\[]+)'
-RE_TITLE = r'上传: (.+?) \([\d\.]+ \w+\)\n'
-RE_META = r'META URL -> (\S+)'
-
 def account_handle(args):
     if not args.file.endswith('.md'):
         print('请提供 markdown 文件')
@@ -324,6 +320,10 @@ def config_proj(args):
         open(path.join(dir, fname), 'w', encoding='utf8').write(cont)
 
 def convert_cdrive_log(args):
+    RE_INFO = r'\[(.+?)\]([^\[]+)'
+    RE_TITLE = r'上传: (.+?) \([\d\.]+ \w+\)\n'
+    RE_META = r'META URL -> (\S+)'
+    
     fname = args.fname
     co = open(fname, encoding='utf8').read()
     cos = co.split(' 上传: ')
