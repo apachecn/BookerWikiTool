@@ -3,6 +3,7 @@
 v2023.2.2
 
 +   添加 anime4k 图像优化工具（需要`Anime4KCPP_CLI`）
++   添加转换 CDRIVE 日志功能
 
 
 v2023.1.31
