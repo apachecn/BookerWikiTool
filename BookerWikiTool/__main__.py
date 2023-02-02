@@ -118,6 +118,12 @@ def main():
     waifu2x_auto_parser.add_argument("-t", "--threads", help="num of threads", type=int, default=8)
     waifu2x_auto_parser.set_defaults(func=waifu2x_auto_handle)
 
+    anime4k_auto_parser = subparsers.add_parser("anime4k-auto", help="process imgs with waifu2x")
+    anime4k_auto_parser.add_argument("fname", help="file or dir name")
+    anime4k_auto_parser.add_argument("-G", "--gpu", action='store_true', help="whether to use GPU")
+    anime4k_auto_parser.add_argument("-t", "--threads", help="num of threads", type=int, default=8)
+    anime4k_auto_parser.set_defaults(func=anime4k_auto_handle)
+
     pack_pdf_parser = subparsers.add_parser("pack-pdf", help="package images into pdf")
     pack_pdf_parser.add_argument("dir", help="dir name")
     pack_pdf_parser.add_argument("-r", "--regex", help="regex of keyword for grouping")
