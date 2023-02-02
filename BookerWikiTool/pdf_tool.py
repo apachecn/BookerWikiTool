@@ -285,3 +285,31 @@ def anime4k_auto_file(args):
     open(fname, 'ab').close() # touch
     print(r[0].decode('utf8', 'ignore') or 
         r[1].decode('utf8', 'ignore'))
+        
+def anime4k_auto_file_safe(args):
+    try: anime4k_auto_file(args)
+    except Exception as ex: traceback.print_exc()
+
+def anime4k_auto_dir(args):
+    dir = args.fname
+    fnames = os.listdir(dir)
+    for f in fnames:
+        ff = path.join(dir, f)
+        args.fname = ff
+        anime4k_auto_file_safe(args)
+
+def anime4k_auto_handle(args):
+    # 检查 waifu2x
+    r = subp.Popen(
+        ['Anime4KCPP_CLI', '-V'],
+        shell=True,
+        stdout=subp.PIPE,
+        stderr=subp.PIPE,
+    ).communicate()
+    if r[1]: 
+        print('Anime4KCPP_CLI 未找到，请下载并将其目录添加到系统变量 PATH 中')
+        return
+    if path.isdir(args.fname):
+        anime4k_auto_dir(args)
+    else:
+        anime4k_auto_file(args)
