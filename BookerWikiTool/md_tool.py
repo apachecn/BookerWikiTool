@@ -332,9 +332,10 @@ def convert_cdrive_log(args):
         info = ' 上传: ' + info
         title = re.search(RE_TITLE, info)
         meta = re.search(RE_META, info)
-        if not title or not meta:
-            continue
-        res.append(f'| {title.group(1)} | {meta.group(1)} |\n')
+        if not title: continue
+        title = title.group(1)
+        meta = meta.group(1) if meta else '未上传'
+        res.append(f'| {title} | {meta} |\n')
         
     res = ''.join(res)
     open(fname + '.md', 'w', encoding='utf8').write(res)
