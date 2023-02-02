@@ -267,8 +267,8 @@ def anime4k_auto_file(args):
         # '-b', '-a',
         # '-r', "4",
         # "-e", "4",
-        "-q" if args.gpu else "",
     ]
+    if args.gpu: cmd.append('-q')
     print(f'cmd: {cmd}')
     r = subp.Popen(
         cmd, 
