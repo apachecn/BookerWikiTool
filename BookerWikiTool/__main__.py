@@ -171,6 +171,12 @@ def main():
     )
     chatgpt_parser.set_defaults(func=chatgpt_cmd)
 
+    pdf_auto_parser = subparsers.add_parser("pdf-auto", help="auto process pdf")
+    pdf_auto_parser.add_argument("fname", help="pdf fname or dirname")
+    pdf_auto_parser.add_argument("-t", "--threads", type=int, default=8, help="num of threads")
+    pdf_auto_parser.add_argument("-G", "--gpu", action='store_true', help="whether to use GPU")
+    pdf_auto_parser.set_defaults(func=pdf_auto_file)
+
     args = parser.parse_args()
     args.func(args)
 
