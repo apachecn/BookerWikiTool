@@ -6,6 +6,8 @@ from os import path
 import re
 import os
 import copy
+import tempfile
+import uuid
 import traceback
 from PIL import Image, ImageFile
 from multiprocessing import Pool
@@ -300,3 +302,45 @@ def anime4k_auto_handle(args):
         anime4k_auto_dir(args)
     else:
         anime4k_auto_file(args)
+
+def pdf_auto_file(args):
+    fname = args.fname
+    threads = args.threads
+    if not fname.endswith('.pdf'):
+        print('请提供 PDF 文件')
+        return
+    print(f'file: {fname}')
+    tmpdir = path.join(tempfile.gettempdir(), uuid.uuid4().hex)
+    safe_mkdir(tmpdir)
+    
+    cmds = [
+        ['wiki-tool', 'ext-pdf', '-d', tmpdir, fname],
+        ['wiki-tool', 'tog-bw', '-t', threads, tmpdir],
+        ['wiki-tool', 'anime4k-auto', '-t', threads, tmpdir, '-G' if args.gpu else ''],
+        ['imgyaso', '-m', 'thres', '-t', threads, tmpdir],
+        ['wiki-tool', 'pack-pdf', '-r', "^[^_]+", tmpdir],
+        ['rm', f'{tmpdir}/*.png'],
+    ]
+    for cmd in cmds:
+        subp.Popen(cmd, shell=True).communicate()
+        
+    safe_rmdir(tmpdir)
+    
+def pdf_auto_dir(args):
+    dir = args.fname
+    fnames = os.listdir(dir)
+    for f in fnames:
+        ff = path.join(dir, f)
+        args.fname = ff
+        pdf_auto_file_safe(args)
+
+def pdf_auto_file_safe(args):
+    try: pdf_auto_file(args)
+    except Exception as ex: traceback.print_exc()
+    
+
+def pdf_auto_handle(args):
+    if path.isdir(args.fname):
+        pdf_auto_dir(args)
+    else:
+        pdf_auto_file(args)
