@@ -316,11 +316,12 @@ def pdf_auto_file(args):
     cmds = [
         ['wiki-tool', 'ext-pdf', '-d', tmpdir, fname],
         ['wiki-tool', 'tog-bw', '-t', threads, tmpdir],
-        ['wiki-tool', 'anime4k-auto', '-t', threads, tmpdir, '-G' if args.gpu else ''],
+        ['wiki-tool', 'anime4k-auto', '-t', threads, tmpdir],
         ['imgyaso', '-m', 'thres', '-t', threads, tmpdir],
         ['wiki-tool', 'pack-pdf', '-r', "^[^_]+", tmpdir],
         ['rm', f'{tmpdir}/*.png'],
     ]
+    if args.gpu: cmds[2].append('-G')
     for cmd in cmds:
         subp.Popen(cmd, shell=True).communicate()
         
