@@ -319,12 +319,19 @@ def pdf_auto_file(args):
         ['wiki-tool', 'anime4k-auto', '-t', threads, tmpdir],
         ['imgyaso', '-m', 'thres', '-t', threads, tmpdir],
         ['wiki-tool', 'pack-pdf', '-r', "^[^_]+", tmpdir],
-        ['rm', f'{tmpdir}/*.png'],
     ]
     if args.gpu: cmds[2].append('-G')
     for cmd in cmds:
         subp.Popen(cmd, shell=True).communicate()
-        
+    if path.isfile(fname + '.bak'): os.unlink(fname + '.bak')
+    os.rename(fname, fname + '.bak')
+    for f in os.listdir(tmpdir):
+        if not f.endswith('.pdf'): continue
+        os.rename(
+            path.join(tmpdir, f),
+            path.join(path.dirname(fname), f),
+        )
+    
     safe_rmdir(tmpdir)
     
 def pdf_auto_dir(args):
