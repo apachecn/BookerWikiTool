@@ -164,7 +164,7 @@ def exp_epub_chs(args):
         else:
             if chs: chs[-1].append(cont)
     chs = chs[st:ed+1]
-    chs = ['\n'.join(ch) for get_html_body(ch) in chs]
+    chs = ['\n'.join(get_html_body(ch)) for ch in chs]
     chs = [
         f'<html><head></head><body>{ch}</body></html>' 
         for ch in chs
