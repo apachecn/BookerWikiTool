@@ -113,13 +113,13 @@ def get_epub_toc(args):
     bio = BytesIO(open(fname, 'rb').read())
     zip = zipfile.ZipFile(bio, 'r', zipfile.ZIP_DEFLATED)
     if 'OEBPS/toc.ncx' in zip.namelist():
-        rt = 'OEBPS'
+        ncx_fname = 'OEBPS/toc.ncx'
     elif 'toc.ncx' in zip.namelist():
-        rt = ''
+        ncx_fname = 'toc.ncx'
     else:
         print('未找到目录文件 toc.ncx')
         return
-    toc_ncx = zip.read(f'{rt}/toc.ncx').decode('utf8')
+    toc_ncx = zip.read(ncx_fname).decode('utf8')
     toc = get_ncx_toc(toc_ncx, args.regex, args.hlevel)
     for i, ch in enumerate(toc):
         pref = '>' * (ch["level"] - 1)
