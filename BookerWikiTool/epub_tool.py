@@ -127,6 +127,7 @@ def get_epub_toc(args):
         print(f'{pref}{i}-{ch["idx"]}：{ch["src"]}\n{pref}{ch["title"]}')
 
 def get_html_body(html):
+    html = re.sub(r'<\?xml[^>]*\?>', '', html)
     rt = pq(html)
     return rt('body').html() if rt('body') else html
 
@@ -147,8 +148,19 @@ def exp_epub_chs(args):
     # 获取目录和文件列表
     bio = BytesIO(open(fname, 'rb').read())
     zip = zipfile.ZipFile(bio, 'r', zipfile.ZIP_DEFLATED)
-    toc_ncx = zip.read('OEBPS/toc.ncx').decode('utf8')
-    cont_opf = zip.read('OEBPS/content.opf').decode('utf8')
+    if 'OEBPS/toc.ncx' in zip.namelist():
+        ncx_fname = 'OEBPS/toc.ncx'
+        opf_fname = 'OEBPS/content.opf'
+        prefix = 'OEBPS/'
+    elif 'toc.ncx' in zip.namelist():
+        ncx_fname = 'toc.ncx'
+        opf_fname = 'content.opf'
+        prefix = ''
+    else:
+        print('未找到目录文件 toc.ncx')
+        return
+    toc_ncx = zip.read(ncx_fname).decode('utf8')
+    cont_opf = zip.read(opf_fname).decode('utf8')
     toc = get_ncx_toc(toc_ncx, rgx, hlv)
     flist = get_opf_flist(cont_opf)
     toc_flist = {
@@ -158,13 +170,14 @@ def exp_epub_chs(args):
     # 按照目录合并文件
     chs = []
     for f in flist:
-        cont = zip.read('OEBPS/' + f).decode('utf8')
+        cont = zip.read(prefix + f).decode('utf8')
+        cont = get_html_body(cont)
         if f in toc_flist:
             chs.append([cont])
         else:
             if chs: chs[-1].append(cont)
     chs = chs[st:ed+1]
-    chs = ['\n'.join(get_html_body(ch)) for ch in chs]
+    chs = ['\n'.join(ch) for ch in chs]
     chs = [
         f'<html><head></head><body>{ch}</body></html>' 
         for ch in chs
