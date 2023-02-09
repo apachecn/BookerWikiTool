@@ -373,7 +373,7 @@ def tr_pick_scanned_pdf(fname, odir, imgs_area_rate, scanned_pg_rate):
         scanned_pg_rate=scanned_pg_rate,
     )
     rtext = '扫描版' if scanned else '文字版'
-    print(f'{f}：{rtext}')
+    print(f'{fname}：{rtext}')
     if scanned:
         os.rename(fname, path.join(odir, path.basename(fname)))
     
