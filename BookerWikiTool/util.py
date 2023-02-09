@@ -118,6 +118,8 @@ def is_c_style_code(fname):
     return bool(m and m.group(1) in ext)
 
 def is_pic(fname):
+    if not path.isfile(fname):
+        return False
     ext = [
         'jpg', 'jpeg', 'jfif', 'png', 
         'gif', 'tiff', 'webp'
@@ -133,6 +135,8 @@ def find_cmd_path(name):
     return ''
     
 def is_video(fname):
+    if not path.isfile(fname):
+        return False
     ext = [
         'mp4', 'm4v', '3gp', 'mpg', 'flv', 'f4v', 
         'swf', 'avi', 'gif', 'wmv', 'rmvb', 'mov', 
