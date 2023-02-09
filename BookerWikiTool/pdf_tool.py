@@ -349,10 +349,14 @@ def pdf_auto_handle(args):
         pdf_auto_file(args)
 
 def pg_all_imgs_area(pg):
-    return sum([info[2] * info[3] for info in pg.get_images()])
+    rects = [
+        pg.get_image_rects(info[0])[0]
+        for info in pg.get_images()
+    ]
+    return sum([(r[2] - r[0]) * (r[3] - r[1]) for r in rects])
 
 def pg_area(pg):
-    return pg.rect[2] * pg.rect[3]
+    return (pg.rect[2] - pg.rect[0]) * (pg.rect[3] - pg.rect[1])
 
 def is_scanned_pdf(fname, imgs_area_rate=0.8, scanned_pg_rate=0.8):
     doc = fitz.open("pdf", open(fname, 'rb').read())
