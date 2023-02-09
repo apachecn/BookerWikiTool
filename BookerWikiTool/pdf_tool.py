@@ -50,24 +50,29 @@ def comp_pdf(args):
     doc.close()
 
 def process_html_code(html):
+    fonts = ['Courier', 'Mocano', 'Consolas', 'Monospace', 'Menlo']
     rt = pq(html)
     el_spans = rt('span')
     for el in el_spans:
         el = pq(el)
-    fonts = ['Courier', 'Mocano', 'Consolas', 'Monospace', 'Menlo']
-    style = el.attr('style') or ''
-    is_code = any([f in style for f in fonts])
-    if is_code:
-        el_code = rt('<code></code>')
-        el_code.html(el.html())
-        el.replace_with(el_code)
+        style = el.attr('style') or ''
+        is_code = any([
+            f.lower() in style.lower() 
+            for f in fonts
+        ])
+        if is_code:
+            el_code = rt('<code></code>')
+            el_code.html(el.html())
+            el_code.attr('style', el.attr('style'))
+            el.replace_with(el_code)
     el_paras = rt('p')
     for el in el_paras:
         el = pq(el)
         is_pre = all([pq(ch).is_('code') for ch in el.children()])
         if is_pre:
             el_pre = rt('<pre></pre>')
-            el_pre.html(el.html())
+            el_pre.html(el.html().replace('\n', ''))
+            el_pre.attr('style', el.attr('style'))
             el.replace_with(el_pre)
     
     html = rt('body').html() if rt('body') else str(rt)
