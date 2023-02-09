@@ -3,6 +3,7 @@ import win32com.client
 import subprocess as subp
 import sys
 from os import path
+from pyquery import PyQuery as pq
 import re
 import os
 import copy
@@ -48,6 +49,31 @@ def comp_pdf(args):
     doc.save(fname, clean=True, garbage=4, deflate=True, linear=True)
     doc.close()
 
+def process_html_code(html):
+    rt = pq(html)
+    el_spans = rt('span')
+    for el in el_spans:
+        el = pq(el)
+    fonts = ['Courier', 'Mocano', 'Consolas', 'Monospace', 'Menlo']
+    style = el.attr('style') or ''
+    is_code = any([f in style for f in fonts])
+    if is_code:
+        el_code = rt('<code></code>')
+        el_code.html(el.html())
+        el.replace_with(el_code)
+    el_paras = rt('p')
+    for el in el_paras:
+        el = pq(el)
+        is_pre = all([pq(ch).is_('code') for ch in el.children()])
+        if is_pre:
+            el_pre = rt('<pre></pre>')
+            el_pre.html(el.html())
+            el.replace_with(el_pre)
+    
+    html = rt('body').html() if rt('body') else str(rt)
+    html = re.sub(r'</pre>\s*<pre[^>]*>', '\n', html)
+    return html
+
 def pdf2html_file(args):
     fname, dir = args.fname, args.dir
     if not fname.endswith('.pdf'):
@@ -59,7 +85,7 @@ def pdf2html_file(args):
     lp = len(str(len(doc)))
     for ip, p in enumerate(doc):
         print(f'page: {ip + 1}')
-        html = p.get_text("html")
+        html = process_html_code(p.get_text("html"))
         html_fname = path.join(dir, f'{title}_{ip+1:0{lp}d}.html')
         print(f'save: {html_fname}')
         open(html_fname, 'w', encoding='utf8').write(html)
