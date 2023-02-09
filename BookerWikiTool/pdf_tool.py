@@ -366,25 +366,37 @@ def is_scanned_pdf(fname, imgs_area_rate=0.8, scanned_pg_rate=0.8):
     ]) / len(doc)
     return rate >= scanned_pg_rate
     
+def tr_pick_scanned_pdf(fname, odir, imgs_area_rate, scanned_pg_rate):
+    scanned = is_scanned_pdf(
+        fname, 
+        imgs_area_rate=imgs_area_rate, 
+        scanned_pg_rate=scanned_pg_rate,
+    )
+    rtext = '扫描版' if scanned else '文字版'
+    print(f'{f}：{rtext}')
+    if scanned:
+        os.rename(fname, path.join(odir, path.basename(fname)))
+    
+def tr_pick_scanned_pdf_safe(*args, **kw):
+    try: tr_pick_scanned_pdf(*args, **kw)
+    except: traceback.print_exc()
+    
 def pick_scanned_pdf(args):
     dir = args.dir
-    imgs_area_rate = args.imgs_area_rate
-    scanned_pg_rate = args.scanned_pg_rate
+    odir = path.join(dir, '扫描版')
     if not path.isdir(dir):
         print('请提供目录')
         return
-    odir = path.join(dir, '扫描版')
     safe_mkdir(odir)
+    pool = Pool(args.threads)
     for f in os.listdir(dir):
         if not f.endswith('.pdf'):
             continue
         ff = path.join(dir, f)
-        scanned = is_scanned_pdf(
-            ff, 
-            imgs_area_rate=imgs_area_rate, 
-            scanned_pg_rate=scanned_pg_rate,
+        pool.apply_async(
+            tr_pick_scanned_pdf_safe, 
+            [ff, odir, args.imgs_area_rate, args.scanned_pg_rate]
         )
-        rtext = '扫描版' if scanned else '文字版'
-        print(f'{f}：{rtext}')
-        if scanned:
-            os.rename(ff, path.join(odir, f))
+    pool.close()
+    pool.join()
+        

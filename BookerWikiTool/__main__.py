@@ -181,6 +181,7 @@ def main():
     pick_scan_parser.add_argument("dir", help="dirname of pdfs")
     pick_scan_parser.add_argument("-i", "--imgs-area-rate", type=float, default=0.8, help="rate of imgs area in page area, above which a page will be regarded as scanned")
     pick_scan_parser.add_argument("-s", "--scanned-pg-rate", type=float, default=0.8, help="rate of scanned pages in whole doc, above which a pdf will be regarded as scanned")
+    pick_scan_parser.add_argument("-t", "--threads", type=int, default=8, help="num of threads")
     pick_scan_parser.set_defaults(func=pick_scanned_pdf)
 
     args = parser.parse_args()
