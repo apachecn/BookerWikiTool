@@ -444,9 +444,10 @@ def pdf_auto_handle(args):
 
 def pg_all_imgs_area(pg):
     rects = [
-        pg.get_image_rects(info[0])[0]
+        pg.get_image_rects(info[0])
         for info in pg.get_images()
     ]
+    rects = [r[0] for r in rects if r]
     return sum([(r[2] - r[0]) * (r[3] - r[1]) for r in rects])
 
 def pg_area(pg):
