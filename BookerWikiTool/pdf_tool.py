@@ -415,6 +415,7 @@ def pdf_auto_file(args):
         ['wiki-tool', 'pack-pdf', tmpdir],
     ]
     if args.gpu: cmds[2].append('-G')
+    if args.whole: cmds[0].append('-w')
     for cmd in cmds:
         subp.Popen(cmd, shell=True).communicate()
     if path.isfile(fname + '.bak'): os.unlink(fname + '.bak')
