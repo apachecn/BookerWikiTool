@@ -55,6 +55,7 @@ def process_html_code(html):
     el_spans = rt('span')
     for el in el_spans:
         el = pq(el)
+        # 如果 SPAN 的字体是等宽字体之一，就认为是内联代码
         style = el.attr('style') or ''
         is_code = any([
             f.lower() in style.lower() 
@@ -68,14 +69,20 @@ def process_html_code(html):
     el_paras = rt('p')
     for el in el_paras:
         el = pq(el)
+        # 如果段落只包含内联代码，就认为是代码块
         is_pre = all([pq(ch).is_('code') for ch in el.children()])
         if is_pre:
             el_pre = rt('<pre></pre>')
+            # 移除里面的所有 CODE 标签但保留内容
+            for el_code in el.children():
+                el_code = pq(el_code)
+                el_code.replace_with(el_code.html())
             el_pre.html(el.html().replace('\n', ''))
             el_pre.attr('style', el.attr('style'))
             el.replace_with(el_pre)
     
     html = rt('body').html() if rt('body') else str(rt)
+    # 合并连续的 PRE
     html = re.sub(r'</pre>\s*<pre[^>]*>', '\n', html)
     return html
 
