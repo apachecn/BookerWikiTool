@@ -347,3 +347,41 @@ def pdf_auto_handle(args):
         pdf_auto_dir(args)
     else:
         pdf_auto_file(args)
+
+def pg_all_imgs_area(pg):
+    return sum([info[2] * info[3] for info in pg.get_images()])
+
+def pg_area(pg):
+    return pg.rect[2] * pg.rect[3]
+
+def is_scanned_pdf(fname, imgs_area_rate=0.8, scanned_pg_rate=0.8):
+    data = open(fname, 'rb').read()
+    doc = fitz.open(BytesIO(data))
+    rate = sum([
+        pg_all_imgs_area(pg) >= pg_area(pg) * imgs_area_rate
+        for pg in doc
+    ]) / len(doc)
+    return rate >= scanned_pg_rate
+    
+def pick_scanned_pdf(args):
+    dir = args.dir
+    imgs_area_rate = args.imgs_area_rate
+    scanned_pg_rate = args.scanned_pg_rate
+    if not path.isdir(dir):
+        print('请提供目录')
+        return
+    odir = path.join(dir, '扫描版')
+    safe_mkdir(odir)
+    for f in os.listdir(dir):
+        if not f.endswith('.pdf'):
+            continue
+        ff = path.join(dir, f)
+        scanned = is_scanned_pdf(
+            ff, 
+            imgs_area_rate=imgs_area_rate, 
+            scanned_pg_rate=scanned_pg_rate，
+        )
+        rtext = '扫描版' if scanned else '文字版'
+        print(f'{f}：{rtext}')
+        if scanned:
+            os.rename(ff, path.join(odir, f))

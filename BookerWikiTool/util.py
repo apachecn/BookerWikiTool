@@ -100,7 +100,7 @@ def fmt_zh(text):
     return text
     
 def safe_mkdir(dir):
-    try: os.mkdir(dir)
+    try: os.makedirs(dir)
     except: pass
     
 def safe_rmdir(dir):
