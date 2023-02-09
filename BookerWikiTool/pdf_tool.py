@@ -379,7 +379,7 @@ def pick_scanned_pdf(args):
         scanned = is_scanned_pdf(
             ff, 
             imgs_area_rate=imgs_area_rate, 
-            scanned_pg_rate=scanned_pg_rate，
+            scanned_pg_rate=scanned_pg_rate,
         )
         rtext = '扫描版' if scanned else '文字版'
         print(f'{f}：{rtext}')
