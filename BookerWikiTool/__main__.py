@@ -181,7 +181,7 @@ def main():
     pdf_auto_parser.add_argument("-t", "--threads", type=int, default=8, help="num of threads")
     pdf_auto_parser.add_argument("-G", "--gpu", action='store_true', help="whether to use GPU")
     pdf_auto_parser.add_argument("-w", "--whole", action='store_true', default=False, help="whether to clip the whole page")
-    pdf_auto_parser.set_defaults(func=pdf_auto_file)
+    pdf_auto_parser.set_defaults(func=pdf_auto_handle)
 
     pick_scan_parser = subparsers.add_parser("pick-scan", help="pick scanned pdf")
     pick_scan_parser.add_argument("dir", help="dirname of pdfs")
