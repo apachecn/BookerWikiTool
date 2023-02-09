@@ -76,14 +76,36 @@ def process_html_code(html):
             # 移除里面的所有 CODE 标签但保留内容
             for el_code in el.children():
                 el_code = pq(el_code)
-                el_code.replace_with(el_code.html())
+                el_code.replace_with(el_code.html() or '')
             el_pre.html(el.html().replace('\n', ''))
             el_pre.attr('style', el.attr('style'))
             el.replace_with(el_pre)
+    # 处理缩进
+    def get_indent(el):
+        style = el.attr('style') or ''
+        m = re.search(r'left:\s*(\d+\.\d+)', style)
+        if not m: return 0
+        else: return float(m.group(1))
+    inds = [get_indent(pq(el)) for el in rt('pre')]
+    inds_uni = list({x for x in inds if x != 0})
+    inds_uni.sort()
+    if len(inds_uni) > 1:
+        # 计算基址和偏移，转换为空格数
+        diff = inds_uni[1] - inds_uni[0]
+        base = inds_uni[0]
+        for i, el in enumerate(rt('pre')):
+            if inds[i] == 0: continue
+            nspace = int((inds[i] - base) // diff) * 4
+            el = pq(el)
+            el.html(' ' * nspace + (el.html() or ''))
     
     html = rt('body').html() if rt('body') else str(rt)
     # 合并连续的 PRE
     html = re.sub(r'</pre>\s*<pre[^>]*>', '\n', html)
+    # 合并段落内的换行
+    html = re.sub(r'(?<![\.\?!:])</p>\s*<p [^>]*>', ' ', html)
+    html = re.sub(r'</?span[^>]*>', '' ,html)
+    html = re.sub(r'style=".+?"', '' ,html)
     return html
 
 def pdf2html_file(args):
