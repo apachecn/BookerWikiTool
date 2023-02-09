@@ -113,6 +113,11 @@ def main():
     ext_pdf_parser.add_argument("-w", "--whole", action='store_true', default=False, help="whether to clip the whole page")
     ext_pdf_parser.set_defaults(func=ext_pdf)
 
+    pdf2html_parser = subparsers.add_parser("pdf2html", help="convert pdf page to html")
+    pdf2html_parser.add_argument("fname", help="file name")
+    pdf2html_parser.add_argument("-d", "--dir", default='.', help="path to save")
+    pdf2html_parser.set_defaults(func=pdf2html)
+
     waifu2x_auto_parser = subparsers.add_parser("waifu2x-auto", help="process imgs with waifu2x")
     waifu2x_auto_parser.add_argument("fname", help="file or dir name")
     waifu2x_auto_parser.add_argument("-t", "--threads", help="num of threads", type=int, default=8)
