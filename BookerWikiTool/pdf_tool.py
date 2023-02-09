@@ -48,6 +48,40 @@ def comp_pdf(args):
     doc.save(fname, clean=True, garbage=4, deflate=True, linear=True)
     doc.close()
 
+def pdf2html_file(args):
+    fname, dir = args.fname, args.dir
+    if not fname.endswith('.pdf'):
+        print('请提供 PDF 文件')
+        return
+    print(f'file: {fname}')
+    title = path.basename(fname)[:-4]
+    doc = fitz.open(fname)
+    lp = len(str(len(doc)))
+    for ip, p in enumerate(doc):
+        print(f'page: {ip + 1}')
+        html = p.get_text("html")
+        html_fname = path.join(dir, f'{title}_{ip+1:0{lp}d}.html')
+        print(f'save: {html_fname}')
+        open(html_fname, 'w', encoding='utf8').write(html)
+
+    doc.close()
+
+def pdf2html_dir(args):
+    dir = args.fname
+    for fname in os.listdir(dir):
+        try:
+            ffname = path.join(dir, fname)
+            args.fname = ffname
+            pdf2html_file(args)
+        except: traceback.print_exc()
+
+def pdf2html(args):
+    if path.isdir(args.fname):
+        pdf2html_dir(args)
+    else:
+        pdf2html_file(args)
+
+
 def ext_pdf(args):
     if path.isdir(args.fname):
         ext_pdf_dir(args)
