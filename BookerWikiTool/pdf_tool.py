@@ -78,7 +78,7 @@ def ext_pdf_file(args):
         
         # 判断是否整页截图
         if args.whole:
-            img = p.get_pixmap()
+            img = p.get_pixmap(dpi=400)
             imgname = path.join(dir, f'{title}_{ip+1:0{lp}d}.png')
             print(f'save: {imgname}')
             img.save(imgname)
