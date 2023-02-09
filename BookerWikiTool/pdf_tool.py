@@ -355,8 +355,7 @@ def pg_area(pg):
     return pg.rect[2] * pg.rect[3]
 
 def is_scanned_pdf(fname, imgs_area_rate=0.8, scanned_pg_rate=0.8):
-    data = open(fname, 'rb').read()
-    doc = fitz.open(BytesIO(data))
+    doc = fitz.open("pdf", open(fname, 'rb').read())
     rate = sum([
         pg_all_imgs_area(pg) >= pg_area(pg) * imgs_area_rate
         for pg in doc
