@@ -29,6 +29,8 @@ app_map = {
     'xlsx': ['Excel.Application', 'Workbooks'],
 }
 
+code_fonts = ['Courier', 'Mocano', 'Consolas', 'Monospace', 'Menlo']
+
 def comp_pdf(args):
     fname = args.fname
     if not fname.endswith('.pdf'):
@@ -49,9 +51,7 @@ def comp_pdf(args):
     doc.save(fname, clean=True, garbage=4, deflate=True, linear=True)
     doc.close()
 
-def process_html_code(html):
-    fonts = ['Courier', 'Mocano', 'Consolas', 'Monospace', 'Menlo']
-    rt = pq(html)
+def process_el_code(rt):
     el_spans = rt('span')
     for el in el_spans:
         el = pq(el)
@@ -59,28 +59,31 @@ def process_html_code(html):
         style = el.attr('style') or ''
         is_code = any([
             f.lower() in style.lower() 
-            for f in fonts
+            for f in code_fonts
         ])
-        if is_code:
-            el_code = rt('<code></code>')
-            el_code.html(el.html())
-            el_code.attr('style', el.attr('style'))
-            el.replace_with(el_code)
+        if not is_code: continue
+        el_code = rt('<code></code>')
+        el_code.html(el.html())
+        el_code.attr('style', el.attr('style'))
+        el.replace_with(el_code)
+
+def process_el_pre(rt):
     el_paras = rt('p')
     for el in el_paras:
         el = pq(el)
         # 如果段落只包含内联代码，就认为是代码块
         is_pre = all([pq(ch).is_('code') for ch in el.children()])
-        if is_pre:
-            el_pre = rt('<pre></pre>')
-            # 移除里面的所有 CODE 标签但保留内容
-            for el_code in el.children():
-                el_code = pq(el_code)
-                el_code.replace_with(el_code.html() or '')
-            el_pre.html(el.html().replace('\n', ''))
-            el_pre.attr('style', el.attr('style'))
-            el.replace_with(el_pre)
-    # 处理缩进
+        if not is_pre: continue
+        el_pre = rt('<pre></pre>')
+        # 移除里面的所有 CODE 标签但保留内容
+        for el_code in el.children():
+            el_code = pq(el_code)
+            el_code.replace_with(el_code.html() or '')
+        el_pre.text(el.text().replace('\n', ''))
+        el_pre.attr('style', el.attr('style'))
+        el.replace_with(el_pre)
+
+def process_indent(rt):
     def get_indent(el):
         style = el.attr('style') or ''
         m = re.search(r'left:\s*(\d+\.\d+)', style)
@@ -89,16 +92,24 @@ def process_html_code(html):
     inds = [get_indent(pq(el)) for el in rt('pre')]
     inds_uni = list({x for x in inds if x != 0})
     inds_uni.sort()
-    if len(inds_uni) > 1:
-        # 计算基址和偏移，转换为空格数
-        diff = inds_uni[1] - inds_uni[0]
-        base = inds_uni[0]
-        for i, el in enumerate(rt('pre')):
-            if inds[i] == 0: continue
-            nspace = int((inds[i] - base) // diff) * 4
-            el = pq(el)
-            el.html(' ' * nspace + (el.html() or ''))
-    
+    if len(inds_uni) <= 1: return
+    # 计算基址和偏移，转换为空格数
+    diff = inds_uni[1] - inds_uni[0]
+    base = inds_uni[0]
+    for i, el in enumerate(rt('pre')):
+        if inds[i] == 0: continue
+        nspace = int((inds[i] - base) // diff) * 4
+        el = pq(el)
+        el.html(' ' * nspace + (el.html() or ''))
+
+def process_html_code(html):
+    rt = pq(html)
+    process_el_code(rt)
+    '''
+    process_el_pre(rt)
+    '''
+    # 处理缩进
+    process_indent(rt)
     html = rt('body').html() if rt('body') else str(rt)
     # 合并连续的 PRE
     html = re.sub(r'</pre>\s*<pre[^>]*>', '\n', html)
@@ -120,6 +131,7 @@ def pdf2html_file(args):
     for ip, p in enumerate(doc):
         print(f'page: {ip + 1}')
         html = process_html_code(p.get_text("html"))
+        # html = (p.get_text("html"))
         html_fname = path.join(dir, f'{title}_{ip+1:0{lp}d}.html')
         print(f'save: {html_fname}')
         open(html_fname, 'w', encoding='utf8').write(html)
