@@ -11,6 +11,7 @@ from os import path
 from pyquery import PyQuery as pq
 from datetime import datetime
 from collections import OrderedDict
+import imgyaso
 
 RE_YAML_META = r'<!--yml([\s\S]+?)-->'
 RE_TITLE = r'^#+ (.+?)$'
@@ -44,6 +45,18 @@ headers = {
 
 def d(name):
     return path.join(DIR, name)
+
+def opti_img(img, mode, colors):
+    if mode == 'quant':
+        return imgyaso.pngquant_bts(img, colors)
+    elif mode == 'grid':
+        return imgyaso.grid_bts(img)
+    elif mode == 'trunc':
+        return imgyaso.trunc_bts(img, colors)
+    elif mode == 'thres':
+        return imgyaso.adathres_bts(img)
+    else:
+        return img
 
 def tomd(html):
     # 处理 IFRAME
@@ -87,12 +100,22 @@ def fmt_zh(text):
     return text
     
 def safe_mkdir(dir):
-    try: os.mkdir(dir)
+    try: os.makedirs(dir)
     except: pass
     
 def safe_rmdir(dir):
     try: shutil.rmtree(dir)
     except: pass
+
+def is_c_style_code(fname):
+    ext = [
+        'c', 'cpp', 'cxx', 'h', 'hpp',
+        'java', 'kt', 'scala', 
+        'cs', 'js', 'json', 'ts', 
+        'php', 'go', 'rust', 'swift',
+    ]
+    m = re.search(r'\.(\w+)$', fname)
+    return bool(m and m.group(1) in ext)
 
 def is_pic(fname):
     ext = [

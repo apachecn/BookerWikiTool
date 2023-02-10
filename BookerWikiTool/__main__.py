@@ -22,13 +22,14 @@ from . import __version__
 from .util import *
 from .epub_tool import *
 from .md_tool import *
-from .keyframe import *
 from .fetch_links import *
 from .pdf_tool import *
 from .zip_tool import *
 from .flatten import *
 from .toggle_bw import *
 from .crawl_wx import *
+from .codelint import *
+from .chatgpt import *
     
 def main():
     parser = argparse.ArgumentParser(prog="BookerWikiTool", description="iBooker WIKI tool", formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -94,6 +95,8 @@ def main():
 
     epub_toc_parser = subparsers.add_parser("epub-toc", help="view epub toc")
     epub_toc_parser.add_argument("fname", help="fname")
+    epub_toc_parser.add_argument("-l", "--hlevel", default=0, type=int, help="heading level, headings less than which will be revserved. 0 means all")
+    epub_toc_parser.add_argument("-r", "--regex", help="regex for chapter title")
     epub_toc_parser.set_defaults(func=get_epub_toc)
 
     epub_chs_parser = subparsers.add_parser("epub-chs", help="export epub chapters")
@@ -101,13 +104,9 @@ def main():
     epub_chs_parser.add_argument("-d", "--dir", default='.', help="output dir")
     epub_chs_parser.add_argument("-s", "--start", default=-1, type=int, help="starting index. -1 means all")
     epub_chs_parser.add_argument("-e", "--end", default=-1, type=int, help="ending index. -1 means all")
-    epub_chs_parser.add_argument("-r", "--regex", required=True, help="regex for chapter title")
+    epub_chs_parser.add_argument("-l", "--hlevel", default=0, type=int, help="heading level, headings less than which will be revserved. 0 means all")
+    epub_chs_parser.add_argument("-r", "--regex", help="regex for chapter title")
     epub_chs_parser.set_defaults(func=exp_epub_chs)
-
-    kf_parser = subparsers.add_parser("ext-kf", help="extract keyframes")
-    kf_parser.add_argument("file", help="file")
-    kf_parser.add_argument("--save-path", default='out', help="path to save")
-    kf_parser.set_defaults(func=ext_keyframe)
 
     ext_pdf_parser = subparsers.add_parser("ext-pdf", help="extract odf into images")
     ext_pdf_parser.add_argument("fname", help="file name")
@@ -115,10 +114,21 @@ def main():
     ext_pdf_parser.add_argument("-w", "--whole", action='store_true', default=False, help="whether to clip the whole page")
     ext_pdf_parser.set_defaults(func=ext_pdf)
 
+    pdf2html_parser = subparsers.add_parser("pdf2html", help="convert pdf page to html")
+    pdf2html_parser.add_argument("fname", help="file name")
+    pdf2html_parser.add_argument("-d", "--dir", default='.', help="path to save")
+    pdf2html_parser.set_defaults(func=pdf2html)
+
     waifu2x_auto_parser = subparsers.add_parser("waifu2x-auto", help="process imgs with waifu2x")
     waifu2x_auto_parser.add_argument("fname", help="file or dir name")
     waifu2x_auto_parser.add_argument("-t", "--threads", help="num of threads", type=int, default=8)
     waifu2x_auto_parser.set_defaults(func=waifu2x_auto_handle)
+
+    anime4k_auto_parser = subparsers.add_parser("anime4k-auto", help="process imgs with waifu2x")
+    anime4k_auto_parser.add_argument("fname", help="file or dir name")
+    anime4k_auto_parser.add_argument("-G", "--gpu", action='store_true', help="whether to use GPU")
+    anime4k_auto_parser.add_argument("-t", "--threads", help="num of threads", type=int, default=8)
+    anime4k_auto_parser.set_defaults(func=anime4k_auto_handle)
 
     pack_pdf_parser = subparsers.add_parser("pack-pdf", help="package images into pdf")
     pack_pdf_parser.add_argument("dir", help="dir name")
@@ -148,13 +158,45 @@ def main():
     crawl_wx_parser = subparsers.add_parser("crawl-wx", help="crawler weixin articles")
     crawl_wx_parser.add_argument("fname", help="XLSX fname")
     crawl_wx_parser.add_argument("-n", "--size", type=int, default=500, help="num of articles per ebook")
+    crawl_wx_parser.add_argument("-o", "--opti-mode", default='thres', help="img optimization mode, default 'thres'")
     crawl_wx_parser.set_defaults(func=crawl_wx)
 
+<<<<<<< HEAD
     ck_zip_parser = subparsers.add_parser("crack-zip", help="crack encrypted zip")
     ck_zip_parser.add_argument("fname", help="ZIP fname")
     ck_zip_parser.add_argument("pw", help="password dict")
     ck_zip_parser.add_argument("-t", "--threads", type=int, default=8, help="num of threads")
     ck_zip_parser.set_defaults(func=crack_zip)
+
+    code_lint_parser = subparsers.add_parser("code-lint", help="lint c-style code")
+    code_lint_parser.add_argument("fname", help="code fname")
+    code_lint_parser.set_defaults(func=code_lint_file)
+
+    cdrive_log_parser = subparsers.add_parser("cdrive-log", help="convert cdrive log to md")
+    cdrive_log_parser.add_argument("fname", help="log fname")
+    cdrive_log_parser.set_defaults(func=convert_cdrive_log)
+
+    chatgpt_parser = subparsers.add_parser("chatgpt", help="chatgpt cmd client")
+    chatgpt_parser.add_argument(
+        "-t", "--openai-token", 
+        default=os.environ.get('OPENAI_TOKEN', ''), 
+        help="openai token, default $OPENAI_TOKEN$",
+    )
+    chatgpt_parser.set_defaults(func=chatgpt_cmd)
+
+    pdf_auto_parser = subparsers.add_parser("pdf-auto", help="auto process pdf")
+    pdf_auto_parser.add_argument("fname", help="pdf fname or dirname")
+    pdf_auto_parser.add_argument("-t", "--threads", type=int, default=8, help="num of threads")
+    pdf_auto_parser.add_argument("-G", "--gpu", action='store_true', help="whether to use GPU")
+    pdf_auto_parser.add_argument("-w", "--whole", action='store_true', default=False, help="whether to clip the whole page")
+    pdf_auto_parser.set_defaults(func=pdf_auto_handle)
+
+    pick_scan_parser = subparsers.add_parser("pick-scan", help="pick scanned pdf")
+    pick_scan_parser.add_argument("dir", help="dirname of pdfs")
+    pick_scan_parser.add_argument("-i", "--imgs-area-rate", type=float, default=0.8, help="rate of imgs area in page area, above which a page will be regarded as scanned")
+    pick_scan_parser.add_argument("-s", "--scanned-pg-rate", type=float, default=0.8, help="rate of scanned pages in whole doc, above which a pdf will be regarded as scanned")
+    pick_scan_parser.add_argument("-t", "--threads", type=int, default=8, help="num of threads")
+    pick_scan_parser.set_defaults(func=pick_scanned_pdf)
 
     args = parser.parse_args()
     args.func(args)

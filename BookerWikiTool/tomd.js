@@ -117,7 +117,7 @@ var myConventors = [
     filter: function (n) {
       return n.nodeName === 'A' && !n.getAttribute('href');
     },
-    replacement: function(){return ''}
+    replacement: function(c){return c}
   },
   
   // <pre>

@@ -3,11 +3,10 @@ pyquery
 readability-lxml
 pyyaml
 EpubCrawler
-moviepy
 imgyaso
-av
 pywin32
 PyMuPdf
 img2pdf
 openpyxl
 pandas
+openai

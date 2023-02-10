@@ -43,12 +43,43 @@ def comp_epub(args):
     open(fname, 'wb').write(new_bio.getvalue())
     print('done...')
         
-def get_ncx_toc(toc_ncx):
+        
+def get_opf_flist(cont_opf):
+    cont_opf = re.sub(r'<\?xml[^>]*\?>', '', cont_opf)
+    cont_opf = re.sub(r'xmlns=".+?"', '', cont_opf)
+    rt = pq(cont_opf)
+    el_refs = rt('itemref')
+    ids = [
+        el_refs.eq(i).attr('idref') 
+        for i in range(len(el_refs))
+    ]
+    el_its = rt('item')
+    id_map = {
+        pq(el).attr('id'):
+        pq(el).attr('href')
+        for el in el_its
+    }
+    return [
+        id_map[id]
+        for id in ids
+        if id in id_map
+    ]
+
+def get_toc_lv(el_nav):
+    cnt = 0
+    while el_nav and el_nav.is_('nav'):
+        cnt += 1
+        el_nav = el_nav.parent()
+    return cnt
+
+def get_ncx_toc(toc_ncx, rgx="", hlv=0):
     toc_ncx = re.sub(r'<\?xml[^>]*\?>', '', toc_ncx)
+    toc_ncx = re.sub(r'(?<=<)ncx:', '', toc_ncx)
+    toc_ncx = re.sub(r'(?<=</)ncx:', '', toc_ncx)
     toc_ncx = re.sub(r'xmlns=".+?"', '', toc_ncx)
     toc_ncx = re.sub(r'<(/?)navLabel', r'<\1label', toc_ncx)
     toc_ncx = re.sub(r'<(/?)navPoint', r'<\1nav', toc_ncx)
-    # print(toc_ncx)
+    toc_ncx = re.sub(r'<(/?)navmap', r'<\1map', toc_ncx)
     rt = pq(toc_ncx)
     el_nps = rt('nav')
     toc = []
@@ -56,7 +87,22 @@ def get_ncx_toc(toc_ncx):
         el = el_nps.eq(i)
         title = el.children('label>text').text()
         src = el.children('content').attr('src')
-        toc.append([i, title, src])
+        toc.append({
+            'idx': i,
+            'title': title.strip(),
+            'src': src,
+            'level': get_toc_lv(el),
+        })
+    if rgx:
+        toc = [
+            ch for ch in toc 
+            if re.search(rgx, ch['title'])
+        ]
+    if hlv:
+        toc = [
+            ch for ch in toc 
+            if ch['level'] <= hlv
+        ]
     return toc
 
 def get_epub_toc(args):
@@ -67,47 +113,77 @@ def get_epub_toc(args):
         
     bio = BytesIO(open(fname, 'rb').read())
     zip = zipfile.ZipFile(bio, 'r', zipfile.ZIP_DEFLATED)
-    toc_ncx = zip.read('OEBPS/toc.ncx').decode('utf8')
-    toc = get_ncx_toc(toc_ncx)
-    for i, title, src in toc:
-        print(f'{i}：{src}\n{title}')
+    if 'OEBPS/toc.ncx' in zip.namelist():
+        ncx_fname = 'OEBPS/toc.ncx'
+    elif 'toc.ncx' in zip.namelist():
+        ncx_fname = 'toc.ncx'
+    else:
+        print('未找到目录文件 toc.ncx')
+        return
+    toc_ncx = zip.read(ncx_fname).decode('utf8')
+    toc = get_ncx_toc(toc_ncx, args.regex, args.hlevel)
+    for i, ch in enumerate(toc):
+        pref = '>' * (ch["level"] - 1)
+        if pref: pref += ' '
+        print(f'{pref}{i}-{ch["idx"]}：{ch["src"]}\n{pref}{ch["title"]}')
+
+def get_html_body(html):
+    html = re.sub(r'<\?xml[^>]*\?>', '', html)
+    rt = pq(html)
+    return rt('body').html() if rt('body') else html
 
 def exp_epub_chs(args):
     fname = args.fname
     rgx = args.regex
-    st = args.start
-    ed = args.end
+    hlv = args.hlevel
+    st = int(args.start)
+    if st == -1: st = 0
+    ed = int(args.end)
+    if ed == -1: ed = 2 ** 32
     dir = args.dir
     
     if not fname.endswith('.epub'):
         print('请提供 EPUB 文件')
         return
-        
+
+    # 获取目录和文件列表
     bio = BytesIO(open(fname, 'rb').read())
     zip = zipfile.ZipFile(bio, 'r', zipfile.ZIP_DEFLATED)
-    toc_ncx = zip.read('OEBPS/toc.ncx').decode('utf8')
-    toc = get_ncx_toc(toc_ncx)
-    if ed != -1: toc = toc[:ed+1]
-    if st != -1: toc = toc[st:]
-    
+    if 'OEBPS/toc.ncx' in zip.namelist():
+        ncx_fname = 'OEBPS/toc.ncx'
+        opf_fname = 'OEBPS/content.opf'
+        prefix = 'OEBPS/'
+    elif 'toc.ncx' in zip.namelist():
+        ncx_fname = 'toc.ncx'
+        opf_fname = 'content.opf'
+        prefix = ''
+    else:
+        print('未找到目录文件 toc.ncx')
+        return
+    toc_ncx = zip.read(ncx_fname).decode('utf8')
+    cont_opf = zip.read(opf_fname).decode('utf8')
+    toc = get_ncx_toc(toc_ncx, rgx, hlv)
+    flist = get_opf_flist(cont_opf)
+    toc_flist = {
+        re.sub(r'#.+$|\?.+$', '', ch['src']) 
+        for ch in toc
+    }
+    # 按照目录合并文件
     chs = []
-    ch = None
-    for i, title, src in toc:
-        if re.search(rgx, title.strip()):
-            ch = []
-            chs.append(ch)
-        if ch is not None:
-            ch.append(src)
-            
+    for f in flist:
+        cont = zip.read(prefix + f).decode('utf8')
+        cont = get_html_body(cont)
+        if f in toc_flist:
+            chs.append([cont])
+        else:
+            if chs: chs[-1].append(cont)
+    chs = chs[st:ed+1]
+    chs = ['\n'.join(ch) for ch in chs]
+    chs = [
+        f'<html><head></head><body>{ch}</body></html>' 
+        for ch in chs
+    ]
     l = len(str(len(chs)))
     for i, ch in enumerate(chs):
-        conts = []
-        for sec in ch:
-            cont = zip.read(f'OEBPS/{sec}').decode('utf8')
-            cont = pq(cont).find('body').eq(0).text()
-            conts.append(cont)
-        cont = '\n'.join(conts)
-        cont = f'<html><head></head><body>{cont}</body></html>'
-        
         fname = path.join(dir, str(i).zfill(l) + '.html')
-        open(fname, 'w', encoding='utf8').write(cont)
+        open(fname, 'w', encoding='utf8').write(ch)

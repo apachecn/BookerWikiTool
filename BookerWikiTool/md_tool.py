@@ -318,3 +318,24 @@ def config_proj(args):
                 .replace('{npmName}', repo)
         )
         open(path.join(dir, fname), 'w', encoding='utf8').write(cont)
+
+def convert_cdrive_log(args):
+    RE_INFO = r'\[(.+?)\]([^\[]+)'
+    RE_TITLE = r'上传: (.+?) \([\d\.]+ \w+\)\n'
+    RE_META = r'META URL -> (\S+)'
+    
+    fname = args.fname
+    co = open(fname, encoding='utf8').read()
+    cos = co.split(' 上传: ')
+    res = ['| 文件 | 链接 |\n| --- | --- |\n']
+    for info in cos:
+        info = ' 上传: ' + info
+        title = re.search(RE_TITLE, info)
+        meta = re.search(RE_META, info)
+        if not title: continue
+        title = title.group(1)
+        meta = meta.group(1) if meta else '未上传'
+        res.append(f'| {title} | {meta} |\n')
+        
+    res = ''.join(res)
+    open(fname + '.md', 'w', encoding='utf8').write(res)
