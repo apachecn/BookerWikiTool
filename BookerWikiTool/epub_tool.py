@@ -74,7 +74,8 @@ def get_toc_lv(el_nav):
 
 def get_ncx_toc(toc_ncx, rgx="", hlv=0):
     toc_ncx = re.sub(r'<\?xml[^>]*\?>', '', toc_ncx)
-    toc_ncx = re.sub(r'(?<=</?)ncx:', '', toc_ncx)
+    toc_ncx = re.sub(r'(?<=<)ncx:', '', toc_ncx)
+    toc_ncx = re.sub(r'(?<=</)ncx:', '', toc_ncx)
     toc_ncx = re.sub(r'xmlns=".+?"', '', toc_ncx)
     toc_ncx = re.sub(r'<(/?)navLabel', r'<\1label', toc_ncx)
     toc_ncx = re.sub(r'<(/?)navPoint', r'<\1nav', toc_ncx)
