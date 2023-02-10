@@ -86,20 +86,25 @@ def process_el_pre(rt):
         el.replace_with(el_pre)
 
 def process_el_heading(rt):
+    def get_font_size(el):
+        style = el.attr('style') or ''
+        m = re.search(r'font-size:\s*(\d+\.\d+)', style)
+        if not m: return 0
+        else: return float(m.group(1))
     el_paras = rt('p')
     for el in el_paras:
         el = pq(el)
         # 如果字体大于等于 16，则认为它是标题
-        style = el.attr('style')
-        m = re.search(r'font-size:\s*(\d+)', style)
-        if not m: continue
-        size = int(m.group(1))
-        print(size)
-        if size >= 16:
-            el_h2 = rt('<h2></h2>')
-            el_h2.html(el.html() or '')
-            el_h2.attr('style', el.attr('style'))
-            el.replace_with(el_h2)
+        el_spans = el.find('span')
+        is_heading = (
+            get_font_size(el) >= 16 or
+            any([get_font_size(pq(el)) >= 16 for el in el_spans])
+        )
+        if not is_heading: continue
+        el_h2 = rt('<h2></h2>')
+        el_h2.html(el.html() or '')
+        el_h2.attr('style', el.attr('style'))
+        el.replace_with(el_h2)
 
 def process_pre_indent(rt):
     def get_indent(el):
@@ -120,10 +125,11 @@ def process_pre_indent(rt):
         el = pq(el)
         el.text(' ' * nspace + (el.text() or ''))
 
+
 def process_html_code(html):
     rt = pq(html)
     process_el_code(rt)
-    process_el_pre(rt)
+    # process_el_pre(rt)
     process_pre_indent(rt)
     process_el_heading(rt)
     # 处理缩进
