@@ -63,7 +63,7 @@ def process_el_code(rt):
         ])
         if not is_code: continue
         el_code = rt('<code></code>')
-        el_code.html(el.html())
+        el_code.text(el.text())
         el_code.attr('style', el.attr('style'))
         el.replace_with(el_code)
 
@@ -78,12 +78,30 @@ def process_el_pre(rt):
         # 移除里面的所有 CODE 标签但保留内容
         for el_code in el.children():
             el_code = pq(el_code)
-            el_code.replace_with(el_code.html() or '')
+            el_span = rt('<span></span>')
+            el_span.text(el_code.text() or '')
+            el_code.replace_with(el_span)
         el_pre.text(el.text().replace('\n', ''))
         el_pre.attr('style', el.attr('style'))
         el.replace_with(el_pre)
 
-def process_indent(rt):
+def process_el_heading(rt):
+    el_paras = rt('p')
+    for el in el_paras:
+        el = pq(el)
+        # 如果字体大于等于 16，则认为它是标题
+        style = el.attr('style')
+        m = re.search(r'font-size:\s*(\d+)', style)
+        if not m: continue
+        size = int(m.group(1))
+        print(size)
+        if size >= 16:
+            el_h2 = rt('<h2></h2>')
+            el_h2.html(el.html() or '')
+            el_h2.attr('style', el.attr('style'))
+            el.replace_with(el_h2)
+
+def process_pre_indent(rt):
     def get_indent(el):
         style = el.attr('style') or ''
         m = re.search(r'left:\s*(\d+\.\d+)', style)
@@ -100,23 +118,22 @@ def process_indent(rt):
         if inds[i] == 0: continue
         nspace = int((inds[i] - base) // diff) * 4
         el = pq(el)
-        el.html(' ' * nspace + (el.html() or ''))
+        el.text(' ' * nspace + (el.text() or ''))
 
 def process_html_code(html):
     rt = pq(html)
     process_el_code(rt)
-    '''
     process_el_pre(rt)
-    '''
+    process_pre_indent(rt)
+    process_el_heading(rt)
     # 处理缩进
-    process_indent(rt)
     html = rt('body').html() if rt('body') else str(rt)
     # 合并连续的 PRE
-    html = re.sub(r'</pre>\s*<pre[^>]*>', '\n', html)
+    # html = re.sub(r'</pre>\s*<pre[^>]*>', '\n', html)
     # 合并段落内的换行
-    html = re.sub(r'(?<![\.\?!:])</p>\s*<p [^>]*>', ' ', html)
-    html = re.sub(r'</?span[^>]*>', '' ,html)
-    html = re.sub(r'style=".+?"', '' ,html)
+    # html = re.sub(r'(?<![\.\?!:])</p>\s*<p [^>]*>', ' ', html)
+    # html = re.sub(r'</?span[^>]*>', '' ,html)
+    # html = re.sub(r'style=".+?"', '' ,html)
     return html
 
 def pdf2html_file(args):
