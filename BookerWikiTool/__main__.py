@@ -163,7 +163,7 @@ def main():
 
     ck_zip_parser = subparsers.add_parser("crack-zip", help="crack encrypted zip")
     ck_zip_parser.add_argument("fname", help="ZIP fname")
-    ck_zip_parser.add_argument("pw", help="password dict")
+    ck_zip_parser.add_argument("-p", "--pw", default=asset('PwdDic.txt'), help="password dict")
     ck_zip_parser.add_argument("-t", "--threads", type=int, default=8, help="num of threads")
     ck_zip_parser.set_defaults(func=crack_zip)
 
