@@ -20,7 +20,7 @@ def crack_zip(z, dir, pw, res):
 def crack_zip(args):
     fname = args.fname
     pw_fname = args.pw
-    if not path.isfile(fname) or
+    if not path.isfile(fname) or \
         not fname.endswith('.zip'):
         print('请提供 ZIP 文件')
         return
