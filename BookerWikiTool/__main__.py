@@ -24,6 +24,7 @@ from .epub_tool import *
 from .md_tool import *
 from .fetch_links import *
 from .pdf_tool import *
+from .zip_tool import *
 from .flatten import *
 from .toggle_bw import *
 from .crawl_wx import *
@@ -159,6 +160,12 @@ def main():
     crawl_wx_parser.add_argument("-n", "--size", type=int, default=500, help="num of articles per ebook")
     crawl_wx_parser.add_argument("-o", "--opti-mode", default='thres', help="img optimization mode, default 'thres'")
     crawl_wx_parser.set_defaults(func=crawl_wx)
+
+    ck_zip_parser = subparsers.add_parser("crack-zip", help="crack encrypted zip")
+    ck_zip_parser.add_argument("fname", help="ZIP fname")
+    ck_zip_parser.add_argument("pw", help="password dict")
+    ck_zip_parser.add_argument("-t", "--threads", type=int, default=8, help="num of threads")
+    ck_zip_parser.set_defaults(func=crack_zip)
 
     code_lint_parser = subparsers.add_parser("code-lint", help="lint c-style code")
     code_lint_parser.add_argument("fname", help="code fname")
