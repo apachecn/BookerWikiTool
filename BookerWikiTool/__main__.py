@@ -161,7 +161,6 @@ def main():
     crawl_wx_parser.add_argument("-o", "--opti-mode", default='thres', help="img optimization mode, default 'thres'")
     crawl_wx_parser.set_defaults(func=crawl_wx)
 
-<<<<<<< HEAD
     ck_zip_parser = subparsers.add_parser("crack-zip", help="crack encrypted zip")
     ck_zip_parser.add_argument("fname", help="ZIP fname")
     ck_zip_parser.add_argument("pw", help="password dict")
