@@ -46,6 +46,9 @@ headers = {
 def d(name):
     return path.join(DIR, name)
 
+def asset_dir():
+    return path.join(DIR, 'assets')
+
 def opti_img(img, mode, colors):
     if mode == 'quant':
         return imgyaso.pngquant_bts(img, colors)
