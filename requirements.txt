@@ -10,3 +10,4 @@ img2pdf
 openpyxl
 pandas
 openai
+pywinauto
