@@ -1,5 +1,6 @@
 from os import path
 import os
+import shutil
 
 def flatten_dir(args):
     dir, delim = args.dir, args.delim
@@ -19,7 +20,7 @@ def flatten_dir(args):
                     .replace('/', delim)
                     .replace('\\', delim)
             )
-            os.rename(
+            shutil.move(
                 path.join(rt, fname),
                 path.join(dir, nfname),
             )

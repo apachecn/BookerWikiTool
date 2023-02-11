@@ -6,6 +6,7 @@ import uuid
 import subprocess as subp
 import re
 import os
+import shutil
 import json
 import yaml
 import traceback
@@ -66,7 +67,7 @@ def ren_md_file(args):
     nfname = re.sub(r'\s', '-', fname_escape(nfname)) + '.md'
     nfname = path.join(dir, nfname)
     print(nfname)
-    os.rename(fname, nfname)
+    shutil.move(fname, nfname)
 
 def download_handle(args):
     html = requests.get(

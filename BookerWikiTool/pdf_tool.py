@@ -6,6 +6,7 @@ from os import path
 from pyquery import PyQuery as pq
 import re
 import os
+import shutil
 import copy
 import tempfile
 import uuid
@@ -454,8 +455,8 @@ def pdf_auto_file(args):
     for cmd in cmds:
         subp.Popen(cmd, shell=True).communicate()
     if path.isfile(fname + '.bak'): os.unlink(fname + '.bak')
-    os.rename(fname, fname + '.bak')
-    os.rename(path.abspath(tmpdir) + '.pdf', fname)
+    shutil.move(fname, fname + '.bak')
+    shutil.move(path.abspath(tmpdir) + '.pdf', fname)
     
     safe_rmdir(tmpdir)
     
@@ -506,9 +507,9 @@ def tr_pick_scanned_pdf(fname, odirs, imgs_area_rate, scanned_pg_rate):
     rtext = '扫描版' if scanned else '文字版'
     print(f'{fname}：{rtext}')
     if scanned:
-        os.rename(fname, path.join(odirs[0], path.basename(fname)))
+        shutil.move(fname, path.join(odirs[0], path.basename(fname)))
     else:
-        os.rename(fname, path.join(odirs[1], path.basename(fname)))
+        shutil.move(fname, path.join(odirs[1], path.basename(fname)))
     
 def tr_pick_scanned_pdf_safe(*args, **kw):
     try: tr_pick_scanned_pdf(*args, **kw)
