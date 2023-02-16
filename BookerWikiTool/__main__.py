@@ -141,6 +141,7 @@ def main():
     fetch_links_parser.add_argument("ofname", help="output file name")
     fetch_links_parser.add_argument("-s", "--start", type=int, default=1, help="starting page")
     fetch_links_parser.add_argument("-e", "--end", type=int, default=10000000, help="ending page")
+    fetch_links_parser.add_argument("-t", "--time", help="time selector")
     fetch_links_parser.add_argument("-p", "--proxy", help="proxy")
     fetch_links_parser.add_argument("-H", "--headers", help="headers in JSON")
     fetch_links_parser.set_defaults(func=fetch_links)

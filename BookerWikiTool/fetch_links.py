@@ -7,6 +7,7 @@ import json
 config = {
     'url': '',
     'link': '',
+    'time': '',
     'proxy': None,
     'headers': {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36',
@@ -16,18 +17,27 @@ config = {
 def get_toc(html, base):
     root = pq(html)
     el_links = root(config['link'])
+    el_times = None
+    if config['time']:
+        el_times = root(config['time'])
+        assert len(el_links) == len(el_times)
     links = []
     for i in range(len(el_links)):
         url = el_links.eq(i).attr('href')
         if not url:
             links.append(el_links.eq(i).text().strip())
             continue
-        links.append(urljoin(base, url))
+        url = urljoin(base, url)
+        if el_times:
+            tm = el_times.eq(i).text().strip()
+            url += '#' + tm
+        links.append(url)
     return links
 
 def fetch_links(args):
     config['url'] = args.url
     config['link'] = args.link
+    config['time'] = args.time
     ofname = args.ofname
     st = args.start
     ed = args.end
