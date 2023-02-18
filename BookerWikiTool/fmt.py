@@ -37,7 +37,7 @@ def fmt_packt(html):
     def img_src_repl(m):
         src = m.group(1)
         fname = path.basename(src)
-        return f'img/{fname}'
+        return f'src="img/{fname}"'
     html = re.sub(RE_SRC, img_src_repl, html)
     return html
     
