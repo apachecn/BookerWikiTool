@@ -97,11 +97,6 @@ def account_words(cont):
     total = zh_count + en_count
     return (total, zh_count, en_count)
     
-def fmt_zh(text):
-    text = re.sub(r'([\u4e00-\u9fff])([a-zA-Z0-9_])', r'\1 \2', text)
-    text = re.sub(r'([a-zA-Z0-9_])([\u4e00-\u9fff])', r'\1 \2', text)
-    return text
-    
 def safe_mkdir(dir):
     try: os.makedirs(dir)
     except: pass

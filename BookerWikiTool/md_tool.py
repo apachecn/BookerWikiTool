@@ -20,6 +20,7 @@ from collections import OrderedDict
 from EpubCrawler.img import process_img
 from EpubCrawler.util import safe_mkdir
 from .util import *
+from .fmt import *
 
 def account_handle(args):
     if not args.file.endswith('.md'):
