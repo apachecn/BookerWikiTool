@@ -39,6 +39,7 @@ def fmt_packt(html):
         fname = path.basename(src)
         return f'img/{fname}'
     html = re.sub(RE_SRC, img_src_repl, html)
+    return html
     
 def process_apress_pre(el_pre, root):
     el_lines = el_pre.find('.FixedLine')
