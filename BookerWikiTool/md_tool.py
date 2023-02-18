@@ -219,28 +219,32 @@ def tomd_handle(args):
     else:
         tomd_file(args)
 
-def fmt_zh_dir(args):
+def fmt_dir(args):
     dir = args.fname
     fnames = os.listdir(dir)
     for fname in fnames:
         args.fname = path.join(dir, fname)
-        fmt_zh_file(args)
+        fmt_file(args)
     
-def fmt_zh_file(args):
+def fmt_file(args):
+    mode = args.mode
     if not args.fname.endswith('.html') and \
         not args.fname.endswith('.md'):
         print('请提供 HTML 或 MD 文件')
         return
     print(args.fname)
     text = open(args.fname, encoding='utf8').read()
-    text = fmt_zh(text)
+    if mode == 'zh':
+        text = fmt_zh(text)
+    elif mode == 'packt':
+        text = fmt_packt(text)
     open(args.fname, 'w', encoding='utf8').write(text)
 
-def fmt_zh_handle(args):
+def fmt_handle(args):
     if path.isdir(args.fname):
-        fmt_zh_dir(args)
+        fmt_dir(args)
     else:
-        fmt_zh_file(args)
+        fmt_file(args)
 
 def opti_md_file_safe(args):
     try: opti_md_file(args)

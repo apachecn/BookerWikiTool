@@ -71,9 +71,10 @@ def main():
     office2pdf_parser.add_argument("fname", help="file name")
     office2pdf_parser.set_defaults(func=office2pdf_handle)
 
-    fmtzh_parser = subparsers.add_parser("fmtzh", help="format zh")
+    fmtzh_parser = subparsers.add_parser("fmt", help="format markdown and html")
+    fmtzh_parser.add_argument("mode", help="fmt mode")
     fmtzh_parser.add_argument("fname", help="file name")
-    fmtzh_parser.set_defaults(func=fmt_zh_handle)
+    fmtzh_parser.set_defaults(func=fmt_handle)
 
     opti_md_parser = subparsers.add_parser("opti-md", help="optimize markdown")
     opti_md_parser.add_argument("fname", help="file name")
