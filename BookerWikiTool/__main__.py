@@ -74,6 +74,7 @@ def main():
     fmtzh_parser = subparsers.add_parser("fmt", help="format markdown and html")
     fmtzh_parser.add_argument("mode", help="fmt mode")
     fmtzh_parser.add_argument("fname", help="file name")
+    fmtzh_parser.add_argument("-t", "--threads", type=int, default=8, help="num of threads")
     fmtzh_parser.set_defaults(func=fmt_handle)
 
     opti_md_parser = subparsers.add_parser("opti-md", help="optimize markdown")
