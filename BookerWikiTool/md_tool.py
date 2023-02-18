@@ -222,9 +222,17 @@ def tomd_handle(args):
 def fmt_dir(args):
     dir = args.fname
     fnames = os.listdir(dir)
+    pool = Pool(args.threads)
     for fname in fnames:
+        args = copy.deepcopy(args)
         args.fname = path.join(dir, fname)
-        fmt_file(args)
+        pool.apply_async(fmt_file_safe, [args])
+    pool.close()
+    pool.join()
+    
+def fmt_file_safe(args):
+    try: fmt_file(args)
+    except: traceback.print_exc()
     
 def fmt_file(args):
     mode = args.mode
