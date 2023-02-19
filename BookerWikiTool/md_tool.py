@@ -259,6 +259,11 @@ def opti_md_file_safe(args):
     except: traceback.print_exc()
 
 def opti_md_file(args):
+    RE_SRC_FULL = r'原文:\[.+?\]\((.+?)\)'
+    RE_SRC_FULL_REP = r'原文：<\1>'
+    RE_PRE_HEAD = r'^\x20*\*+\x20*```'
+    RE_LEG_TOKEN = r'T\d+】'
+    RE_PRE_HEAD2 = r'```\*+|\*+```'
     fname = args.fname
     if not fname.endswith('.md'):
         print('请提供 Markdown 文件')
@@ -269,6 +274,7 @@ def opti_md_file(args):
     cont = re.sub(RE_LEG_TOKEN, '', cont)
     cont = re.sub(RE_SRC_FULL, RE_SRC_FULL_REP, cont)
     cont = re.sub(RE_PRE_HEAD, '```', cont, flags=re.M)
+    cont = re.sub(RE_PRE_HEAD2, '```', cont)
     open(fname, 'w', encoding='utf8').write(cont)
    
 
