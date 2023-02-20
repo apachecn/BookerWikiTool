@@ -27,7 +27,7 @@ def crack_zip(args):
     pw_fname = args.pw
     if not path.isfile(fname) or \
         (not fname.endswith('.zip') and \
-         not fnames.endswith('.rar')):
+         not fname.endswith('.rar')):
         print('请提供 ZIP 或 RAR 文件')
         return
     print(fname)
