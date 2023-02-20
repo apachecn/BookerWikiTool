@@ -5,7 +5,7 @@ import os
 from os import path
 import re
 import traceback
-from util import *
+from .util import *
 
 def zip_has_pw(z):
     return any([
