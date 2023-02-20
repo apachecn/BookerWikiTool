@@ -11,3 +11,4 @@ openpyxl
 pandas
 openai
 pywinauto
+rarfile
