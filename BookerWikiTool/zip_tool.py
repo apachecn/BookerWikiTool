@@ -5,6 +5,7 @@ import os
 from os import path
 import re
 import traceback
+from util import *
 
 def zip_has_pw(z):
     return any([
@@ -23,6 +24,7 @@ def crack_single(z, dir, pw):
         return False
 
 def crack_zip(args):
+    os.environ['PATH'] = os.environ.get('PATH', '') + ';' + asset()
     fname = args.fname
     pw_fname = args.pw
     if not path.isfile(fname) or \
