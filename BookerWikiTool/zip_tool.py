@@ -1,4 +1,5 @@
 import zipfile
+import rarfile
 from multiprocessing.pool import Pool
 import os
 from os import path
@@ -25,14 +26,23 @@ def crack_zip(args):
     fname = args.fname
     pw_fname = args.pw
     if not path.isfile(fname) or \
-        not fname.endswith('.zip'):
-        print('请提供 ZIP 文件')
+        (not fname.endswith('.zip') and \
+         not fnames.endswith('.rar')):
+        print('请提供 ZIP 或 RAR 文件')
         return
     print(fname)
-    z = zipfile.ZipFile(fname)
+    if fname.endswith('.zip'):
+        z = zipfile.ZipFile(fname)
+    else:
+        z = rarfile.RarFile(fname)
     odir = re.sub(r'\.\w+$', '', fname)
     if not path.isdir(odir): os.makedirs(odir)
-    if not zip_has_pw(z):
+    has_pw = (
+        zip_has_pw(z) 
+        if fname.endswith('.zip') 
+        else z.needs_password()
+    )
+    if not has_pw:
         z.extractall(odir)
         print(f'{fname} 未加密，已解压到 {odir}')
         z.close()
