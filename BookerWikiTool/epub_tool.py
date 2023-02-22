@@ -184,7 +184,9 @@ def exp_epub_chs(args):
     # 按照目录合并文件
     chs = []
     for f in flist:
-        cont = zip.read(path.join(book_dir, f)).decode('utf8')
+        cont = zip.read(
+            path.join(book_dir, f).replace('\\', '/')
+        ).decode('utf8')
         cont = get_html_body(cont)
         if f in toc_flist:
             chs.append([cont])
