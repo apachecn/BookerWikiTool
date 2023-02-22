@@ -1,2 +1,2 @@
-pip uninstall BookerTrans -y
+pip uninstall BookerWikiTool -y
 python setup.py install
