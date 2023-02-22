@@ -114,7 +114,7 @@ def get_epub_toc(args):
     bio = BytesIO(open(fname, 'rb').read())
     zip = zipfile.ZipFile(bio, 'r', zipfile.ZIP_DEFLATED)
     _, ncx_fname, _ = get_toc_and_content_path(zip)
-    if not ncx_fname:
+    if ncx_fname is None:
         print('未找到目录文件 toc.ncx')
         return
     toc_ncx = zip.read(ncx_fname).decode('utf8')
@@ -170,7 +170,7 @@ def exp_epub_chs(args):
     bio = BytesIO(open(fname, 'rb').read())
     zip = zipfile.ZipFile(bio, 'r', zipfile.ZIP_DEFLATED)
     book_dir, ncx_fname, opf_fname = get_toc_and_content_path(zip)
-    if not book_dir:
+    if book_dir is None:
         print('未找到目录文件 toc.ncx')
         return
     toc_ncx = zip.read(ncx_fname).decode('utf8')
