@@ -130,7 +130,7 @@ def get_html_body(html):
     return rt('body').html() if rt('body') else html
 
 def get_toc_and_content_path(zip):
-    book_dirs = ['', 'OEBPS', 'BOOK']
+    book_dirs = ['', 'OEBPS', 'EPUB']
     ncx_path = None
     book_dir = None
     for d in book_dirs:
