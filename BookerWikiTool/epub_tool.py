@@ -131,8 +131,8 @@ def get_html_body(html):
 
 def get_toc_and_content_path(zip):
     book_dirs = ['', 'OEBPS', 'BOOK']
-    ncx_path = ''
-    book_dir = ''
+    ncx_path = None
+    book_dir = None
     for d in book_dirs:
         test = path.join(d, 'toc.ncx').replace('\\', '/')
         if test not in zip.namelist():
@@ -140,15 +140,15 @@ def get_toc_and_content_path(zip):
         book_dir = d
         ncx_path = test
         break;
-    if not book_dir: return (None, None, None)
+    if ncx_path is None: return (None, None, None)
     opf_fnames = ['content.opf', 'book.opf']
-    opf_path = ''
+    opf_path = None
     for f in opf_fnames:
         test = path.join(book_dir, f).replace('\\', '/')
         if  test not in  zip.namelist():
             continue
         opf_path = test
-    if not opf_path: return (None, None, None)
+    if opf_path is None: return (None, None, None)
     return (book_dir, ncx_path, opf_path)
             
 
