@@ -134,7 +134,7 @@ def get_toc_and_content_path(zip):
     ncx_path = ''
     book_dir = ''
     for d in book_dirs:
-        test = path.join(d, 'toc.ncx')
+        test = path.join(d, 'toc.ncx').replace('\\', '/')
         if test not in zip.namelist():
             continue
         book_dir = d
@@ -144,7 +144,7 @@ def get_toc_and_content_path(zip):
     opf_fnames = ['content.opf', 'book.opf']
     opf_path = ''
     for f in opf_fnames:
-        test = path.join(book_dir, f)
+        test = path.join(book_dir, f).replace('\\', '/')
         if  test not in  zip.namelist():
             continue
         opf_path = test
