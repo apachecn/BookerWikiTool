@@ -113,11 +113,8 @@ def get_epub_toc(args):
         
     bio = BytesIO(open(fname, 'rb').read())
     zip = zipfile.ZipFile(bio, 'r', zipfile.ZIP_DEFLATED)
-    if 'OEBPS/toc.ncx' in zip.namelist():
-        ncx_fname = 'OEBPS/toc.ncx'
-    elif 'toc.ncx' in zip.namelist():
-        ncx_fname = 'toc.ncx'
-    else:
+    _, ncx_fname, _ = get_toc_and_content_path(zip)
+    if not ncx_fname:
         print('未找到目录文件 toc.ncx')
         return
     toc_ncx = zip.read(ncx_fname).decode('utf8')
@@ -131,6 +128,29 @@ def get_html_body(html):
     html = re.sub(r'<\?xml[^>]*\?>', '', html)
     rt = pq(html)
     return rt('body').html() if rt('body') else html
+
+def get_toc_and_content_path(zip):
+    book_dirs = ['', 'OEBPS', 'BOOK']
+    ncx_path = ''
+    book_dir = ''
+    for d in book_dirs:
+        test = path.join(d, 'toc.ncx')
+        if test not in zip.namelist():
+            continue
+        book_dir = d
+        ncx_path = test
+        break;
+    if not book_dir: return (None, None, None)
+    opf_fnames = ['content.opf', 'book.opf']
+    opf_path = ''
+    for f in opf_fnames:
+        test = path.join(book_dir, f)
+        if  test not in  zip.namelist():
+            continue
+        opf_path = test
+    if not opf_path: return (None, None, None)
+    return (book_dir, ncx_path, opf_path)
+            
 
 def exp_epub_chs(args):
     fname = args.fname
@@ -149,15 +169,8 @@ def exp_epub_chs(args):
     # 获取目录和文件列表
     bio = BytesIO(open(fname, 'rb').read())
     zip = zipfile.ZipFile(bio, 'r', zipfile.ZIP_DEFLATED)
-    if 'OEBPS/toc.ncx' in zip.namelist():
-        ncx_fname = 'OEBPS/toc.ncx'
-        opf_fname = 'OEBPS/content.opf'
-        prefix = 'OEBPS/'
-    elif 'toc.ncx' in zip.namelist():
-        ncx_fname = 'toc.ncx'
-        opf_fname = 'content.opf'
-        prefix = ''
-    else:
+    book_dir, ncx_fname, opf_fname = get_toc_and_content_path(zip)
+    if not book_dir:
         print('未找到目录文件 toc.ncx')
         return
     toc_ncx = zip.read(ncx_fname).decode('utf8')
@@ -171,7 +184,7 @@ def exp_epub_chs(args):
     # 按照目录合并文件
     chs = []
     for f in flist:
-        cont = zip.read(prefix + f).decode('utf8')
+        cont = zip.read(path.join(book_dir, f)).decode('utf8')
         cont = get_html_body(cont)
         if f in toc_flist:
             chs.append([cont])
