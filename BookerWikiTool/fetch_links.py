@@ -96,6 +96,7 @@ def batch_links(args):
             'title': args.title,
             'content': args.content,
             'remove': args.remove,
+            'optiMode': args.opti_mode,
             'list': links[i:i+args.num],
         }
 
