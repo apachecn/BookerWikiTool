@@ -83,7 +83,7 @@ def batch_links(args):
     links = open(args.links, encoding='utf8').read().split('\n')
     links = filter(None, links)
     
-    dates = [re.search('#' + args.regex, l) for l in links]
+    dates = [re.search('#' + args.time_regex, l) for l in links]
     if not all(dates):
         print('未能提取文章发布时间')
         return
