@@ -81,7 +81,7 @@ def time_match_to_str(m):
 def batch_links(args):
     num = args.num
     links = open(args.links, encoding='utf8').read().split('\n')
-    links = filter(None, links)
+    links = list(filter(None, links))
     
     dates = [re.search('#' + args.time_regex, l) for l in links]
     if not all(dates):
