@@ -156,7 +156,7 @@ def main():
     batch_links_parser.add_argument("-c", "--content", default="", help="content selector")
     batch_links_parser.add_argument("-r", "--remove", default="", help="remove elems selector")
     batch_links_parser.add_argument("-n", "--num", default=500, type=int, help="num of articles in one epub")
-    batch_links_parser.add_argument("-m", "--opti-mode", default='thres', help="img optimization mode")
+    batch_links_parser.add_argument("-m", "--opti-mode", default='quant', help="img optimization mode")
     batch_links_parser.add_argument("-g", "--time-regex", default=r'(\d+)-(\d+)-(\d+)', help="time regex")
     fetch_links_parser.set_defaults(func=batch_links)
 
