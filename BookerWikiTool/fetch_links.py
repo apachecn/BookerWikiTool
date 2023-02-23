@@ -103,7 +103,7 @@ def batch_links(args):
             'list': links[i:i+args.num],
         }
 
-        cfg_fname = f'config_{fname_escape(args.fname)}_{st}_{ed}.json'
+        cfg_fname = f'config_{fname_escape(args.name)}_{st}_{ed}.json'
         open(cfg_fname, 'w', encoding='utf8').write(json.dumps(cfg))
         subp.Popen(['crawl-epub', cfg_fname], shell=True).communicate()
         
