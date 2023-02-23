@@ -158,7 +158,7 @@ def main():
     batch_links_parser.add_argument("-n", "--num", default=500, type=int, help="num of articles in one epub")
     batch_links_parser.add_argument("-m", "--opti-mode", default='quant', help="img optimization mode")
     batch_links_parser.add_argument("-g", "--time-regex", default=r'(\d+)-(\d+)-(\d+)', help="time regex")
-    fetch_links_parser.set_defaults(func=batch_links)
+    batch_links_parser.set_defaults(func=batch_links)
 
     toggle_bw_parser = subparsers.add_parser("tog-bw", help="check if image colors reversed and then toggle them")
     toggle_bw_parser.add_argument("fname", help="file or dir name")
