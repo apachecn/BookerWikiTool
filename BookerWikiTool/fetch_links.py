@@ -68,3 +68,38 @@ def fetch_links(args):
             ofile.write(it + '\n')
     
     ofile.close()
+
+def time_match_to_str(m):
+    yr = m.group(1)
+    mon = m.group(2)
+    if len(mon) == 1: mon = '0' + mon
+    return yr + mon
+
+def batch_links(args):
+    num = args.num
+    links = open(args.links, encoding='utf8').read().split('\n')
+    links = filter(None, links)
+    
+    dates = [re.search('#' + args.regex, l) for l in links]
+    if not all(dates):
+        print('未能提取文章发布时间')
+        return
+    
+    for i in range(0, len(links), args.num):
+        st = time_match_to_str(dates[i])
+        ed = time_match_to_str(dates[min(len(dates)-1, i+num)])
+        if st > ed: st, ed = ed, st
+        
+        cfg = {
+            'name': f'{args.name} {st}-{ed}',
+            'url': links[i],
+            'title': args.title,
+            'content': args.content,
+            'remove': args.remove,
+            'list': links[i:i+args.num],
+        }
+
+        cfg_fname = f'config_{fname_escape(args.fname)}_{st}_{ed}.json'
+        open(cfg_fname, 'w', encoding='utf8').write(json.dumps(cfg))
+        subp.Popen(['crawl-epub', cfg_fname], shell=True).communicate()
+        
