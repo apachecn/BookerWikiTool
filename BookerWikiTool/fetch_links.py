@@ -3,6 +3,9 @@ from urllib.parse import urljoin
 from EpubCrawler.util import request_retry
 from pyquery import PyQuery as pq
 import json
+import re
+import subprocess as subp
+from .util import *
 
 config = {
     'url': '',
