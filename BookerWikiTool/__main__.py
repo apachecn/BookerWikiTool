@@ -149,6 +149,17 @@ def main():
     fetch_links_parser.add_argument("-H", "--headers", help="headers in JSON")
     fetch_links_parser.set_defaults(func=fetch_links)
 
+    batch_links_parser = subparsers.add_parser("batch-links", help="batch download links to epub")
+    batch_links_parser.add_argument("name", help="epub name")
+    batch_links_parser.add_argument("fname", help="name of file storing links")
+    batch_links_parser.add_argument("-t", "--title", default="", help="title selectork")
+    batch_links_parser.add_argument("-c", "--content", default="", help="content selector")
+    batch_links_parser.add_argument("-r", "--remove", default="", help="remove elems selector")
+    batch_links_parser.add_argument("-n", "--num", default=500, type=int, help="num of articles in one epub")
+    batch_links_parser.add_argument("-m", "--opti-mode", default='thres', help="img optimization mode")
+    batch_links_parser.add_argument("-g", "--time-regex", default=r'(\d+)-(\d+)-(\d+)', help="time regex")
+    fetch_links_parser.set_defaults(func=batch_links)
+
     toggle_bw_parser = subparsers.add_parser("tog-bw", help="check if image colors reversed and then toggle them")
     toggle_bw_parser.add_argument("fname", help="file or dir name")
     toggle_bw_parser.add_argument("-t", "--threads", type=int, default=8, help="num of thread")
