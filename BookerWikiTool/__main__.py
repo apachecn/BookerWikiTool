@@ -151,7 +151,7 @@ def main():
 
     batch_links_parser = subparsers.add_parser("batch-links", help="batch download links to epub")
     batch_links_parser.add_argument("name", help="epub name")
-    batch_links_parser.add_argument("fname", help="name of file storing links")
+    batch_links_parser.add_argument("links", help="name of file storing links")
     batch_links_parser.add_argument("-t", "--title", default="", help="title selectork")
     batch_links_parser.add_argument("-c", "--content", default="", help="content selector")
     batch_links_parser.add_argument("-r", "--remove", default="", help="remove elems selector")
