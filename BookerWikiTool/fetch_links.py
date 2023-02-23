@@ -14,7 +14,7 @@ config = {
     },
 }
 
-def get_toc(html, base):
+def get_toc(html, base, re_tm):
     root = pq(html)
     el_links = root(config['link'])
     el_times = None
@@ -30,7 +30,8 @@ def get_toc(html, base):
         url = urljoin(base, url)
         if el_times:
             tm = el_times.eq(i).text().strip()
-            url += '#' + tm
+            m = re.search(re_tm, tm)
+            url += '#' + (m.group() if m else tm)
         links.append(url)
     return links
 
