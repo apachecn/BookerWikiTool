@@ -147,6 +147,7 @@ def main():
     fetch_links_parser.add_argument("-r", "--time-regex", default=r"\d+-\d+-\d+", help="time regex")
     fetch_links_parser.add_argument("-p", "--proxy", help="proxy")
     fetch_links_parser.add_argument("-H", "--headers", help="headers in JSON")
+    fetch_links_parser.add_argument("-J", "--json", action='store_true', help="treat output as JSON not HTML")
     fetch_links_parser.set_defaults(func=fetch_links)
 
     batch_links_parser = subparsers.add_parser("batch-links", help="batch download links to epub")
