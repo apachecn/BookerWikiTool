@@ -6,6 +6,7 @@ import os
 import shutil
 import json
 import yaml
+from functools import reduce
 from urllib.parse import quote_plus
 from os import path
 from pyquery import PyQuery as pq
@@ -135,3 +136,13 @@ def is_video(fname):
     ]
     m = re.search(r'\.(\w+)$', fname)
     return bool(m and m.group(1) in ext)
+    
+def dict_get_recur(obj, keys):
+    res = [obj]
+    for k in keys.split('.'):
+        k = k.strip()
+        if k == '*':
+            res = reduce(lambda x, y: x + y,res, [])
+        else:
+            res = [o.get(k) for o in res if k in o]
+    return res
