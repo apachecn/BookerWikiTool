@@ -17,6 +17,20 @@ config = {
     },
 }
 
+def get_toc_json(jstr, re_tm):
+    j = json.loads(jstr)
+    links = dict_get_recur(j, config['link'])
+    times = None
+    if config['time']:
+        times = dict_get_recur(j, config['time'])
+        assert len(links) == len(times)
+        for i, t in enumerate(times):
+            m = re.search(re_tm, t)
+            times[i] = m.group() if m else t
+        links = [f'{l}#{t}' for l, t in zip(links,times)]
+    return links
+    
+
 def get_toc(html, base, re_tm):
     root = pq(html)
     el_links = root(config['link'])
