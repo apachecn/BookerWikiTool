@@ -78,7 +78,10 @@ def fetch_links(args):
             proxies=config['proxy'],
             headers=config['headers'],
         ).text
-        toc = get_toc(html, url, args.time_regex)
+        if args.json:
+            toc = get_toc_json(html, args.time_regex)
+        else:
+            toc = get_toc(html, url, args.time_regex)
         if len(toc) == 0: break
         for it in toc:
             print(it)
