@@ -122,6 +122,7 @@ def batch_links(args):
 
         cfg_fname = f'config_{fname_escape(args.name)}_{st}_{ed}.json'
         open(cfg_fname, 'w', encoding='utf8').write(json.dumps(cfg))
+        print(cfg_fname)
         if args.exec:
             subp.Popen(['crawl-epub', cfg_fname], shell=True).communicate()
         
