@@ -107,7 +107,7 @@ def batch_links(args):
     
     for i in range(0, len(links), args.num):
         st = time_match_to_str(dates[i])
-        ed = time_match_to_str(dates[min(len(dates)-1, i+num)])
+        ed = time_match_to_str(dates[i:i+args.num][-1])
         if st > ed: st, ed = ed, st
         
         cfg = {
@@ -122,5 +122,6 @@ def batch_links(args):
 
         cfg_fname = f'config_{fname_escape(args.name)}_{st}_{ed}.json'
         open(cfg_fname, 'w', encoding='utf8').write(json.dumps(cfg))
-        subp.Popen(['crawl-epub', cfg_fname], shell=True).communicate()
+        if args.exec:
+            subp.Popen(['crawl-epub', cfg_fname], shell=True).communicate()
         
