@@ -135,13 +135,15 @@ def get_toc_and_content_path(zip):
         return (None, None)
     meta = zip.read(meta_path).decode('utf-8')
     meta = re.sub(r'<\?xml[^>]*\?>', '', meta)
+    meta = re.sub(r'xmlns=".+?"', '', meta)
     opf_path = pq(meta).find('rootfile').attr('full-path') or ''
     if opf_path not in zip.namelist():
         return (None, None)
     opf = zip.read(opf_path).decode('utf-8')
     opf = re.sub(r'<\?xml[^>]*\?>', '', opf)
+    opf = re.sub(r'xmlns=".+?"', '', opf)
     ncx_path = pq(opf).find('item#ncx').attr('href') or ''
-    ncx_path = path.join(path.dirname(opf_path), ncx_path)
+    ncx_path = path.join(path.dirname(opf_path), ncx_path).replace('\\', '/')
     if ncx_path not in zip.namelist():
         return (None, None)
     return (opf_path, ncx_path)
