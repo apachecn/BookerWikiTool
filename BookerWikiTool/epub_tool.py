@@ -146,7 +146,7 @@ def get_toc_and_content_path(zip):
     ncx_path = path.join(path.dirname(opf_path), ncx_path).replace('\\', '/')
     if ncx_path not in zip.namelist():
         return (None, None)
-    return (opf_path, ncx_path)
+    return (ncx_path, opf_path)
             
 
 def exp_epub_chs(args):
