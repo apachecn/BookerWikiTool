@@ -179,6 +179,7 @@ def exp_epub_chs(args):
         for ch in toc
     }
     # 按照目录合并文件
+    book_dir = path.dirname(opf_fname)
     chs = []
     for f in flist:
         cont = zip.read(
