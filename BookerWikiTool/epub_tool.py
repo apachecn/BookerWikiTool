@@ -113,7 +113,7 @@ def get_epub_toc(args):
         
     bio = BytesIO(open(fname, 'rb').read())
     zip = zipfile.ZipFile(bio, 'r', zipfile.ZIP_DEFLATED)
-    _, ncx_fname, _ = get_toc_and_content_path(zip)
+    ncx_fname, _ = get_toc_and_content_path(zip)
     if ncx_fname is None:
         print('未找到目录文件 toc.ncx')
         return
@@ -130,26 +130,21 @@ def get_html_body(html):
     return rt('body').html() if rt('body') else html
 
 def get_toc_and_content_path(zip):
-    book_dirs = ['', 'OEBPS', 'EPUB']
-    ncx_path = None
-    book_dir = None
-    for d in book_dirs:
-        test = path.join(d, 'toc.ncx').replace('\\', '/')
-        if test not in zip.namelist():
-            continue
-        book_dir = d
-        ncx_path = test
-        break;
-    if ncx_path is None: return (None, None, None)
-    opf_fnames = ['content.opf', 'book.opf']
-    opf_path = None
-    for f in opf_fnames:
-        test = path.join(book_dir, f).replace('\\', '/')
-        if  test not in  zip.namelist():
-            continue
-        opf_path = test
-    if opf_path is None: return (None, None, None)
-    return (book_dir, ncx_path, opf_path)
+    meta_path = 'META-INF/container.xml'
+    if meta_path not in zip.namelist():
+        return (None, None)
+    meta = zip.read(meta_path).decode('utf-8')
+    meta = re.sub(r'<\?xml[^>]*\?>', '', meta)
+    opf_path = pq(meta).find('rootfile').attr('full-path') or ''
+    if opf_path not in zip.namelist():
+        return (None, None)
+    opf = zip.read(opf_path).decode('utf-8')
+    opf = re.sub(r'<\?xml[^>]*\?>', '', opf)
+    ncx_path = pq(opf).find('item#ncx').attr('href') or ''
+    ncx_path = path.join(path.dirname(opf_path), ncx_path)
+    if ncx_path not in zip.namelist():
+        return (None, None)
+    return (opf_path, ncx_path)
             
 
 def exp_epub_chs(args):
@@ -169,8 +164,8 @@ def exp_epub_chs(args):
     # 获取目录和文件列表
     bio = BytesIO(open(fname, 'rb').read())
     zip = zipfile.ZipFile(bio, 'r', zipfile.ZIP_DEFLATED)
-    book_dir, ncx_fname, opf_fname = get_toc_and_content_path(zip)
-    if book_dir is None:
+    ncx_fname, opf_fname = get_toc_and_content_path(zip)
+    if ncx_fname is None:
         print('未找到目录文件 toc.ncx')
         return
     toc_ncx = zip.read(ncx_fname).decode('utf8')
