@@ -273,7 +273,7 @@ def opti_md_file(args):
     cont = cont.replace('../Images/', 'img/')
     cont = re.sub(RE_LEG_TOKEN, '', cont)
     cont = re.sub(RE_SRC_FULL, RE_SRC_FULL_REP, cont)
-    cont = re.sub(r'#\d+\-\d+\-\d+(?=<)', '', cont)
+    cont = re.sub(r'#\d+\-\d+\-\d+(?=>)', '', cont)
     cont = re.sub(RE_PRE_HEAD, '```', cont, flags=re.M)
     cont = re.sub(RE_PRE_HEAD2, '```', cont)
     open(fname, 'w', encoding='utf8').write(cont)
