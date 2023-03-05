@@ -139,7 +139,7 @@ def fetch_sitemap_handle(args):
         
 def fetch_sitemap(url, rgx):
     xml = request_retry('GET', url).text
-    xml = re.sub(r'</?xml[^>]*>', '', xml)
+    xml = re.sub(r'<\?xml[^>]*>', '', xml)
     xml = re.sub(r'xmlns=".+?"', '', xml)
     rt = pq(xml)
     urls = []
