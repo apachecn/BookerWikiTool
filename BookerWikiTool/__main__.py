@@ -150,6 +150,12 @@ def main():
     fetch_links_parser.add_argument("-J", "--json", action='store_true', help="treat output as JSON not HTML")
     fetch_links_parser.set_defaults(func=fetch_links)
 
+    fetch_sitemap_parser = subparsers.add_parser("fetch-sitemap", help="fetch links in pages")
+    fetch_sitemap_parser.add_argument("url", help="url with {i} as page num")
+    fetch_sitemap_parser.add_argument("link", help="link selector")
+    fetch_sitemap_parser.add_argument("ofname", help="output file name")
+    fetch_sitemap_parser.add_argument("-s", "--start", type=int, default=1, help="starting page")
+
     batch_links_parser = subparsers.add_parser("batch-links", help="batch download links to epub")
     batch_links_parser.add_argument("name", help="epub name")
     batch_links_parser.add_argument("links", help="name of file storing links")

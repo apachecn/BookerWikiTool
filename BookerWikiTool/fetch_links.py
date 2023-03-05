@@ -126,3 +126,39 @@ def batch_links(args):
         if args.exec:
             subp.Popen(['crawl-epub', cfg_fname], shell=True).communicate()
         
+        
+def fetch_sitemap_handle(args):
+    url, rgx, fname = args.url, args.rgx, args.fname
+    urls = fetch_sitemap(url, rgx)
+    f = open(fname, 'w', encoding='utf8')
+    for u in urls:
+        f.write(u + '\n')
+        print(u)
+    f.close()
+
+        
+def fetch_sitemap(url, rgx):
+    xml = request_retry('GET', url).text
+    xml = re.sub(r'</?xml[^>]*>', '', xml)
+    xml = re.sub(r'xmlns=".+?"', '', xml)
+    rt = pq(xml)
+    urls = []
+    subs = [
+        pq(el).text() for el in rt('loc') 
+        if pq(el).text().endswith('.xml')
+    ]
+    for s in subs:
+        urls += fetch_sitemap(s, rgx)
+    el_urls = pq([
+        el for el in rt('url') 
+        if not pq(el).children('loc').text().endswith('.xml')
+    ])
+    urls += [
+        pq(el).children('loc').text() + '#' +
+        pq(el).children('lastmod').text() 
+        for el in el_urls
+    ]
+    
+    return urls
+
+    
