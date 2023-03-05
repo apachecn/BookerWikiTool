@@ -154,7 +154,7 @@ def main():
     fetch_sitemap_parser.add_argument("url", help="sitemap url")
     fetch_sitemap_parser.add_argument("-r", "--regex", default="/blog/", help="link regex")
     fetch_sitemap_parser.add_argument("ofname", help="output file name")
-    fetch_links_parser.set_defaults(func=fetch_sitemap_handle)
+    fetch_sitemap_parser.set_defaults(func=fetch_sitemap_handle)
 
     batch_links_parser = subparsers.add_parser("batch-links", help="batch download links to epub")
     batch_links_parser.add_argument("name", help="epub name")
