@@ -128,7 +128,7 @@ def batch_links(args):
         
         
 def fetch_sitemap_handle(args):
-    url, regex, ofname = args.url, args.rgx, args.ofname
+    url, regex, ofname = args.url, args.regex, args.ofname
     urls = fetch_sitemap(url, regex)
     f = open(ofname, 'w', encoding='utf8')
     for u in urls:
