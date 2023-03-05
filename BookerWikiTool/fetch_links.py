@@ -156,7 +156,7 @@ def fetch_sitemap(url, rgx):
     ])
     urls += [
         pq(el).children('loc').text() + '#' +
-        pq(el).children('lastmod').text() 
+        (pq(el).children('lastmod').text() or '0001-01-01') 
         for el in el_urls
     ]
     return urls
