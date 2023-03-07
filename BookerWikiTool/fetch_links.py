@@ -139,26 +139,18 @@ def fetch_sitemap_handle(args):
         
 def fetch_sitemap(url, rgx):
     xml = request_retry('GET', url).text
-    xml = re.sub(r'<\?xml[^>]*>', '', xml)
-    xml = re.sub(r'xmlns=".+?"', '', xml)
-    rt = pq(xml)
-    urls = []
+    urls = re.findall(r'<loc>(.+?)</loc>', xml)
     subs = [
-        pq(el).text() for el in rt('loc') 
-        if pq(el).text().endswith('.xml')
+        u for u in urls
+        if u.endswith('.xml')
     ]
+    res = []
     for s in subs:
-        urls += fetch_sitemap(s, rgx)
-    el_urls = pq([
-        el for el in rt('url') 
-        if not pq(el).children('loc').text().endswith('.xml')
-           and re.search(rgx, pq(el).children('loc').text()) 
-    ])
-    urls += [
-        pq(el).children('loc').text() + '#' +
-        (pq(el).children('lastmod').text() or '0001-01-01') 
-        for el in el_urls
+        res += fetch_sitemap(s, rgx)
+    res += [
+        f'{u}#0001-01-01' for u in urls
+        if not u.endswith('.xml')
     ]
-    return urls
+    return res
 
     
