@@ -149,7 +149,8 @@ def fetch_sitemap(url, rgx):
         res += fetch_sitemap(s, rgx)
     res += [
         f'{u}#0001-01-01' for u in urls
-        if not u.endswith('.xml')
+        if not u.endswith('.xml') 
+           and re.search(rgx, u)
     ]
     return res
 
