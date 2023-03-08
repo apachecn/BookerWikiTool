@@ -118,6 +118,7 @@ def batch_links(args):
             'remove': args.remove,
             'optiMode': args.opti_mode,
             'list': links[i:i+args.num],
+            'sizeLimit': args.size_limit,
         }
 
         cfg_fname = f'config_{fname_escape(args.name)}_{st}_{ed}.json'

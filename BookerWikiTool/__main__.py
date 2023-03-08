@@ -164,6 +164,7 @@ def main():
     batch_links_parser.add_argument("-r", "--remove", default="", help="remove elems selector")
     batch_links_parser.add_argument("-n", "--num", default=500, type=int, help="num of articles in one epub")
     batch_links_parser.add_argument("-m", "--opti-mode", default='quant', help="img optimization mode")
+    batch_links_parser.add_argument("-l", "--size-limit", default='100m', help="epub size limit")
     batch_links_parser.add_argument("-g", "--time-regex", default=r'(\d+)-(\d+)-(\d+)', help="time regex")
     batch_links_parser.add_argument("-E", "--exec", action='store_true', help="whether to execute EpubCrawler on config files")
     batch_links_parser.set_defaults(func=batch_links)
