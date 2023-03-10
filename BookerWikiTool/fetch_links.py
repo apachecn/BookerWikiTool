@@ -1,5 +1,5 @@
 import sys
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 from EpubCrawler.util import request_retry
 from pyquery import PyQuery as pq
 import json
@@ -131,6 +131,10 @@ def batch_links(args):
         
         
 def fetch_sitemap_handle(args):
+    if not args.ofname:
+        args.ofname = urlparse(args.url) \
+            .hostname \
+            .replace('.', '_') + '.txt'
     url, regex, ofname = args.url, args.regex, args.ofname
     urls = fetch_sitemap(url, regex)
     f = open(ofname, 'w', encoding='utf8')
