@@ -97,6 +97,8 @@ def time_match_to_str(m):
 
 def batch_links(args):
     num = args.num
+    if not args.name:
+        args.name = re.sub(r'\.\w+$', '', path.basename(args.links))
     links = open(args.links, encoding='utf8').read().split('\n')
     links = list(filter(None, links))
     
