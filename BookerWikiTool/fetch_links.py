@@ -89,7 +89,9 @@ def fetch_links(args):
     
     ofile.close()
 
-def time_match_to_str(m):
+def get_date_from_url(url, rgx):
+    m = re.search('#' + rgx, url)
+    if not m: return '000101'
     yr = m.group(1)
     mon = m.group(2)
     if len(mon) == 1: mon = '0' + mon
@@ -102,18 +104,15 @@ def batch_links(args):
     links = open(args.links, encoding='utf8').read().split('\n')
     links = list(filter(None, links))
     
-    dates = [re.search('#' + args.time_regex, l) for l in links]
-    if not all(dates):
-        print('未能提取文章发布时间')
-        return
+    dates = [get_date_from_url(l, args.time_regex) for l in links]
     
     for i in range(0, len(links), args.num):
-        st = time_match_to_str(dates[i])
-        ed = time_match_to_str(dates[i:i+args.num][-1])
+        st = dates[i]
+        ed = dates[i:i+args.num][-1]
         if st > ed: st, ed = ed, st
         
         cfg = {
-            'name': f'{args.name} {st}-{ed}',
+            'name': f'{args.name}_{st}_{ed}',
             'url': links[i],
             'title': args.title,
             'content': args.content,
