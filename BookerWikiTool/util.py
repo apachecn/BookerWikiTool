@@ -146,3 +146,13 @@ def dict_get_recur(obj, keys):
         else:
             res = [o.get(k) for o in res if k in o]
     return res
+    
+def safe(default=None):
+    def outer(f):
+        def inner(*args, **kw):
+            try: return f(*args, **kw)
+            except: 
+                traceback.print_exc()
+                return default
+        return inner
+    return outer
