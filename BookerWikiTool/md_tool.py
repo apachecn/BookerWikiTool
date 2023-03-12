@@ -317,7 +317,7 @@ def convert_cdrive_log(args):
     res = ''.join(res)
     open(fname + '.md', 'w', encoding='utf8').write(res)
 
-def fix_suffix(args):
+def rm_suffix(args):
     dir = args.dir
     if not path.isdir(dir):
         print('请提供目录')

@@ -53,10 +53,10 @@ def main():
     summary_parser.add_argument("dir", help="dir")
     summary_parser.set_defaults(func=summary_handle)
     
-    fix_suff_parser = subparsers.add_parser("fix-suff", help="fix suffix of HTML titles")
-    fix_suff_parser.add_argument("dir", help="dir")
-    fix_suff_parser.add_argument("-r", "--rate", type=float, default=0.5, help="rate of suffix in HTML titles")
-    fix_suff_parser.set_defaults(func=fix_suffix)
+    rm_suff_parser = subparsers.add_parser("rm-suff", help="remove suffix of HTML titles")
+    rm_suff_parser.add_argument("dir", help="dir")
+    rm_suff_parser.add_argument("-r", "--rate", type=float, default=0.5, help="rate of suffix in HTML titles")
+    rm_suff_parser.set_defaults(func=rm_suffix)
     
     ren_parser = subparsers.add_parser("ren-md", help="rename md fname")
     ren_parser.add_argument("fname", help="file for dir name")
