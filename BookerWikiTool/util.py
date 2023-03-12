@@ -151,6 +151,7 @@ def dict_get_recur(obj, keys):
 def safe(default=None):
     def outer(f):
         def inner(*args, **kw):
+            print(123123)
             try: return f(*args, **kw)
             except: 
                 traceback.print_exc()

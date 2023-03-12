@@ -24,7 +24,7 @@ def toggle_bw_dir(args):
     pool.close()
     pool.join()
 
-@safe()
+# @safe()
 def toggle_bw_file(args):
     fname = args.fname
     thres = args.thres # 50

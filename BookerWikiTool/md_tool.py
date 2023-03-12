@@ -48,7 +48,7 @@ def ren_md_dir(args):
     pool.close()
     pool.join()
 
-@safe()
+# @safe()
 def ren_md_file(args):
     fname = args.fname
     if not fname.endswith('.md'):
@@ -196,7 +196,7 @@ def tomd_dir(args):
     pool.close()
     pool.join()
 
-@safe()
+# @safe()
 def tomd_file(args):
     if not args.fname.endswith('.html'):
         print('请提供 HTML 文件')
@@ -213,7 +213,7 @@ def tomd_handle(args):
     else:
         tomd_file(args)
 
-@safe()
+# @safe()
 def opti_md_file(args):
     RE_SRC_FULL = r'原文[:：]\[.+?\]\((.+?)\)'
     RE_SRC_FULL_REP = r'原文：<\1>'

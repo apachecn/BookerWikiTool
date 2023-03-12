@@ -121,7 +121,7 @@ def fmt_dir(args):
     pool.close()
     pool.join()
     
-@safe()
+# @safe()
 def fmt_file(args):
     mode = args.mode
     if not args.fname.endswith('.html') and \

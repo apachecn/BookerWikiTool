@@ -308,7 +308,7 @@ def office2pdf_dir(args):
         try: office2pdf_file(args)
         except Exception as ex: traceback.print_exc()
 
-@safe()
+# @safe()
 def waifu2x_auto_file(args):
     fname = args.fname
     if not is_pic(fname):
@@ -373,7 +373,7 @@ def office2pdf_handle(args):
     else:
         office2pdf_file(args)
 
-@safe()
+# @safe()
 def anime4k_auto_file(args):
     fname = args.fname
     if not is_pic(fname):
@@ -427,7 +427,7 @@ def anime4k_auto_handle(args):
     else:
         anime4k_auto_file(args)
 
-@safe()
+# @safe()
 def pdf_auto_file(args):
     fname = args.fname
     threads = args.threads
@@ -489,7 +489,7 @@ def is_scanned_pdf(fname, imgs_area_rate=0.8, scanned_pg_rate=0.8):
     ]) / len(doc)
     return rate >= scanned_pg_rate
     
-@safe()
+# @safe()
 def tr_pick_scanned_pdf(fname, odirs, imgs_area_rate, scanned_pg_rate):
     scanned = is_scanned_pdf(
         fname, 
