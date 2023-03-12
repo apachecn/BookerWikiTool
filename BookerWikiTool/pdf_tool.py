@@ -308,10 +308,7 @@ def office2pdf_dir(args):
         try: office2pdf_file(args)
         except Exception as ex: traceback.print_exc()
 
-def waifu2x_auto_file_safe(args):
-    try: waifu2x_auto_file(args)
-    except Exception as ex: traceback.print_exc()
-
+@safe()
 def waifu2x_auto_file(args):
     fname = args.fname
     if not is_pic(fname):
@@ -356,7 +353,7 @@ def waifu2x_auto_dir(args):
         ff = path.join(dir, f)
         args = copy.deepcopy(args)
         args.fname = ff
-        pool.apply_async(waifu2x_auto_file_safe, [args])
+        pool.apply_async(waifu2x_auto_file, [args])
     pool.close()
     pool.join()
     
@@ -376,6 +373,7 @@ def office2pdf_handle(args):
     else:
         office2pdf_file(args)
 
+@safe()
 def anime4k_auto_file(args):
     fname = args.fname
     if not is_pic(fname):
@@ -411,17 +409,13 @@ def anime4k_auto_file(args):
     print(r[0].decode('utf8', 'ignore') or 
         r[1].decode('utf8', 'ignore'))
         
-def anime4k_auto_file_safe(args):
-    try: anime4k_auto_file(args)
-    except Exception as ex: traceback.print_exc()
-
 def anime4k_auto_dir(args):
     dir = args.fname
     fnames = os.listdir(dir)
     for f in fnames:
         ff = path.join(dir, f)
         args.fname = ff
-        anime4k_auto_file_safe(args)
+        anime4k_auto_file(args)
 
 def anime4k_auto_handle(args):
     # 检查 waifu2x
@@ -433,6 +427,7 @@ def anime4k_auto_handle(args):
     else:
         anime4k_auto_file(args)
 
+@safe()
 def pdf_auto_file(args):
     fname = args.fname
     threads = args.threads
@@ -466,12 +461,8 @@ def pdf_auto_dir(args):
     for f in fnames:
         ff = path.join(dir, f)
         args.fname = ff
-        pdf_auto_file_safe(args)
+        pdf_auto_file(args)
 
-def pdf_auto_file_safe(args):
-    try: pdf_auto_file(args)
-    except Exception as ex: traceback.print_exc()
-    
 
 def pdf_auto_handle(args):
     if path.isdir(args.fname):
@@ -498,6 +489,7 @@ def is_scanned_pdf(fname, imgs_area_rate=0.8, scanned_pg_rate=0.8):
     ]) / len(doc)
     return rate >= scanned_pg_rate
     
+@safe()
 def tr_pick_scanned_pdf(fname, odirs, imgs_area_rate, scanned_pg_rate):
     scanned = is_scanned_pdf(
         fname, 
@@ -510,10 +502,6 @@ def tr_pick_scanned_pdf(fname, odirs, imgs_area_rate, scanned_pg_rate):
         shutil.move(fname, path.join(odirs[0], path.basename(fname)))
     else:
         shutil.move(fname, path.join(odirs[1], path.basename(fname)))
-    
-def tr_pick_scanned_pdf_safe(*args, **kw):
-    try: tr_pick_scanned_pdf(*args, **kw)
-    except: traceback.print_exc()
     
 def pick_scanned_pdf(args):
     dir = args.dir
@@ -530,7 +518,7 @@ def pick_scanned_pdf(args):
             continue
         ff = path.join(dir, f)
         pool.apply_async(
-            tr_pick_scanned_pdf_safe, 
+            tr_pick_scanned_pdf, 
             [
                 ff, [odir0, odir1], 
                 args.imgs_area_rate, 
