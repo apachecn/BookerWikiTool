@@ -316,3 +316,38 @@ def convert_cdrive_log(args):
         
     res = ''.join(res)
     open(fname + '.md', 'w', encoding='utf8').write(res)
+
+def fix_suffix(args):
+    dir = args.dir
+    if not path.isdir(dir):
+        print('请提供目录')
+        return
+    html_fnames = [
+        f for f in os.listdir(dir) 
+        if f.endswith('.html')
+    ]
+    suff_cnt = {}
+    for f in html_fnames:
+        cont = open(path.join(dir, f), encoding='utf8').read()
+        title = pq(cont).find('h1').eq(0).text()
+        if not title: continue
+        m = re.search(r'[\-\|]\s[^\-\|]+$', title)
+        if not m: continue
+        suff = m.group()
+        suff_cnt[suff] = suff_cnt.get(suff, 0) + 1
+    
+    for suff, cnt in list(suff_cnt.items()):
+        if cnt > len(html_fnames) * args.rate:
+            print(f'检测到后缀 {suff}')
+        else
+            del suff[cnt]
+    
+    if len(suff_cnt) == 0: return
+    for f in html_fnames:
+        ff = path.join(dir, f)
+        print(ff)
+        cont = open(ff, encoding='utf8').read()
+        for suff in suff_cnt:
+            cont = cont.replace(suff, '')
+        open(ff, 'w', encoding='utf8').write(cont)
+    
