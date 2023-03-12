@@ -24,10 +24,7 @@ def toggle_bw_dir(args):
     pool.close()
     pool.join()
 
-def toggle_bw_file_safe(args):
-    try: toggle_bw_file(args)
-    except: traceback.print_exc()
-    
+@safe()
 def toggle_bw_file(args):
     fname = args.fname
     thres = args.thres # 50
