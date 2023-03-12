@@ -44,14 +44,11 @@ def ren_md_dir(args):
     for f in fnames:
         args = copy.deepcopy(args)
         args.fname = path.join(dir, f)
-        pool.apply_async(ren_md_file_safe, [args])
+        pool.apply_async(ren_md_file, [args])
     pool.close()
     pool.join()
 
-def ren_md_file_safe(args):
-    try: ren_md_file(args)
-    except: traceback.print_exc()
-
+@safe()
 def ren_md_file(args):
     fname = args.fname
     if not fname.endswith('.md'):
@@ -195,14 +192,11 @@ def tomd_dir(args):
         args = copy.deepcopy(args)
         args.fname = path.join(dir, fname)
         # tomd_file(args)
-        pool.apply_async(tomd_file_safe, [args])
+        pool.apply_async(tomd_file, [args])
     pool.close()
     pool.join()
 
-def tomd_file_safe(args):
-    try: tomd_file(args)
-    except: traceback.print_exc()
-
+@safe()
 def tomd_file(args):
     if not args.fname.endswith('.html'):
         print('请提供 HTML 文件')
@@ -226,14 +220,11 @@ def fmt_dir(args):
     for fname in fnames:
         args = copy.deepcopy(args)
         args.fname = path.join(dir, fname)
-        pool.apply_async(fmt_file_safe, [args])
+        pool.apply_async(fmt_file, [args])
     pool.close()
     pool.join()
     
-def fmt_file_safe(args):
-    try: fmt_file(args)
-    except: traceback.print_exc()
-    
+@safe()
 def fmt_file(args):
     mode = args.mode
     if not args.fname.endswith('.html') and \
@@ -254,10 +245,7 @@ def fmt_handle(args):
     else:
         fmt_file(args)
 
-def opti_md_file_safe(args):
-    try: opti_md_file(args)
-    except: traceback.print_exc()
-
+@safe()
 def opti_md_file(args):
     RE_SRC_FULL = r'原文[:：]\[.+?\]\((.+?)\)'
     RE_SRC_FULL_REP = r'原文：<\1>'
@@ -294,7 +282,7 @@ def opti_md_dir(args):
         args = copy.deepcopy(args)
         args.fname = path.join(dir, fname)
         # tomd_file(args)
-        pool.apply_async(opti_md_file_safe, [args])
+        pool.apply_async(opti_md_file, [args])
     pool.close()
     pool.join()
 
