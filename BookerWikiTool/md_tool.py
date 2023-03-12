@@ -329,12 +329,15 @@ def fix_suffix(args):
     suff_cnt = {}
     for f in html_fnames:
         cont = open(path.join(dir, f), encoding='utf8').read()
+        cont = re.sub(r'<\?xml[^>]*>', '', cont)
+        cont = re.sub(r'xmlns=".+?"', '', cont)
         title = pq(cont).find('h1').eq(0).text()
         if not title: continue
         m = re.search(r'[\-\|]\s[^\-\|]+$', title)
         if not m: continue
         suff = m.group()
         suff_cnt[suff] = suff_cnt.get(suff, 0) + 1
+        print(f'file: {f}, title: "{title}", suffix: "{suff}"')
     
     for suff, cnt in list(suff_cnt.items()):
         if cnt > len(html_fnames) * args.rate:
