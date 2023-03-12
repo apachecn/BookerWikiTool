@@ -339,7 +339,7 @@ def fix_suffix(args):
     for suff, cnt in list(suff_cnt.items()):
         if cnt > len(html_fnames) * args.rate:
             print(f'检测到后缀 {suff}')
-        else
+        else:
             del suff[cnt]
     
     if len(suff_cnt) == 0: return
