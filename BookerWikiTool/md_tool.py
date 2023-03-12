@@ -213,38 +213,6 @@ def tomd_handle(args):
     else:
         tomd_file(args)
 
-def fmt_dir(args):
-    dir = args.fname
-    fnames = os.listdir(dir)
-    pool = Pool(args.threads)
-    for fname in fnames:
-        args = copy.deepcopy(args)
-        args.fname = path.join(dir, fname)
-        pool.apply_async(fmt_file, [args])
-    pool.close()
-    pool.join()
-    
-@safe()
-def fmt_file(args):
-    mode = args.mode
-    if not args.fname.endswith('.html') and \
-        not args.fname.endswith('.md'):
-        print('请提供 HTML 或 MD 文件')
-        return
-    print(args.fname)
-    text = open(args.fname, encoding='utf8').read()
-    if mode == 'zh':
-        text = fmt_zh(text)
-    elif mode == 'packt':
-        text = fmt_packt(text)
-    open(args.fname, 'w', encoding='utf8').write(text)
-
-def fmt_handle(args):
-    if path.isdir(args.fname):
-        fmt_dir(args)
-    else:
-        fmt_file(args)
-
 @safe()
 def opti_md_file(args):
     RE_SRC_FULL = r'原文[:：]\[.+?\]\((.+?)\)'

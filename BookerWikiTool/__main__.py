@@ -22,6 +22,7 @@ from . import __version__
 from .util import *
 from .epub_tool import *
 from .md_tool import *
+from .fmt import *
 from .fetch_links import *
 from .pdf_tool import *
 from .zip_tool import *

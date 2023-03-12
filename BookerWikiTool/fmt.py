@@ -1,8 +1,10 @@
-from pyquery import PyQuery as pq
-import sys
-import os
-from os import path
 import re
+import os
+import copy
+from multiprocessing import Pool
+from os import path
+from pyquery import PyQuery as pq
+from .util import *
 
 def fmt_zh(text):
     text = re.sub(r'([\u4e00-\u9fff])([a-zA-Z0-9_])', r'\1 \2', text)
@@ -106,3 +108,38 @@ def fmt_apress(html):
     html = str(root)
     html = re.sub(r'</?(div|span|article|header|section|figure|figcaption)[^>]*>', '', html)
     return html
+
+
+def fmt_dir(args):
+    dir = args.fname
+    fnames = os.listdir(dir)
+    pool = Pool(args.threads)
+    for fname in fnames:
+        args = copy.deepcopy(args)
+        args.fname = path.join(dir, fname)
+        pool.apply_async(fmt_file, [args])
+    pool.close()
+    pool.join()
+    
+@safe()
+def fmt_file(args):
+    mode = args.mode
+    if not args.fname.endswith('.html') and \
+        not args.fname.endswith('.md'):
+        print('请提供 HTML 或 MD 文件')
+        return
+    print(args.fname)
+    text = open(args.fname, encoding='utf8').read()
+    if mode == 'zh':
+        text = fmt_zh(text)
+    elif mode == 'packt':
+        text = fmt_packt(text)
+    elif mode == 'apress':
+        text = fmt_apress(text)
+    open(args.fname, 'w', encoding='utf8').write(text)
+
+def fmt_handle(args):
+    if path.isdir(args.fname):
+        fmt_dir(args)
+    else:
+        fmt_file(args)
