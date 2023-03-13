@@ -146,6 +146,7 @@ def fetch_sitemap_handle(args):
 def fetch_sitemap(url, rgx):
     xml = request_retry('GET', url, headers=config['headers']).text
     urls = re.findall(r'<loc>(.+?)</loc>', xml)
+    urls = [u.strip() for u in urls]
     subs = [
         u for u in urls
         if u.endswith('.xml')
