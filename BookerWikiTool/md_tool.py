@@ -343,7 +343,7 @@ def rm_suffix(args):
         if cnt > len(html_fnames) * args.rate:
             print(f'检测到后缀 {suff}')
         else:
-            del suff[cnt]
+            del suff_cnt[suff]
     
     if len(suff_cnt) == 0: return
     for f in html_fnames:
