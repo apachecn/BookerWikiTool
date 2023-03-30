@@ -1,10 +1,11 @@
 import os
 from os import path
-from pywinauto.application import Application
-from pywinauto.keyboard import send_keys
 from time import sleep
 
 def pdg2pdf(args):
+    from pywinauto.application import Application
+    from pywinauto.keyboard import send_keys
+    
     dir = args.dir
     if not path.isdir(dir):
         print('请提供目录')

@@ -1,5 +1,4 @@
 import fitz
-import win32com.client
 import subprocess as subp
 import sys
 from os import path
@@ -277,6 +276,7 @@ def pack_pdf(args):
         open(fname, 'wb').write(pdf)
 
 def office2pdf(fname, ofname):
+    import win32com.client
     m = re.search(r'\.(\w+)$', fname)
     ext = m.group(1) if m else ""
     if ext not in app_map:

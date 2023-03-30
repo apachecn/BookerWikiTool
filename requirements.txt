@@ -4,11 +4,11 @@ readability-lxml
 pyyaml
 EpubCrawler
 imgyaso
-pywin32
+# pywin32
 PyMuPdf
 img2pdf
 openpyxl
 pandas
 openai
-pywinauto
+# pywinauto
 rarfile
