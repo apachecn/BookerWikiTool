@@ -32,6 +32,7 @@ from .crawl_wx import *
 from .codelint import *
 from .chatgpt import *
 from .medium import *
+from .webarchive import *
     
 def main():
     parser = argparse.ArgumentParser(prog="BookerWikiTool", description="iBooker WIKI tool", formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -234,6 +235,16 @@ def main():
     fetch_med_parser.add_argument('-e', '--end', default='99991231', help="ending date")
     fetch_med_parser.add_argument('-p', '--proxy', help="proxy")
     fetch_med_parser.set_defaults(func=fetch_medium)
+
+    fetch_war_parser = subparsers.add_parser("fetch-web-archive", help="fetch web archive")
+    fetch_war_parser.add_argument("host", help="host")
+    fetch_war_parser.add_argument("-s", "--start", type=int, default=1, help="starting page")
+    fetch_war_parser.add_argument("-e", "--end", type=int, default=1_000_000_000, help="ending page")
+    fetch_war_parser.add_argument("-r", "--regex", default='.', help="regex to match urls")
+    fetch_war_parser.add_argument("-q", "--query", action='store_true', help="whether to deduplicate with query")
+    fetch_war_parser.add_argument("-f", "--fragment", action='store_true', help="whether to deduplicate with fragment")
+    fetch_war_parser.add_argument("-p", "--proxy", help="proxy")
+    fetch_war_parser.set_defaults(func=fetch_webarchive)
 
     args = parser.parse_args()
     args.func(args)
