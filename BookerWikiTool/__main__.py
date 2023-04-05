@@ -31,6 +31,7 @@ from .toggle_bw import *
 from .crawl_wx import *
 from .codelint import *
 from .chatgpt import *
+from .medium import *
     
 def main():
     parser = argparse.ArgumentParser(prog="BookerWikiTool", description="iBooker WIKI tool", formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -226,6 +227,12 @@ def main():
     pick_scan_parser.add_argument("-s", "--scanned-pg-rate", type=float, default=0.8, help="rate of scanned pages in whole doc, above which a pdf will be regarded as scanned")
     pick_scan_parser.add_argument("-t", "--threads", type=int, default=8, help="num of threads")
     pick_scan_parser.set_defaults(func=pick_scanned_pdf)
+
+    fetch_med_parser = subparsers.add_parser("fetch-medium", help="fetch medium toc")
+    fetch_med_parser.add_argument("host", help="medium blog host: xxx.medium.com or medium.com/xxx")
+    fetch_med_parser.add_argument('-s', '--start', default='20150101', help="starting date")
+    fetch_med_parser.add_argument('-e', '--end', default='99991231', help="ending date")
+    fetch_med_parser.set_defaults(func=fetch_medium)
 
     args = parser.parse_args()
     args.func(args)
