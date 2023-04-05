@@ -232,6 +232,7 @@ def main():
     fetch_med_parser.add_argument("host", help="medium blog host: xxx.medium.com or medium.com/xxx")
     fetch_med_parser.add_argument('-s', '--start', default='20150101', help="starting date")
     fetch_med_parser.add_argument('-e', '--end', default='99991231', help="ending date")
+    fetch_med_parser.add_argument('-p', '--proxy', help="proxy")
     fetch_med_parser.set_defaults(func=fetch_medium)
 
     args = parser.parse_args()

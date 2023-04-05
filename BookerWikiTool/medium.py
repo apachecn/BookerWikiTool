@@ -18,6 +18,7 @@ def get_links(html, dt):
 
 def fetch_medium(args):
     host, st, ed = args.host, args.start, args.end
+    proxy = {'https': args.proxy, 'http': args.proxy}
     ofname = re.sub(r'\W', '_', host) + '_' + st + '_' + ed + '.txt'
     stdt = datetime(int(st[:4]), int(st[4:6]), int(st[6:8]))
     eddt = datetime(int(ed[:4]), int(ed[4:6]), int(ed[6:8]))
@@ -27,7 +28,7 @@ def fetch_medium(args):
     while dt <= eddt and dt <= now:
         url = f'https://{host}/archive/{dt.year}/{dt.month:02d}/{dt.day:02d}/'
         print(url)
-        html = request_retry('GET', url).text
+        html = request_retry('GET', url, proxies=proxy).text
         links = get_links(html, dt)
         if links:
             print('\n'.join(links))
