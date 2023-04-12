@@ -77,7 +77,7 @@ def ren_md_file(args):
         return
     nfname = re.sub(r'\s', '-', fname_escape(title)) + '.md'
     nfname = path.join(path.dirname(fname), nfname)
-    print(nfname)
+    print(f'{fname} => {nfname}')
     shutil.move(fname, nfname)
 
 def download_handle(args):
