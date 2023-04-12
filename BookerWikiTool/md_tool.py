@@ -4,6 +4,7 @@ from readability import Document
 import tempfile
 import uuid
 import subprocess as subp
+from  urllib.parse import urlparse
 import re
 import os
 import shutil
@@ -55,7 +56,7 @@ def get_md_title(md):
     if not rm: return
     return rm.group(1)
     
-def get_md_src_title(md):
+def get_md_src_title(cont):
     rm = re.search(RE_SOURCE, cont, flags=re.M)
     if not rm: return
     src = rm.group(1)
