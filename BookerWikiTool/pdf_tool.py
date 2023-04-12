@@ -12,7 +12,7 @@ import uuid
 import traceback
 from PIL import Image, ImageFile
 from multiprocessing import Pool
-from imgyaso import pngquant_bts
+from imgyaso import pngquant_bts, adathres_bts
 import img2pdf
 from io import BytesIO
 from .util import *
@@ -46,7 +46,7 @@ def comp_pdf(args):
             print(f'image: {ii+1}, xref: {xref}')
             img = fitz.Pixmap(doc, xref)
             data = img.pil_tobytes(format="JPEG", quality=100)
-            data = pngquant_bts(data)
+            data = adathres_bts(data)
             p.replace_image(xref, stream=data)
     doc.save(fname, clean=True, garbage=4, deflate=True, linear=True)
     doc.close()
