@@ -17,7 +17,8 @@ import imgyaso
 
 RE_YAML_META = r'<!--yml([\s\S]+?)-->'
 RE_TITLE = r'^#+ (.+?)$'
-RE_SOURCE = r'/([^/\n]+?)/?>'
+RE_SOURCE = r'原文：<(.+?)>'
+RE_SRC_TITLE = r'[\w\-]{15,}'
 RE_CODE_BLOCK = r'```[\s\S]+?```'
 RE_IMG = r'!\[.*?\]\(.*?\)'
 # Word 字数统计标准：

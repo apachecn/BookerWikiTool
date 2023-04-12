@@ -49,21 +49,34 @@ def ren_md_dir(args):
     pool.join()
 
 # @safe()
+
+def get_md_title(md):
+    rm = re.search(RE_TITLE, cont, flags=re.M)
+    if not rm: return
+    return rm.group(1)
+    
+def get_md_src_title(md):
+    rm = re.search(RE_SOURCE, cont, flags=re.M)
+    if not rm: return
+    src = rm.group(1)
+    p = urlparse(src).path
+    rm = re.search(RE_SRC_TITLE, p)
+    if not rm: return
+    return rm.group()
+
 def ren_md_file(args):
     fname = args.fname
     if not fname.endswith('.md'):
         print('请提供 markdown 文件')
         return
     cont = open(fname, encoding='utf8').read()
-    dir = path.dirname(fname)
-    RE = RE_SOURCE if args.by == 'src' else RE_TITLE
-    rm = re.search(RE, cont, flags=re.M)
-    if not rm: 
-        print(f'{fname} 未找到文件名')
+    title = get_md_src_title(cont) \
+        if args.by == 'src' else get_md_title(cont)
+    if not title:
+        print(f"未找到 {fname} 的标题")
         return
-    nfname = rm.group(1)
-    nfname = re.sub(r'\s', '-', fname_escape(nfname)) + '.md'
-    nfname = path.join(dir, nfname)
+    nfname = re.sub(r'\s', '-', fname_escape(title)) + '.md'
+    nfname = path.join(path.dirname(fname), nfname)
     print(nfname)
     shutil.move(fname, nfname)
 
