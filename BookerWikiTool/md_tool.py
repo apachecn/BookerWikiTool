@@ -52,7 +52,7 @@ def ren_md_dir(args):
 # @safe()
 
 def get_md_title(md):
-    rm = re.search(RE_TITLE, cont, flags=re.M)
+    rm = re.search(RE_TITLE, md, flags=re.M)
     if not rm: return
     return rm.group(1)
     
